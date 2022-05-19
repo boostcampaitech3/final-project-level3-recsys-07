@@ -17,13 +17,19 @@ with st.container():
         input_button=st.button('🔍')
 
 st.markdown("""---""")
-image_list=['https://image.msscdn.net/images/style/detail/26833/detail_26833_2_500.jpg' for i in range(5)]
+image_list=['https://image.msscdn.net/images/style/detail/26833/detail_26833_2_500.jpg' for i in range(8)]
 print(image_list)
 with st.container():
     st.markdown("### 갖고있는 옷과 가장 비슷한 사진을 골라주세요")
     image_iterator = paginator('',image_list,items_per_page=5,on_sidebar=False)
     indices_on_page, images_on_page = map(list, zip(*image_iterator))
-    st.image(images_on_page, width=126)
+    my_cloth= clickable_images(images_on_page,titles=[f"Image #{str(i)}" for i in range(5)],
+                                div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
+                                img_style={"margin": "5px", "height": "200px", "width" : "125px"},key='mySelect'
+                            )
+    st.write(my_cloth) # 아무것도 선택하지 않았을 때 : -1
+    st.write(indices_on_page[my_cloth])
+
     st.button('선택')
 
 st.markdown("""---""")
