@@ -71,6 +71,8 @@ def get_tags_list(driver) :
     tags_raw = driver.find_elements(By.CSS_SELECTOR, value="li.article-tag-list a.listItem")
     for tag in tags_raw :
         tags_list.append(tag.text[1:])
+    if len(tags_list) == 0:
+        tags_list = None
     return tags_list
 
 def get_four_season(driver) :
@@ -82,6 +84,8 @@ def get_four_season(driver) :
             seasons = guide.find_elements(By.CSS_SELECTOR, value="td.active")
             for season in seasons :
                 four_season.append(season.text)
+    if len(four_season) == 0:
+        four_season=None
     return four_season
 
 def get_color(driver) :
@@ -101,3 +105,10 @@ def get_size(driver) :
     if len(size) == 0:
         size = None
     return size
+
+def get_view(driver) :
+    product_info = driver.find_elements(By.CSS_SELECTOR, "ul.product_article > li > p.product_article_contents")
+    view = product_info[2].find_element(By.CSS_SELECTOR, "strong#pageview_1m").text
+    if not view : 
+        view = None
+    return view

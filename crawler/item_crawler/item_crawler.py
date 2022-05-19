@@ -29,10 +29,12 @@ for codi_element in container:
 cnt = 0
 for codi_id, codi_url in codi:
     print(f"Crawling for CODI ID : {codi_id}\n")
+
     driver.get(codi_url)
     driver.implicitly_wait(0.5)
     item_list = driver.find_elements(By.CSS_SELECTOR, 'div.styling_list > div.swiper-slide')
     item_urls = []
+    
     for item in item_list:
         item_url = item.find_element(By.CSS_SELECTOR, "a.brand_item").get_attribute('href')
         item_urls.append(item_url)
@@ -41,6 +43,7 @@ for codi_id, codi_url in codi:
         driver.get(item_url)
         driver.implicitly_wait(0.5) #페이지를 로딩하는 시간동안 대기
         print(f"Crawling item : {item_url}")
+
         rating = get_rating(driver)
         likes = get_likes(driver)
         cum_sale = get_cum_sale(driver)
@@ -58,9 +61,9 @@ for codi_id, codi_url in codi:
         serial_number = product_info[0].find_element(By.CSS_SELECTOR, "strong").get_attribute('innerHTML').split()[-1]
         season = product_info[1].find_element(By.CSS_SELECTOR, "strong").text
         gender = product_info[1].find_element(By.CSS_SELECTOR, "span.txt_gender").text
-        view = product_info[2].find_element(By.CSS_SELECTOR, "strong#pageview_1m").text
-        #price = driver.find_element(By.CSS_SELECTOR, "del.price-del").text
-        price = driver.find_element(By.CSS_SELECTOR, value="span.product_article_price")
+        #view = product_info[2].find_element(By.CSS_SELECTOR, "strong#pageview_1m").text
+        view = get_view(driver)
+        price = driver.find_element(By.CSS_SELECTOR, value="span.product_article_price").text
         img_url = driver.find_element(By.CSS_SELECTOR, "div.product-img > img").get_attribute('src')
         
         features = [rating,likes, cum_sale, buy_age_list, buy_gender_list,
