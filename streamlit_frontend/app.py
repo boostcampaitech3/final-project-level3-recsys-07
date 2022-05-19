@@ -2,6 +2,7 @@ from logging import PlaceHolder
 import streamlit as st
 from utils import paginator
 from st_clickable_images import clickable_images
+
 st.image('https://www.noiremag.com/wp-content/uploads/2020/08/2020-fashion-trends-feature-696x392-1.jpg')
 st.title('YUSINSA')
 
@@ -36,28 +37,31 @@ with st.container():
     st.markdown('#### 상의')
     top_click= clickable_images(top_list,titles=[f"Image #{str(i)}" for i in range(5)],
                                         div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
-                                        img_style={"margin": "5px", "height": "200px", "width" : "125px"},key='topselect'
+                                        img_style={"margin": "5px", "height": "200px", "width" : "125px"},key='topSelect'
                                     )
     st.markdown(f"Image #{top_click} clicked" if top_click > -1 else "No image clicked")
-
+    
+    if st.session_state.topSelect!= None:
+        st.write(st.session_state)
+        st.write(st.session_state.topSelect)
     st.markdown('#### 바지')
     pants_click= clickable_images(pants_list,titles=[f"Image #{str(i)}" for i in range(5)],
                                         div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
-                                        img_style={"margin": "5px", "height": "200px", "width" : "125px"}
+                                        img_style={"margin": "5px", "height": "200px", "width" : "125px"},key='pantsSelect'
                                     )
     # st.markdown(f"Image #{pants_click} clicked" if pants_click > -1 else "No image clicked")
 
     st.markdown('#### 신발')
     shoes_click= clickable_images(shoes_list,titles=[f"Image #{str(i)}" for i in range(5)],
                                         div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
-                                        img_style={"margin": "5px", "height": "200px", "width" : "125px"}
+                                        img_style={"margin": "5px", "height": "200px", "width" : "125px"},key='shoesSelect'
                                     )
     # st.markdown(f"Image #{shoes_click} clicked" if shoes_click > -1 else "No image clicked")
     
     st.markdown('#### 악세사리')
     acc_click= clickable_images(acc_list,titles=[f"Image #{str(i)}" for i in range(5)],
                                         div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
-                                        img_style={"margin": "5px", "height": "200px", "width" : "125px"}
+                                        img_style={"margin": "5px", "height": "200px", "width" : "125px"},key='accSelect'
                                     )
     # st.markdown(f"Image #{acc_click} clicked" if acc_click > -1 else "No image clicked")
 
