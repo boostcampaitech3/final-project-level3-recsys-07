@@ -7,10 +7,15 @@ st.image('https://www.noiremag.com/wp-content/uploads/2020/08/2020-fashion-trend
 st.title('YUSINSA')
 
 with st.container():
+    '''
+        검색 CONTAINER
+    '''
+    # TODO : 검색 리스트 생성
+    # TODO : 검색 이벤트 연결 -> on.click
     c1_col1,c1_col2 = st.columns(2)
 
     with c1_col1:
-        input=st.text_input(label='👕👖',placeholder='갖고있는 옷을 검색하세요')
+        input=st.multiselect(label='👕👖 갖고있는 옷을 검색하세요',options = ['yellow green','yellow','ye','blue yellow', '22yellow'])
     with c1_col2:
         st.write("")
         st.write("")
@@ -18,7 +23,7 @@ with st.container():
 
 st.markdown("""---""")
 image_list=['https://image.msscdn.net/images/style/detail/26833/detail_26833_2_500.jpg' for i in range(8)]
-print(image_list)
+
 with st.container():
     st.markdown("### 갖고있는 옷과 가장 비슷한 사진을 골라주세요")
     image_iterator = paginator('',image_list,items_per_page=5,on_sidebar=False)
