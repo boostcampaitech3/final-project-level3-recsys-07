@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from easydict import EasyDict
 from utils import *
 import openpyxl
+import os
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument(argument='--headless') 
