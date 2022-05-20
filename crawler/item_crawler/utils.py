@@ -1,26 +1,76 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from torch import set_autocast_enabled
 
-def get_rating(driver) :
-    try :
-        rating = float(driver.find_element(By.CSS_SELECTOR, value="div.estimate-point > p span").text)
-    except :
-        rating = None
-    return rating
+def get_brand(product_info):
+    brand = product_info[0].find_element(By.CSS_SELECTOR, "strong > a").text
+    return brand
 
-def get_likes(driver) :
-    try :
-        likes = int(driver.find_element(By.CSS_SELECTOR, value="li.product_section_like span").text)
-    except :
-        likes = None
-    return likes
-    
-def get_cum_sale(driver):
+def get_serial_number(product_info):
+    serial_number = product_info[0].find_element(By.CSS_SELECTOR, "strong").get_attribute('innerHTML').split()[-1]
+    return serial_number
+
+def get_season(product_info):
     try:
-        cum_sale = int(driver.find_element(By.CSS_SELECTOR, value="li#li_sales_1y strong").text)
+        season = product_info[1].find_element(By.CSS_SELECTOR, "strong").text
+    except:
+        season = None
+    return season
+
+def get_gender(product_info):
+    gender = product_info[1].find_element(By.CSS_SELECTOR, "span.txt_gender").text
+    return gender
+
+def get_view(product_info) :
+    view = product_info[2].find_element(By.CSS_SELECTOR, "strong#pageview_1m").text
+    if not view : 
+        view = None
+    return view
+
+def get_cum_sale(product_info):
+    try:
+        cum_sale = int(product_info[3].find_element(By.CSS_SELECTOR, value="strong#sales_1y_qty").text)
     except :
         cum_sale = None
     return cum_sale
+
+def get_likes(product_info) :
+    try:
+        likes = int(product_info[4].find_element(By.CSS_SELECTOR, value="span.prd_like_cnt").text.replace(',', ''))
+    except:
+        likes = None
+    return likes
+
+def get_rating(product_info) :
+    try:
+        rating = float(rating = product_info[5].find_element(By.CSS_SELECTOR, "span.prd-score__rating").text)
+    except:
+        rating = None
+    return rating
+
+def get_color(menu):
+    color = []
+    if not menu or len(menu) == 1: return None
+    colors = menu[0].find_elements(By.CSS_SELECTOR, "option")
+    
+    for i in range(1, len(colors)):
+        if colors[i].text: color.append(colors[i].text)
+    return color
+
+def get_size(menu):
+    size = [] 
+    if not menu: return None
+    if len(menu) == 1: sizes = menu[0].find_elements(By.CSS_SELECTOR, "option")
+    else: sizes = menu[1].find_elements(By.CSS_SELECTOR, "option")
+    
+    for i in range(1, len(sizes)):
+        if sizes[i].text: size.append(sizes[i].text)
+    return size
+
+def get_price(driver):
+    price = driver.find_element(By.CSS_SELECTOR, "span.product_article_price").text[:-1]
+    price = int(price.replace(',', ''))
+    return price
 
 def get_buy_age_list(driver):
     buy_age_raw = driver.find_elements(By.CSS_SELECTOR, value="ul.bar_wrap > li span.bar_num")
@@ -87,28 +137,3 @@ def get_four_season(driver) :
     if len(four_season) == 0:
         four_season=None
     return four_season
-
-def get_color(driver) :
-    color = []
-    colors = driver.find_elements(By.CSS_SELECTOR, "div#goods_opt_area > select#option1 > option")
-    for i in range(1, len(colors)):
-        color.append(colors[i].text)
-    if len(color) == 0:
-        color = None
-    return color
-
-def get_size(driver) :
-    size = []
-    sizes = driver.find_elements(By.CSS_SELECTOR, "div#goods_opt_area > select#option2 > option")
-    for i in range(1, len(sizes)):
-        size.append(sizes[i].text)
-    if len(size) == 0:
-        size = None
-    return size
-
-def get_view(driver) :
-    product_info = driver.find_elements(By.CSS_SELECTOR, "ul.product_article > li > p.product_article_contents")
-    view = product_info[2].find_element(By.CSS_SELECTOR, "strong#pageview_1m").text
-    if not view : 
-        view = None
-    return view
