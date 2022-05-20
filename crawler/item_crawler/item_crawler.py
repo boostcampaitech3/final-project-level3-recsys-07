@@ -5,13 +5,16 @@ from utils import *
 import openpyxl
 import os
 
+import pandas as pd
+from tqdm import tqdm
+
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument(argument='--headless') 
 chrome_options.add_argument(argument='--no-sandbox')
 chrome_options.add_argument(argument='--disable-dev-shm-usage')
 
 URL_PATH = "https://www.musinsa.com/app/styles/lists"
-driver = webdriver.Chrome('/opt/ml/workspace/crawler/item_crawler/chromedriver',chrome_options=chrome_options)
+driver = webdriver.Chrome('/opt/ml/workspace/crawler/chromedriver',chrome_options=chrome_options)
 driver.get(URL_PATH)
 driver.implicitly_wait(2) #페이지를 로딩하는 시간동안 대기
 
@@ -54,19 +57,25 @@ sheet_item_buy_gender.append(["id", "buy_men", "buy_women"])
 button = driver.find_element(By.CSS_SELECTOR, "button.global-filter__button--mensinsa")
 button.click()
 
-container =  driver.find_elements(By.CSS_SELECTOR, "ul.style-list > li")
-BASE_CODI_URL = "https://www.musinsa.com/app/styles/views/"
+#container =  driver.find_elements(By.CSS_SELECTOR, "ul.style-list > li")
+#BASE_CODI_URL = "https://www.musinsa.com/app/styles/views/"
+#codi = []
+#for codi_element in container:
+#    img_src = codi_element.find_element(By.CSS_SELECTOR, 'div.style-list-item__thumbnail > a').get_attribute('onclick')
+#    codi_id = img_src.split("'")[1]
+#    codi_url = BASE_CODI_URL + codi_id
+#    codi.append((codi_id, codi_url))
 
-codi = []
-for codi_element in container:
-    img_src = codi_element.find_element(By.CSS_SELECTOR, 'div.style-list-item__thumbnail > a').get_attribute('onclick')
-    codi_id = img_src.split("'")[1]
-    codi_url = BASE_CODI_URL + codi_id
-    codi.append((codi_id, codi_url))
+codi_info = pd.read_excel("/opt/ml/workspace/crawler/codi_crawler/asset/codi.xlsx")
+codi_urls = codi_info["url"].to_list()
+codi_ids = codi_info["id"].to_list()
 
+#for codi_id, codi_url in codi:
+#    print(f"Crawling for CODI ID : {codi_id}\n")
 cnt = 0
-for codi_id, codi_url in codi:
-    print(f"Crawling for CODI ID : {codi_id}\n")
+for codi_id, codi_url in zip(codi_ids, codi_urls) :
+    print(f"Crawling for CODI URL : {codi_url}\n")
+    print(f"{cnt} out of 600 codi crawled...")
 
     driver.get(codi_url)
     driver.implicitly_wait(0.5)
@@ -146,20 +155,18 @@ for codi_id, codi_url in codi:
         if buy_gender_list:
             sheet_item_buy_gender.append([id]+buy_gender_list)
         
-        os.makedirs('./asset', exist_ok=True)
-        wb_item.save("./asset/item.xlsx")
-        wb_item_color.save("./asset/item_color.xlsx")
-        wb_item_size.save("./asset/item_size.xlsx")
-        wb_item_tag.save("./asset/item_tag.xlsx")
-        wb_item_four_season.save("./asset/item_four_season.xlsx")
-        wb_item_fit.save("./asset/item_fit.xlsx")
-        wb_item_buy_age.save("./asset/item_buy_age.xlsx")
-        wb_item_buy_gender.save("./asset/item_buy_gender.xlsx")
         
         print()
-    cnt +=1
-    if cnt == 2 :
-        break
+    cnt += 1
+os.makedirs('./asset', exist_ok=True)
+wb_item.save("./asset/item.xlsx")
+wb_item_color.save("./asset/item_color.xlsx")
+wb_item_size.save("./asset/item_size.xlsx")
+wb_item_tag.save("./asset/item_tag.xlsx")
+wb_item_four_season.save("./asset/item_four_season.xlsx")
+wb_item_fit.save("./asset/item_fit.xlsx")
+wb_item_buy_age.save("./asset/item_buy_age.xlsx")
+wb_item_buy_gender.save("./asset/item_buy_gender.xlsx")
 
 driver.close()
 
