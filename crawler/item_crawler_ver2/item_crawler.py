@@ -73,11 +73,16 @@ codi_ids = codi_info["id"].to_list()
 #for codi_id, codi_url in codi:
 #    print(f"Crawling for CODI ID : {codi_id}\n")
 cnt = 0
-for codi_id, codi_url in zip(codi_ids, codi_urls) :
+for codi_id, codi_url in zip(codi_ids[235:], codi_urls[235:]) :
     print(f"Crawling for CODI URL : {codi_url}\n")
     print(f"{cnt} out of 600 codi crawled...")
 
-    driver.get(codi_url)
+    try :
+        driver.get(codi_url)
+    except :
+        print("이 에러가 발생하면 다음 코디부터 따로 크롤링 해주시길 바랍니다!")
+        continue
+    
     driver.implicitly_wait(1)
     item_list = driver.find_elements(By.CSS_SELECTOR, 'div.styling_list > div.swiper-slide')
     item_urls = []
@@ -158,19 +163,20 @@ for codi_id, codi_url in zip(codi_ids, codi_urls) :
         if buy_gender_list:
             sheet_item_buy_gender.append([id]+buy_gender_list)
         
-        os.makedirs('./asset', exist_ok=True)
-        wb_item.save("./asset/item.xlsx")
-        wb_item_color.save("./asset/item_color.xlsx")
-        wb_item_size.save("./asset/item_size.xlsx")
-        wb_item_tag.save("./asset/item_tag.xlsx")
-        wb_item_four_season.save("./asset/item_four_season.xlsx")
-        wb_item_fit.save("./asset/item_fit.xlsx")
-        wb_item_buy_age.save("./asset/item_buy_age.xlsx")
-        wb_item_buy_gender.save("./asset/item_buy_gender.xlsx")
-        
+        os.makedirs('./asset2', exist_ok=True)
+        wb_item.save("./asset2/item.xlsx")
+        wb_item_color.save("./asset2/item_color.xlsx")
+        wb_item_size.save("./asset2/item_size.xlsx")
+        wb_item_tag.save("./asset2/item_tag.xlsx")
+        wb_item_four_season.save("./asset2/item_four_season.xlsx")
+        wb_item_fit.save("./asset2/item_fit.xlsx")
+        wb_item_buy_age.save("./asset2/item_buy_age.xlsx")
+        wb_item_buy_gender.save("./asset2/item_buy_gender.xlsx")
+
         print()
     cnt += 1
 
 
 driver.close()
+
 
