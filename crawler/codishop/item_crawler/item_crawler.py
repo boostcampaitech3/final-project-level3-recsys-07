@@ -4,7 +4,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from easydict import EasyDict
 from utils import *
-import openpyxl
 
 #-----------------------------------------
 # 🌟 꼭 설정해야 하는 파라미터!
@@ -22,10 +21,10 @@ if _SORT_OPTION == 'view':
     if _STORE_OPTION == 'raw_codishop':
         URL_PATH = "https://www.musinsa.com/app/styles/lists?sort=view_cnt"
     else:
-        URL_PATH = "https://www.musinsa.com/app/styles/lists"
+        URL_PATH = "https://www.musinsa.com/app/codimap/lists?sort=view_cnt"
 else:
     if _STORE_OPTION == 'raw_codishop':
-        URL_PATH = "https://www.musinsa.com/app/codimap/lists?sort=view_cnt"
+        URL_PATH = "https://www.musinsa.com/app/styles/lists"
     else:
         URL_PATH = "https://www.musinsa.com/app/codimap/lists"
         
@@ -51,7 +50,7 @@ button = driver.find_element(By.CSS_SELECTOR, "button.global-filter__button--men
 button.click()
 
 # 🚀 코디 정보를 가져올 url 받아오기
-codi_info = pd.read_excel('/opt/ml/input/data/' + _STORE_OPTION + '/' + _SORT_OPTION + '/codi/codi.xlsx', engine='openpyxl')
+codi_info = pd.read_excel('/opt/ml/input/data/' + _STORE_OPTION + '/' + _SORT_OPTION + '/codi/codi.xlsx')
 codi_urls = codi_info["url"].to_list()
 codi_ids = codi_info["id"].to_list()
 
@@ -124,6 +123,9 @@ for codi_id, codi_url in zip(codi_ids, codi_urls) :
         
         # 위에서 크롤링한 정보를 sheet에 append
         save_to_sheets(sheets, item_info)
+        
+        # 크롤링 결과 파일로 저장
+        save_workbooks(workbooks, _SORT_OPTION, _STORE_OPTION)
 
         # 현재 아이템 crawling 결과 출력
         if _VERBOSE:
@@ -131,6 +133,4 @@ for codi_id, codi_url in zip(codi_ids, codi_urls) :
 
     cnt += 1
 
-# 크롤링 결과 파일로 저장
-save_workbooks(workbooks, _SORT_OPTION, _STORE_OPTION)
 driver.close()
