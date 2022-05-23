@@ -1,10 +1,12 @@
 from faulthandler import disable
+import imp
 from logging import PlaceHolder
 import streamlit as st
 from utils import paginator, get_images_url
 from st_clickable_images import clickable_images
 import pandas as pd
-from ..modes.Rule_Based.rule_based import *
+from rule_based import get_item_recommendation
+
 
 st.image('https://www.noiremag.com/wp-content/uploads/2020/08/2020-fashion-trends-feature-696x392-1.jpg')
 st.title('YUSINSA')
@@ -62,7 +64,7 @@ if len(st.session_state['result'])!=0:
 
         st.button('선택', disabled=st.session_state['clicked_item'] == -1)
         st.write(st.session_state['clicked_item'])
-        st.write(get_item_reccomendation(st.session_state['clicked_item']))
+        st.write(get_item_recommendation(st.session_state['clicked_item']))
 
 
 if st.session_state["clicked_item"]!=-1:
