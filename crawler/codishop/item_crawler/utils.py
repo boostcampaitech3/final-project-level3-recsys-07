@@ -325,12 +325,12 @@ def save_to_sheets(worksheets: Tuple[Worksheet, ...], item_info: EasyDict) -> No
 
     # dropbox 2 정보
     if item_info.drop2:
-        for option in item_info.drop1:
+        for option in item_info.drop2:
             worksheets[2].append([item_info.id, option])
 
     # dropbox 3 정보
     if item_info.drop3:
-        for option in item_info.drop1:
+        for option in item_info.drop3:
             worksheets[3].append([item_info.id, option])
 
     # item_tag.xlsx 정보
