@@ -1,5 +1,9 @@
 import streamlit as st
 import numpy as np
+import pandas as pd
+
+ITEM_PATH = "/opt/ml/input/data/raw_codimap/item.xlsx"
+ITEM_DATA = pd.read_excel(ITEM_PATH)
 
 def paginator(label, items, items_per_page=10, on_sidebar=True):
     """Lets the user paginate a set of items.
@@ -67,3 +71,11 @@ def demonstrate_paginator():
 
 if __name__ == '__main__':
     demonstrate_paginator()
+
+def get_images_url(item_ids: list) -> dict:
+    image_dict = dict()
+    
+    for id in item_ids:
+        image_dict[id] = ITEM_DATA[ITEM_DATA['id'] == id]['img_url'].unique().tolist()[0]
+    
+    return image_dict
