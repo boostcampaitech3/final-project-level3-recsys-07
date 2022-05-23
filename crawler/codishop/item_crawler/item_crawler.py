@@ -40,7 +40,7 @@ chrome_options.add_argument(argument='--disable-dev-shm-usage')
 # 🚀 크롤러 지정
 driver = webdriver.Chrome('chromedriver', options=chrome_options)
 driver.get(URL_PATH)
-driver.implicitly_wait(3) #페이지를 로딩하는 시간동안 대기
+driver.implicitly_wait(1.5) #페이지를 로딩하는 시간동안 대기
 
 # 🚀 크롤링 완료된 정보를 저장할 excel sheet_codi 지정
 workbooks = make_workbooks()
@@ -102,7 +102,7 @@ for codi_id, codi_url in zip(codi_ids, codi_urls) :
         product_info  = driver.find_elements(By.CSS_SELECTOR, "ul.product_article > li > p.product_article_contents > strong")
         item_info.brand         = get_brand(product_info)
         item_info.serial_number = get_serial_number(product_info)
-        item_info.season        = get_season(driver, product_info)
+        item_info.season        = get_season(driver)
         item_info.gender        = get_gender(driver)
         item_info.view          = get_view(driver)
         item_info.cum_sale      = get_cum_sale(driver)
@@ -124,7 +124,8 @@ for codi_id, codi_url in zip(codi_ids, codi_urls) :
         item_info.tags_list       = get_tags_list(driver)
         item_info.buy_age_list    = get_buy_age_list(driver)
         item_info.buy_gender_list = get_buy_gender_list(driver)
-        item_info.four_season_list, item_info.fit_list = get_fs_and_fit(driver)      
+        item_info.four_season_list, item_info.fit_list = get_fs_and_fit(driver)    
+        item_info.rel_codi_url_list = get_rel_codi_url_list(driver)  
         
         # 위에서 크롤링한 정보를 sheet에 append
         save_to_sheets(sheets, item_info)

@@ -59,7 +59,7 @@ def get_serial_number(product_info: List[WebElement]) -> Optional[str]:
 
 
 # 🚀 item의 시즌 정보
-def get_season(driver: webdriver.Chrome, product_info : List[WebElement]) -> Optional[str]:
+def get_season(driver: webdriver.Chrome) -> Optional[str]:
 
     # 시즌 정보가 존재하는 페이지인지 확인
     result = driver.find_elements(By.XPATH, '//*[@id="product_order_info"]/div[1]/ul/li[2]/p[1]/span[1]/a')
@@ -233,6 +233,13 @@ def get_buy_gender_list(driver : webdriver.Chrome) -> Optional[str]:
 
     return buy_gender_list
 
+def get_rel_codi_url_list(driver: webdriver.Chrome) -> Optional[str]:
+    BASE_PATH = 'https://www.musinsa.com'
+    url_list = driver.find_elements(By.CSS_SELECTOR, value='ul.style_list > li.list_item > a').text
+    for i in range(len(url_list)):
+        url_list[i] = BASE_PATH + url_list[i]
+    return url_list
+        
 
 # 🚀 크롤링 결과를 저장할 excel 파일 생성
 def make_workbooks() -> Tuple[Workbook, ...]:
@@ -309,7 +316,6 @@ def save_to_sheets(worksheets: Tuple[Worksheet, ...], item_info: EasyDict) -> No
         item_info.price,
         item_info.item_url,
         item_info.img_url,
-        item_info.codi_id
     ])
 
     # dropbox 1 정보
@@ -349,6 +355,10 @@ def save_to_sheets(worksheets: Tuple[Worksheet, ...], item_info: EasyDict) -> No
     # item_buy_gender.xlsx 정보
     if item_info.buy_gender_list: 
         worksheets[8].append([item_info.id] + item_info.buy_gender_list)
+
+    if item_info.rel_codi_url_list:
+        for rel_codi_url in item_info.rel_codi_url_list:
+            worksheets[9].append([item_info.id, rel_codi_url])
 
 
 # 🚀 디버깅: 크롤링 결과 출력
