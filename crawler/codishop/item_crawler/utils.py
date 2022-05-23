@@ -51,7 +51,7 @@ def get_brand(product_info: List[WebElement]) -> str:
 
 # 🚀 item의 시리얼번호
 def get_serial_number(product_info: List[WebElement]) -> Optional[str]:
-    serial_number = product_info[0].get_attribute('innerHTML').split()[-1]
+    serial_number = product_info[0].get_attribute('innerHTML').split("</span>")[-1]
     if serial_number =="제품번호+컬러번호":
         serial_number = None 
 
