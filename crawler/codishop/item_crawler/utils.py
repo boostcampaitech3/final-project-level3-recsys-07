@@ -5,7 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Union
 from easydict import EasyDict
 from openpyxl import Workbook
 from openpyxl.worksheet.worksheet import Worksheet
@@ -132,7 +132,20 @@ def get_img_url(driver: webdriver.Chrome) -> str:
     return driver.find_element(By.CSS_SELECTOR, "div.product-img > img").get_attribute('src')
 
 
-# 🚀 item의 색상
+# 🚀 idx 번째 dropbox
+def get_dropbox(menu: List[WebElement], idx:int) -> Optional[List]:
+    if len(menu) > idx:
+        return None
+
+    option_list = list()
+    options = menu[idx].find_elements(By.CSS_SELECTOR, "option")
+    for i in range(1, len(options)):
+        if options[i].text:
+            option_list.append(options[i].text)
+
+    return option_list
+
+# 🚀 item의 색상 -- not used
 def get_color(menu : List[WebElement]) -> Optional[str]:
     color = []
     if not menu or len(menu) == 1: return None
@@ -143,7 +156,7 @@ def get_color(menu : List[WebElement]) -> Optional[str]:
     return color
 
 
-# 🚀 item의 사이즈
+# 🚀 item의 사이즈 -- not used
 def get_size(menu : List[WebElement]) -> Optional[str]:
     size = [] 
     if not menu: return None
@@ -156,7 +169,7 @@ def get_size(menu : List[WebElement]) -> Optional[str]:
 
 
 # 🚀 item의 태그
-def get_tags_list(driver : webdriver.Chrome) -> Optional[str]:
+def get_tags_list(driver : webdriver.Chrome) -> List:
     tags_list = list()
     tags_raw = driver.find_elements(By.CSS_SELECTOR, value='li.article-tag-list > p > a.listItem')
     
@@ -170,7 +183,7 @@ def get_tags_list(driver : webdriver.Chrome) -> Optional[str]:
 
 
 # 🚀 item의 계절 정보와, 핏 정보
-def get_fs_and_fit(driver : webdriver.Chrome) -> Optional[str]:
+def get_fs_and_fit(driver : webdriver.Chrome) -> Union[List, List]:
     guide_all = driver.find_elements(By.CSS_SELECTOR, value="table.table-simple tr")
     four_season_list = list()
     fit_list = list()
@@ -225,7 +238,7 @@ def get_buy_gender_list(driver : webdriver.Chrome) -> Optional[str]:
 def make_workbooks() -> Tuple[Workbook, ...]:
     workbooks = list()
 
-    for _ in range(8):
+    for _ in range(10):
         workbook = openpyxl.Workbook()
         workbooks.append(workbook)
     
@@ -240,15 +253,17 @@ def make_worksheets(workbooks: Tuple[Workbook, ...]) -> Tuple[Worksheet, ...]:
         worksheets.append(worksheet)
         
     worksheets[0].append(["id",  "name", "big_class", "mid_class", "brand", "serial_number", "gender",
-                   "season", "cum_sale", "view", "likes", "rating", "price", "url", "img_url", "codi_id"])
-    worksheets[1].append(["id", "color"])
-    worksheets[2].append(["id", "size"])
-    worksheets[3].append(["id", "tag"])
-    worksheets[4].append(["id", "four_seaseon"])
-    worksheets[5].append(["id", "fit"])
-    worksheets[6].append(["id", "buy_age_18", "buy_age_19_23", "buy_age_24_28", 
+                   "season", "cum_sale", "view", "likes", "rating", "price", "url", "img_url"])
+    worksheets[1].append(["id", "option1"])
+    worksheets[2].append(["id", "option2"])
+    worksheets[3].append(["id", "option3"])
+    worksheets[4].append(["id", "tag"])
+    worksheets[5].append(["id", "four_seaseon"])
+    worksheets[6].append(["id", "fit"])
+    worksheets[7].append(["id", "buy_age_18", "buy_age_19_23", "buy_age_24_28", 
                            "buy_age_29_33", "buy_age_34_39", "buy_age_40"])
-    worksheets[7].append(["id", "buy_men", "buy_women"])
+    worksheets[8].append(["id", "buy_men", "buy_women"])
+    worksheets[9].append(["id", "rel_codi_url"])
 
     return tuple(worksheets)
 
@@ -262,13 +277,15 @@ def save_workbooks(workbooks: Tuple[Workbook, ...], sort_opt: str, store_opt: st
     os.makedirs(path, exist_ok=True)
     
     workbooks[0].save(os.path.join(path, "item.xlsx"))
-    workbooks[1].save(os.path.join(path, "item_color.xlsx"))
-    workbooks[2].save(os.path.join(path, "item_size.xlsx"))
-    workbooks[3].save(os.path.join(path, "item_tag.xlsx"))
-    workbooks[4].save(os.path.join(path, "item_four_season.xlsx"))
-    workbooks[5].save(os.path.join(path, "item_fit.xlsx"))
-    workbooks[6].save(os.path.join(path, "item_buy_age.xlsx"))
-    workbooks[7].save(os.path.join(path, "item_buy_gender.xlsx"))
+    workbooks[1].save(os.path.join(path, "item_option1.xlsx"))
+    workbooks[2].save(os.path.join(path, "item_option2.xlsx"))
+    workbooks[3].save(os.path.join(path, "item_option3.xlsx"))
+    workbooks[4].save(os.path.join(path, "item_tag.xlsx"))
+    workbooks[5].save(os.path.join(path, "item_four_season.xlsx"))
+    workbooks[6].save(os.path.join(path, "item_fit.xlsx"))
+    workbooks[7].save(os.path.join(path, "item_buy_age.xlsx"))
+    workbooks[8].save(os.path.join(path, "item_buy_gender.xlsx"))
+    workbooks[9].save(os.path.join(path, "item_rel_codi_url.xlsx"))
 
     print ("Saving Done..")
 
@@ -295,38 +312,43 @@ def save_to_sheets(worksheets: Tuple[Worksheet, ...], item_info: EasyDict) -> No
         item_info.codi_id
     ])
 
-    # item_color.xlsx 정보
-    if item_info.color_list:
-        for color in item_info.color_list:
-            worksheets[1].append([item_info.id, color])
+    # dropbox 1 정보
+    if item_info.drop1:
+        for option in item_info.drop1:
+            worksheets[1].append([item_info.id, option])
 
-    # item_size.xlsx 정보
-    if item_info.size_list:
-        for size in item_info.size_list:
-            worksheets[2].append([item_info.id, size])
+    # dropbox 2 정보
+    if item_info.drop2:
+        for option in item_info.drop1:
+            worksheets[2].append([item_info.id, option])
+
+    # dropbox 3 정보
+    if item_info.drop3:
+        for option in item_info.drop1:
+            worksheets[3].append([item_info.id, option])
 
     # item_tag.xlsx 정보
     if item_info.tags_list:
         for tag in item_info.tags_list:
-             worksheets[3].append([item_info.id, tag])
+             worksheets[4].append([item_info.id, tag])
 
     # item_four_season.xlsx 정보
     if item_info.four_season_list:
         for four_season in item_info.four_season_list:
-            worksheets[4].append([item_info.id, four_season])
+            worksheets[5].append([item_info.id, four_season])
 
     # item_fit.xlsx 정보
     if item_info.fit_list:
         for fit in item_info.fit_list:
-            worksheets[5].append([item_info.id, fit])
+            worksheets[6].append([item_info.id, fit])
 
     # item_buy_age.xlsx 정보
     if item_info.buy_age_list:
-        worksheets[6].append([item_info.id] + item_info.buy_age_list)
+        worksheets[7].append([item_info.id] + item_info.buy_age_list)
 
     # item_buy_gender.xlsx 정보
     if item_info.buy_gender_list: 
-        worksheets[7].append([item_info.id] + item_info.buy_gender_list)
+        worksheets[8].append([item_info.id] + item_info.buy_gender_list)
 
 
 # 🚀 디버깅: 크롤링 결과 출력

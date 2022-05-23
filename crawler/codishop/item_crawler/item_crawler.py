@@ -114,8 +114,12 @@ for codi_id, codi_url in zip(codi_ids, codi_urls) :
         #-- 주의: 크롤링의 일관성이 높지 않음
         try: menu = driver.find_elements(By.CSS_SELECTOR, "div#goods_opt_area > select")
         except: menu = None
-        item_info.color_list    = get_color(menu)
-        item_info.size_list     = get_size(menu)
+
+        item_info.drop1         = get_dropbox(menu, 0)
+        item_info.drop2         = get_dropbox(menu, 1)
+        item_info.drop3         = get_dropbox(menu, 2)
+        # item_info.color_list    = get_color(menu)
+        # item_info.size_list     = get_size(menu)
 
         item_info.tags_list       = get_tags_list(driver)
         item_info.buy_age_list    = get_buy_age_list(driver)
