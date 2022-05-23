@@ -40,7 +40,7 @@ chrome_options.add_argument(argument='--disable-dev-shm-usage')
 # 🚀 크롤러 지정
 driver = webdriver.Chrome('chromedriver', options=chrome_options)
 driver.get(URL_PATH)
-driver.implicitly_wait(1.5) #페이지를 로딩하는 시간동안 대기
+driver.implicitly_wait(3) #페이지를 로딩하는 시간동안 대기
 
 # 🚀 크롤링 완료된 정보를 저장할 excel sheet_codi 지정
 workbooks = make_workbooks()
