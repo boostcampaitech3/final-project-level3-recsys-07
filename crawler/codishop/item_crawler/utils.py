@@ -254,17 +254,21 @@ def make_worksheets(workbooks: Tuple[Workbook, ...]) -> Tuple[Worksheet, ...]:
 
 
 # 🚀 크롤링 완료된 정보들을 파일로 저장
-def save_workbooks(workbooks: Tuple[Workbook, ...]) -> None:
-    os.makedirs('./raw_codimap', exist_ok=True)
+def save_workbooks(workbooks: Tuple[Workbook, ...], sort_opt: str, store_opt: str) -> None:
+
+
+    path = '/opt/ml/input/data/' + store_opt + '/' + sort_opt + '/item'
+
+    os.makedirs(path, exist_ok=True)
     
-    workbooks[0].save("./raw_codimap/item.xlsx")
-    workbooks[1].save("./raw_codimap/item_color.xlsx")
-    workbooks[2].save("./raw_codimap/item_size.xlsx")
-    workbooks[3].save("./raw_codimap/item_tag.xlsx")
-    workbooks[4].save("./raw_codimap/item_four_season.xlsx")
-    workbooks[5].save("./raw_codimap/item_fit.xlsx")
-    workbooks[6].save("./raw_codimap/item_buy_age.xlsx")
-    workbooks[7].save("./raw_codimap/item_buy_gender.xlsx")
+    workbooks[0].save(os.path.join(path, "item.xlsx"))
+    workbooks[1].save(os.path.join(path, "item_color.xlsx"))
+    workbooks[2].save(os.path.join(path, "item_size.xlsx"))
+    workbooks[3].save(os.path.join(path, "item_tag.xlsx"))
+    workbooks[4].save(os.path.join(path, "item_four_season.xlsx"))
+    workbooks[5].save(os.path.join(path, "item_fit.xlsx"))
+    workbooks[6].save(os.path.join(path, "item_buy_age.xlsx"))
+    workbooks[7].save(os.path.join(path, "item_buy_gender.xlsx"))
 
     print ("Saving Done..")
 

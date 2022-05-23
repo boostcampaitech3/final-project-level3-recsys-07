@@ -5,10 +5,30 @@ from selenium.webdriver.common.by import By
 from easydict import EasyDict
 from utils import *
 
+#-----------------------------------------
 # 🌟 꼭 설정해야 하는 파라미터!
 _VERBOSE = True
-# URL_PATH = "https://www.musinsa.com/app/styles/lists"
-URL_PATH = "https://www.musinsa.com/app/codimap/lists?sort=view_cnt"
+
+_SORT_OPTION = 'view'
+# _SORT_OPTION = 'recent'
+
+_STORE_OPTION = 'raw_codishop'
+# _STORE_OPTION = 'raw_codimap'
+#-----------------------------------------
+
+URL_PATH = None
+if _SORT_OPTION == 'view':
+    if _STORE_OPTION == 'raw_codishop':
+        URL_PATH = "https://www.musinsa.com/app/styles/lists?sort=view_cnt"
+    else:
+        URL_PATH = "https://www.musinsa.com/app/styles/lists"
+else:
+    if _STORE_OPTION == 'raw_codishop':
+        URL_PATH = "https://www.musinsa.com/app/codimap/lists?sort=view_cnt"
+    else:
+        URL_PATH = "https://www.musinsa.com/app/codimap/lists"
+        
+
 
 # 🚀 크롤러 옵션 설정
 chrome_options = webdriver.ChromeOptions()
@@ -30,7 +50,7 @@ button = driver.find_element(By.CSS_SELECTOR, "button.global-filter__button--men
 button.click()
 
 # 🚀 코디 정보를 가져올 url 받아오기
-codi_info = pd.read_excel("../codi_crawler/asset/codi.xlsx")
+codi_info = pd.read_excel('/opt/ml/input/data/' + _STORE_OPTION + '/' + _SORT_OPTION + '/codi/codi.xlsx')
 codi_urls = codi_info["url"].to_list()
 codi_ids = codi_info["id"].to_list()
 
@@ -111,5 +131,5 @@ for codi_id, codi_url in zip(codi_ids, codi_urls) :
     cnt += 1
 
 # 크롤링 결과 파일로 저장
-save_workbooks(workbooks)
+save_workbooks(workbooks, _SORT_OPTION, _STORE_OPTION)
 driver.close()
