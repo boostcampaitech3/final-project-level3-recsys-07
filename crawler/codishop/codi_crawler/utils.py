@@ -12,7 +12,7 @@ from openpyxl.worksheet.worksheet import Worksheet
 
 
 # 🚀 코디들을 뽑아올 페이지 지정
-COORDI_LIST_PATH = "https://www.musinsa.com/app/styles/lists?sort=view_cnt&page="
+COORDI_LIST_PATH = "https://www.musinsa.com/app/styles/lists?&page="
 COORDI_BASE_PATH = "https://www.musinsa.com/app/styles/views/"
 
 # 🚀 (코디 링크, 스타일 정보, 코디 이미지 url) 리스트 받아오기
@@ -69,7 +69,7 @@ def make_crawl_xlsx(driver: webdriver.Chrome, sheets: Tuple[Worksheet, Worksheet
         
         # 코디의 경로 받아오고 코디 상세정보 페이지 진입하기
         driver.get(codi_path)
-        driver.implicitly_wait(3)
+        driver.implicitly_wait(1.5)
         
         # ⭐ 5. 코디 태그 받아오기 (다른 sheet에 저장)
         coordi_tags = driver.find_elements(by=By.CSS_SELECTOR, value=".ui-tag-list__item")
@@ -94,12 +94,17 @@ def save_as_xlsx(workbooks: Tuple[Workbook, Workbook, Workbook]):
     wb_codi = workbooks[0]
     wb_codi_tag = workbooks[1]
     wb_codi_item_id = workbooks[2]
+        
+    subpath = 'recent'
+    if "sort" in COORDI_LIST_PATH:
+        subpath = 'view'
     
-    os.makedirs('./asset', exist_ok=True)
-    wb_codi.save("./asset/codi.xlsx")
-    wb_codi_tag.save("./asset/codi_tag.xlsx")
-    wb_codi_item_id.save("./asset/codi_item_id.xlsx")
-    
+    PATH = '/opt/ml/input/data/raw_codishop/' + subpath + '/codi/'
+    os.makedirs(PATH, exist_ok=True)
+    wb_codi.save(os.path.join(PATH, "codi.xlsx"))
+    wb_codi_tag.save(os.path.join(PATH, "codi_tag.xlsx"))
+    wb_codi_item_id.save(os.path.join(PATH, "codi_item_id.xlsx"))
+
     
 # 🚀 최상위 메인 페이지 불러오기 (코디 목록 60개 보여지는 페이지)
 def do_crawling(
@@ -124,7 +129,7 @@ def do_crawling(
     for page_idx in range(1, num_crawl_pages + 1):
         print (f"Crawling {page_idx} pages..\nurl={COORDI_LIST_PATH + str(page_idx)}")
         driver.get(COORDI_LIST_PATH + str(page_idx))
-        driver.implicitly_wait(3)
+        driver.implicitly_wait(1.5)
         
         # "남성"으로 성별 고정
         button_male = driver.find_element(By.CSS_SELECTOR, "button.global-filter__button--mensinsa")
@@ -135,4 +140,4 @@ def do_crawling(
     driver.close()
     
     save_as_xlsx(workbooks)
-    print ("Crawling done. All files saved (./asset)")
+    print ("Crawling done. All files saved")
