@@ -59,7 +59,7 @@ def get_serial_number(product_info: List[WebElement]) -> Optional[str]:
 
 
 # 🚀 item의 시즌 정보
-def get_season(driver: webdriver.Chrome, product_info : List[WebElement]) -> Optional[str]:
+def get_season(driver: webdriver.Chrome) -> Optional[str]:
 
     # 시즌 정보가 존재하는 페이지인지 확인
     result = driver.find_elements(By.XPATH, '//*[@id="product_order_info"]/div[1]/ul/li[2]/p[1]/span[1]/a')
@@ -220,12 +220,19 @@ def get_buy_gender_list(driver : webdriver.Chrome) -> Optional[str]:
 
     return buy_gender_list
 
+def get_rel_codi_url_list(driver: webdriver.Chrome) -> Optional[str]:
+    BASE_PATH = 'https://www.musinsa.com'
+    url_list = driver.find_elements(By.CSS_SELECTOR, value='ul.style_list > li.list_item > a').text
+    for i in range(len(url_list)):
+        url_list[i] = BASE_PATH + url_list[i]
+    return url_list
+        
 
 # 🚀 크롤링 결과를 저장할 excel 파일 생성
 def make_workbooks() -> Tuple[Workbook, ...]:
     workbooks = list()
 
-    for _ in range(8):
+    for _ in range(10):
         workbook = openpyxl.Workbook()
         workbooks.append(workbook)
     
@@ -240,15 +247,17 @@ def make_worksheets(workbooks: Tuple[Workbook, ...]) -> Tuple[Worksheet, ...]:
         worksheets.append(worksheet)
         
     worksheets[0].append(["id",  "name", "big_class", "mid_class", "brand", "serial_number", "gender",
-                   "season", "cum_sale", "view", "likes", "rating", "price", "url", "img_url", "codi_id"])
-    worksheets[1].append(["id", "color"])
-    worksheets[2].append(["id", "size"])
-    worksheets[3].append(["id", "tag"])
-    worksheets[4].append(["id", "four_seaseon"])
-    worksheets[5].append(["id", "fit"])
-    worksheets[6].append(["id", "buy_age_18", "buy_age_19_23", "buy_age_24_28", 
+                   "season", "cum_sale", "view", "likes", "rating", "price", "url", "img_url"])
+    worksheets[1].append(["id", "option1"])
+    worksheets[2].append(["id", "option2"])
+    worksheets[3].append(["id", "option3"])
+    worksheets[4].append(["id", "tag"])
+    worksheets[5].append(["id", "four_seaseon"])
+    worksheets[6].append(["id", "fit"])
+    worksheets[7].append(["id", "buy_age_18", "buy_age_19_23", "buy_age_24_28", 
                            "buy_age_29_33", "buy_age_34_39", "buy_age_40"])
-    worksheets[7].append(["id", "buy_men", "buy_women"])
+    worksheets[8].append(["id", "buy_men", "buy_women"])
+    worksheets[9].append(["id", "rel_codi_url"])
 
     return tuple(worksheets)
 
@@ -262,13 +271,15 @@ def save_workbooks(workbooks: Tuple[Workbook, ...], sort_opt: str, store_opt: st
     os.makedirs(path, exist_ok=True)
     
     workbooks[0].save(os.path.join(path, "item.xlsx"))
-    workbooks[1].save(os.path.join(path, "item_color.xlsx"))
-    workbooks[2].save(os.path.join(path, "item_size.xlsx"))
-    workbooks[3].save(os.path.join(path, "item_tag.xlsx"))
-    workbooks[4].save(os.path.join(path, "item_four_season.xlsx"))
-    workbooks[5].save(os.path.join(path, "item_fit.xlsx"))
-    workbooks[6].save(os.path.join(path, "item_buy_age.xlsx"))
-    workbooks[7].save(os.path.join(path, "item_buy_gender.xlsx"))
+    workbooks[1].save(os.path.join(path, "item_option1.xlsx"))
+    workbooks[2].save(os.path.join(path, "item_option2.xlsx"))
+    workbooks[3].save(os.path.join(path, "item_option3.xlsx"))
+    workbooks[4].save(os.path.join(path, "item_tag.xlsx"))
+    workbooks[5].save(os.path.join(path, "item_four_season.xlsx"))
+    workbooks[6].save(os.path.join(path, "item_fit.xlsx"))
+    workbooks[7].save(os.path.join(path, "item_buy_age.xlsx"))
+    workbooks[8].save(os.path.join(path, "item_buy_gender.xlsx"))
+    workbooks[9].save(os.path.join(path, "item_rel_codi_url.xlsx"))
 
     print ("Saving Done..")
 
@@ -292,7 +303,6 @@ def save_to_sheets(worksheets: Tuple[Worksheet, ...], item_info: EasyDict) -> No
         item_info.price,
         item_info.item_url,
         item_info.img_url,
-        item_info.codi_id
     ])
 
     # item_color.xlsx 정보
@@ -327,6 +337,10 @@ def save_to_sheets(worksheets: Tuple[Worksheet, ...], item_info: EasyDict) -> No
     # item_buy_gender.xlsx 정보
     if item_info.buy_gender_list: 
         worksheets[7].append([item_info.id] + item_info.buy_gender_list)
+
+    if item_info.rel_codi_url_list:
+        for rel_codi_url in item_info.rel_codi_url_list:
+            worksheets[9].append([item_info.id, rel_codi_url])
 
 
 # 🚀 디버깅: 크롤링 결과 출력
