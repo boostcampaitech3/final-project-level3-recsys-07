@@ -134,7 +134,7 @@ def get_img_url(driver: webdriver.Chrome) -> str:
 
 # 🚀 idx 번째 dropbox
 def get_dropbox(menu: List[WebElement], idx:int) -> Optional[List]:
-    if len(menu) > idx:
+    if len(menu) <= idx:
         return None
 
     option_list = list()
@@ -234,10 +234,9 @@ def get_buy_gender_list(driver : webdriver.Chrome) -> Optional[str]:
     return buy_gender_list
 
 def get_rel_codi_url_list(driver: webdriver.Chrome) -> Optional[str]:
-    BASE_PATH = 'https://www.musinsa.com'
-    url_list = driver.find_elements(By.CSS_SELECTOR, value='ul.style_list > li.list_item > a').text
+    url_list = driver.find_elements(By.CSS_SELECTOR, value='div.tab.coordi > ul.style_list > li.list_item > a.img-block')
     for i in range(len(url_list)):
-        url_list[i] = BASE_PATH + url_list[i]
+        url_list[i] = url_list[i].get_attribute('href')
     return url_list
         
 
