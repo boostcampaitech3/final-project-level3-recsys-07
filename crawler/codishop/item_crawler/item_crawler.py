@@ -57,6 +57,7 @@ codi_ids = codi_info["id"].to_list()
 
 # 🚀 각 코디에 대한 크롤링 진행
 cnt = 0
+seen_list = list()
 for codi_id, codi_url in zip(codi_ids, codi_urls) :
     print(f"Crawling for CODI URL : {codi_url}\n")
     print(f"{cnt} out of {len(codi_urls)} codi crawled...")
@@ -75,9 +76,15 @@ for codi_id, codi_url in zip(codi_ids, codi_urls) :
     
     # 각 아이템들의 url 추출
     for item in item_list:
-        item_url = item.find_element(By.CSS_SELECTOR, "a.brand_item").get_attribute('href')
-        item_urls.append(item_url)
 
+        item_url = item.find_element(By.CSS_SELECTOR, "a.brand_item").get_attribute('href')
+
+        # 이미 크롤링 진행한 item은 pass
+        if item_url in seen_list:
+            continue
+        seen_list.append(item_url)
+
+        item_urls.append(item_url)
     # 각 아이템들을 순회하면서 크롤링 진행
     for item_url in item_urls:
         try : 
