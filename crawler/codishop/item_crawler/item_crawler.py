@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from easydict import EasyDict
 from utils import *
+import openpyxl
 
 #-----------------------------------------
 # 🌟 꼭 설정해야 하는 파라미터!
@@ -50,7 +51,7 @@ button = driver.find_element(By.CSS_SELECTOR, "button.global-filter__button--men
 button.click()
 
 # 🚀 코디 정보를 가져올 url 받아오기
-codi_info = pd.read_excel('/opt/ml/input/data/' + _STORE_OPTION + '/' + _SORT_OPTION + '/codi/codi.xlsx')
+codi_info = pd.read_excel('/opt/ml/input/data/' + _STORE_OPTION + '/' + _SORT_OPTION + '/codi/codi.xlsx', engine='openpyxl')
 codi_urls = codi_info["url"].to_list()
 codi_ids = codi_info["id"].to_list()
 
