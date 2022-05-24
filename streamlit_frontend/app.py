@@ -18,7 +18,10 @@ STATE_KEYS_VALS = [
     ("input_status", True),
     ("my_cloth",None),
     ("end_survey",False),
-    ('clicked_item',-1)
+    ('clicked_item',-1),
+    ('my_cloth_button',False), 
+    ('survey_end',False),
+    ('codi_click', None)
 ]
 for k, v in STATE_KEYS_VALS:
     if k not in st.session_state:
@@ -26,94 +29,81 @@ for k, v in STATE_KEYS_VALS:
 
 def search(tag):
     if tag != []:
-        temp=df[df['tag']==tag[0]]
-        st.session_state['result'] = temp.iloc[:,0].tolist() # 일단 id 하나만
+        temp=df[df['tag']==tag[0]] # 그 키워드를 가진 아이템
+        st.session_state['result'] = temp.iloc[:,0].tolist()  #0:id column 
 
 def input_status_change():
     st.session_state['input_status']=False
 
-with st.container():
-    # TODO : 검색 리스트 생성
-    # TODO : 검색 이벤트 연결 -> on.click
-    c1_col1,c1_col2 = st.columns(2)
+def set_value(key):
+    st.session_state[key] = st.session_state["key_" + key]
 
-    with c1_col1:
-        input=st.multiselect(label='👕👖 갖고있는 옷을 검색하세요',options = tags,on_change=input_status_change)
+survey_container=st.empty()
+with survey_container.container():
+    with st.container():
+        # TODO : 검색 리스트 생성
+        # TODO : 검색 이벤트 연결 -> on.click
+        c1_col1,c1_col2 = st.columns(2)
+
+        with c1_col1:
+            input=st.multiselect(label='👕👖 갖고있는 옷을 검색하세요',options = tags,on_change=input_status_change)
+            
+        with c1_col2:
+            st.write("")
+            st.write("")
+            input_button = st.button('🔍', on_click=search,args =(input,), disabled=st.session_state['input_status'])       
         
-    with c1_col2:
-        st.write("")
-        st.write("")
-        input_button = st.button('🔍', on_click=search,args =(input,), disabled=st.session_state['input_status'])       
-    
 
-if len(st.session_state['result'])!=0:
-    st.markdown("""---""")
-    image_dict=get_images_url([st.session_state['result']]) #list 반환
-    image_list=list(image_dict.values())
-    item_ids=list(image_dict.keys())
+    if len(st.session_state['result'])!=0:
+        st.markdown("""---""")
+        image_dict=get_images_url(st.session_state['result'])  #['result']에는 키워드 #list 반환
+        image_list=list(image_dict.values())
+        item_ids=list(image_dict.keys())
+
+        with st.container():
+            st.markdown("### 갖고있는 옷과 가장 비슷한 사진을 골라주세요")
+            image_iterator = paginator('',image_list,items_per_page=5,on_sidebar=False)
+            indices_on_page, images_on_page = map(list, zip(*image_iterator))
+            st.session_state['my_cloth']= clickable_images(images_on_page,titles=[f"Image #{str(i)}" for i in range(5)],
+                                        div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
+                                        img_style={"margin": "5px", "height": "200px", "width" : "125px"},key='mySelect'
+                                    )
+            st.session_state['clicked_item']=item_ids[indices_on_page[st.session_state['my_cloth']]] # id가  들어옴
+
+            st.session_state['my_cloth_button']=st.button('선택', disabled=st.session_state['clicked_item'] == -1)
+if st.session_state['my_cloth_button']: # 버튼이 눌리면
+    survey_container.empty() # 위의 내용들 삭제하기
 
     with st.container():
-        st.markdown("### 갖고있는 옷과 가장 비슷한 사진을 골라주세요")
-        image_iterator = paginator('',image_list,items_per_page=5,on_sidebar=False)
-        indices_on_page, images_on_page = map(list, zip(*image_iterator))
-        st.session_state['my_cloth']= clickable_images(images_on_page,titles=[f"Image #{str(i)}" for i in range(5)],
-                                    div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
-                                    img_style={"margin": "5px", "height": "200px", "width" : "125px"},key='mySelect'
-                                )
-        st.session_state['clicked_item']=item_ids[indices_on_page[st.session_state['my_cloth']]] # id가  들어옴
+        st.write("선택한 아이템 : ")
+        st.image(str(list(get_images_url([st.session_state['clicked_item']]).values())[0]), width=300) # st.session_state['clicked_item'] : id
+        codis=get_item_recommendation(st.session_state['clicked_item'])
 
-        st.button('선택', disabled=st.session_state['clicked_item'] == -1)
-        st.write(st.session_state['clicked_item'])
-        st.write(get_item_recommendation(st.session_state['clicked_item']))
-
-
-if st.session_state["clicked_item"]!=-1:
-    st.markdown("""---""")
-    with st.container():
-        top_list=['https://image.msscdn.net/images/goods_img/20211224/2282033/2282033_2_500.jpg?t=20220503165501' for i in range(5)]
-        pants_list=['https://image.msscdn.net/images/goods_img/20220307/2403053/2403053_1_220.jpg' for i in range(5)]
-        shoes_list=['https://image.msscdn.net/images/goods_img/20210730/2044904/2044904_4_220.jpg' for i in range(5)]
-        acc_list=['https://image.msscdn.net/images/goods_img/20220224/2382342/2382342_1_220.jpg' for i in range(5)]
         st.markdown('### 관련 코디를 보고싶은 옷을 골라보세요')
-        st.markdown('#### 상의')
-        top_click= clickable_images(top_list,titles=[f"Image #{str(i)}" for i in range(5)],
+        for codi in codis.keys():
+            codi_id=codis[codi]
+  
+            if len(codi_id)!=0:
+                st.markdown(f'#### {codi}')
+                codi_list=list(get_images_url(codi_id).values())
+
+                ######## 체크박스로 구현 한 후에 코디로 넘길 수 있을 것 같아요############################
+                clickable_images(codi_list,titles=[f"Image #{str(i)}" for i in range(len(codi_id))],
                                             div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
-                                            img_style={"margin": "5px", "height": "200px", "width" : "125px"},key='topSelect'
-                                        )
-        st.markdown(f"Image #{top_click} clicked" if top_click > -1 else "No image clicked")
-        
-        if st.session_state.topSelect!= None:
-            st.write(st.session_state)
-            st.write(st.session_state.topSelect)
-        st.markdown('#### 바지')
-        pants_click= clickable_images(pants_list,titles=[f"Image #{str(i)}" for i in range(5)],
-                                            div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
-                                            img_style={"margin": "5px", "height": "200px", "width" : "125px"},key='pantsSelect'
-                                        )
-        # st.markdown(f"Image #{pants_click} clicked" if pants_click > -1 else "No image clicked")
+                                            img_style={"margin": "5px", "height": "200px", "width" : "125px"},key=f'{codi}Select')
 
-        st.markdown('#### 신발')
-        shoes_click= clickable_images(shoes_list,titles=[f"Image #{str(i)}" for i in range(5)],
-                                            div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
-                                            img_style={"margin": "5px", "height": "200px", "width" : "125px"},key='shoesSelect'
-                                        )
-        # st.markdown(f"Image #{shoes_click} clicked" if shoes_click > -1 else "No image clicked")
-        
-        st.markdown('#### 악세사리')
-        acc_click= clickable_images(acc_list,titles=[f"Image #{str(i)}" for i in range(5)],
-                                            div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
-                                            img_style={"margin": "5px", "height": "200px", "width" : "125px"},key='accSelect'
-                                        )
-        # st.markdown(f"Image #{acc_click} clicked" if acc_click > -1 else "No image clicked")
+        print(st.session_state)
+        # if st.session_state[f'{codi}_click']:
+        #     print(st.session_state[f'{codi}_click'])
+        # st.markdown(f"Image #{top_click} clicked" if top_click > -1 else "No image clicked")
 
+        # st.markdown("""---""")
 
-    st.markdown("""---""")
+        # with st.container():
+        #     st.markdown('### 추천코디')
+        #     fit_list=['https://image.msscdn.net/images/style/list/l_3_2022051912523500000002502.jpg' for i in range(5)]
+        #     notfit_list=['https://image.msscdn.net/images/style/list/l_2_2022020309572400000037350.jpg' for i in range(5)]
 
-    with st.container():
-        st.markdown('### 추천코디')
-        fit_list=['https://image.msscdn.net/images/style/list/l_3_2022051912523500000002502.jpg' for i in range(5)]
-        notfit_list=['https://image.msscdn.net/images/style/list/l_2_2022020309572400000037350.jpg' for i in range(5)]
-
-        st.image(fit_list, use_column_width=False, caption=["some generic text"] * len(fit_list),width=125)
-        st.markdown('#### 가진 옷과는 어울리지 않아요')
-        st.image(notfit_list, use_column_width=False, caption=["some generic text"] * len(notfit_list),width=125)
+        #     st.image(fit_list, use_column_width=False, caption=["some generic text"] * len(fit_list),width=125)
+        #     st.markdown('#### 가진 옷과는 어울리지 않아요')
+        #     st.image(notfit_list, use_column_width=False, caption=["some generic text"] * len(notfit_list),width=125)

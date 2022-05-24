@@ -75,7 +75,7 @@ if __name__ == '__main__':
 def get_images_url(item_ids: list) -> dict:
     image_dict = dict()
     
-    for id in item_ids[0]:
+    for id in item_ids:
         image_dict[id] = ITEM_DATA[ITEM_DATA['id'] == id]['img_url'].unique().tolist()[0]
     
     return image_dict

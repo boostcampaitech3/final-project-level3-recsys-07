@@ -55,7 +55,7 @@ def data_preprocessing(item_feature : pd.DataFrame) -> None :
     item_feature["my_big_class"] = actual_big_class_list
     item_feature["likes"] = item_feature["likes"].fillna(0)
 
-def get_item_reccomendation(item_id)-> None :
+def get_item_recommendation(item_id)-> None :
     data_preprocessing(item_feature=item_feature)
     
     data = interaction_matrix[interaction_matrix["id"]==item_id]
