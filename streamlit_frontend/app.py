@@ -1,9 +1,8 @@
 from faulthandler import disable
-import imp
 from logging import PlaceHolder
 import streamlit as st
-from utils import paginator, get_images_url
-from st_clickable_images import clickable_images
+from utils import get_images_url, get_clothes_name
+
 import pandas as pd
 from rule_based import get_item_recommendation
 
@@ -67,29 +66,31 @@ with survey_container.container():
         item_ids=list(image_dict.keys())
 
         page_limit = len(image_list) // 10
-
         page_limit = max(1,page_limit) # slider max가 min이랑 동일한 경우 에러 발생
-
+        
+        is_disable = False
+        if page_limit == 1:
+            is_disable=True
+        
         with st.container():
             st.markdown("### 갖고있는 옷과 가장 비슷한 사진을 골라주세요")
 
-            page = st.slider('Select pages', 0, page_limit, 0)
+            page = st.slider('Select pages', 0, page_limit, 0, disabled=is_disable)
 
             idx = 0 + (page * 10)
 
             for row in range(2):
                 for col_index, col in enumerate(st.columns(5)):
-                    indecator = idx
-                    if indecator >= len(image_list):
+                    if idx >= len(image_list):
                         break
 
-                    cloth = image_list[indecator]
+                    clothes = image_list[idx]
 
                     with col:
-                        st.image(cloth)
+                        st.image(clothes)
                         st.checkbox(
-                            'test',
-                            key = 'cloth-{}'.format(item_ids[indecator]),
+                            get_clothes_name(item_ids[idx]),
+                            key = 'clothes-{}'.format(item_ids[idx]),
                             on_change = select_item,
                             args=(idx,),
                         )
@@ -101,26 +102,43 @@ if st.session_state['survey_end']: # 버튼이 눌리면
 
     with st.container():
         st.write("선택한 아이템 : ")
-        st.image(str(list(get_images_url([st.session_state['clicked_item']]).values())[0]), width=300) # st.session_state['clicked_item'] : id
-        
+        (_, center, _) = st.columns([1, 1, 1])
+        with center:
+            st.image(str(list(get_images_url([st.session_state['clicked_item']]).values())[0]), width=300) # st.session_state['clicked_item'] : id
+      
+
+
         codis=get_item_recommendation(st.session_state['clicked_item'])
 
         st.markdown('### 관련 코디를 보고싶은 옷을 골라보세요')
         for codi in codis.keys():
             codi_id=codis[codi]
-  
+            
             if len(codi_id)!=0:
                 st.markdown(f'#### {codi}')
                 codi_list=list(get_images_url(codi_id).values())
 
-                ######## 체크박스로 구현 한 후에 코디로 넘길 수 있을 것 같아요############################
-                clickable_images(codi_list,titles=[f"Image #{str(i)}" for i in range(len(codi_id))],
-                                            div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
-                                            img_style={"margin": "5px", "height": "200px", "width" : "125px"},key=f'{codi}Select')
+                codi_cnt = len(codi_list)
+                idx = 0
+                for col_index, col in enumerate(st.columns(5)):
+                    if idx >= len(codi_list):
+                        break
 
-        print(st.session_state)
-        if st.session_state[f'{codi}_click']:
-            print(st.session_state[f'{codi}_click'])
+                    clothes = codi_list[idx]
+
+                    with col:
+                        st.image(clothes)
+                        st.checkbox(
+                            get_clothes_name(item_ids[idx]),
+                            key = 'clothes-{}'.format(codi_list[idx]),
+                            # on_change = select_item,
+                            # args=(idx,),
+                        )
+                    idx+=1
+
+        # print(st.session_state)
+        # if st.session_state[f'{codi}_click']:
+        #     print(st.session_state[f'{codi}_click'])
         # st.markdown(f"Image #{top_click} clicked" if top_click > -1 else "No image clicked")
 
         # st.markdown("""---""")

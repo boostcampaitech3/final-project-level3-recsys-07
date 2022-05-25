@@ -1,3 +1,4 @@
+from tokenize import String
 import streamlit as st
 import numpy as np
 import pandas as pd
@@ -79,3 +80,7 @@ def get_images_url(item_ids: list) -> dict:
         image_dict[id] = ITEM_DATA[ITEM_DATA['id'] == id]['img_url'].unique().tolist()[0]
     
     return image_dict
+
+def get_clothes_name(item_id: int) -> str:
+    name = ITEM_DATA[ITEM_DATA['id'] == item_id]['name'].values[0]
+    return name
