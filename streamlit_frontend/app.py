@@ -1,7 +1,7 @@
 from faulthandler import disable
 from logging import PlaceHolder
 import streamlit as st
-from utils import get_images_url, get_clothes_name
+from utils import get_codi_images_url, get_images_url, get_clothes_name,get_codi,get_codi_images_url
 
 import pandas as pd
 from rule_based import get_item_recommendation
@@ -20,7 +20,9 @@ STATE_KEYS_VALS = [
     ('clicked_item',-1),
     ('my_cloth_button',False), 
     ('survey_end',False),
-    ('codi_click', None)
+    ('codi_click', None),
+    ('picked_item',None),
+    ('picked_end',False)
 ]
 for k, v in STATE_KEYS_VALS:
     if k not in st.session_state:
@@ -99,8 +101,8 @@ with survey_container.container():
 
 if st.session_state['survey_end']: # 버튼이 눌리면
     survey_container.empty() # 위의 내용들 삭제하기
-
-    with st.container():
+    pick_container=st.empty()
+    with pick_container:
         st.write("선택한 아이템 : ")
         (_, center, _) = st.columns([1, 1, 1])
         with center:
@@ -116,7 +118,10 @@ if st.session_state['survey_end']: # 버튼이 눌리면
             
             if len(codi_id)!=0:
                 st.markdown(f'#### {codi}')
-                codi_list=list(get_images_url(codi_id).values())
+                codi_dict=get_images_url(codi_id)
+
+                codi_list=list(codi_dict.values())
+                item_ids=list(codi_dict.keys())
 
                 codi_cnt = len(codi_list)
                 idx = 0
@@ -128,26 +133,31 @@ if st.session_state['survey_end']: # 버튼이 눌리면
 
                     with col:
                         st.image(clothes)
-                        st.checkbox(
+                        checked=st.checkbox(
                             get_clothes_name(item_ids[idx]),
-                            key = 'clothes-{}'.format(codi_list[idx]),
+                            key = 'clothes-{}'.format(codi_list[idx]), #url이 key로 들어가게됨
                             # on_change = select_item,
                             # args=(idx,),
                         )
+                        if checked:
+                            print(codi,idx, get_clothes_name(item_ids[idx]),item_ids[idx])
+                            st.session_state['picked_item']=item_ids[idx]
+                            st.session_state['picked_end']=True
+                            break
+                            # pick_item()
                     idx+=1
+# st.write(st.session_state['picked_item'])
+if st.session_state['picked_end']:
+    pick_container.empty() # 지금껏 있던 내용들 모두 삭제
+    with st.container():
+        st.markdown('### 추천코디')
+        st.write(st.session_state['picked_item'])
+        st.write("코디리스트")
+        print('코디리스트')
+        codi_ids=get_codi(st.session_state['picked_item'])
 
-        # print(st.session_state)
-        # if st.session_state[f'{codi}_click']:
-        #     print(st.session_state[f'{codi}_click'])
-        # st.markdown(f"Image #{top_click} clicked" if top_click > -1 else "No image clicked")
+        codi_dict=get_codi_images_url(codi_ids)
+        codi_image_list=list(codi_dict.values())
+        print(codi_image_list)
 
-        # st.markdown("""---""")
-
-        # with st.container():
-        #     st.markdown('### 추천코디')
-        #     fit_list=['https://image.msscdn.net/images/style/list/l_3_2022051912523500000002502.jpg' for i in range(5)]
-        #     notfit_list=['https://image.msscdn.net/images/style/list/l_2_2022020309572400000037350.jpg' for i in range(5)]
-
-        #     st.image(fit_list, use_column_width=False, caption=["some generic text"] * len(fit_list),width=125)
-        #     st.markdown('#### 가진 옷과는 어울리지 않아요')
-        #     st.image(notfit_list, use_column_width=False, caption=["some generic text"] * len(notfit_list),width=125)
+        st.image(codi_image_list, use_column_width=False, caption=["some generic text"] * len(codi_image_list),width=125)#codi image url을 못찾아서 지금은 상품 이미지임

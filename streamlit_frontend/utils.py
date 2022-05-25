@@ -84,3 +84,21 @@ def get_images_url(item_ids: list) -> dict:
 def get_clothes_name(item_id: int) -> str:
     name = ITEM_DATA[ITEM_DATA['id'] == item_id]['name'].values[0]
     return name
+
+def get_codi(item_ids:list):
+    codi_data=ITEM_DATA.groupby('codi_id')['id'].apply(list)
+
+    codi_ids=list()
+    for i in range(len(codi_data)):
+        if item_ids in codi_data.iloc[i]:
+            codi_ids.append(codi_data.index[i])
+    return codi_ids
+
+def get_codi_images_url(codi_ids:list):
+    codi_dict=dict()
+
+    for id in codi_ids:
+        codi_dict[id]=ITEM_DATA[ITEM_DATA['codi_id'] == id]['img_url'].unique().tolist()[0]
+
+    return codi_dict
+    
