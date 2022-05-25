@@ -38,6 +38,11 @@ def input_status_change():
 def set_value(key):
     st.session_state[key] = st.session_state["key_" + key]
 
+
+def select_item(index: int):
+    st.session_state['clicked_item']=item_ids[index] # id가  들어옴
+    st.session_state['survey_end'] = True
+
 survey_container=st.empty()
 with survey_container.container():
     with st.container():
@@ -57,26 +62,47 @@ with survey_container.container():
     if len(st.session_state['result'])!=0:
         st.markdown("""---""")
         image_dict=get_images_url(st.session_state['result'])  #['result']에는 키워드 #list 반환
+        
         image_list=list(image_dict.values())
         item_ids=list(image_dict.keys())
 
+        page_limit = len(image_list) // 10
+
+        page_limit = max(1,page_limit) # slider max가 min이랑 동일한 경우 에러 발생
+
         with st.container():
             st.markdown("### 갖고있는 옷과 가장 비슷한 사진을 골라주세요")
-            image_iterator = paginator('',image_list,items_per_page=5,on_sidebar=False)
-            indices_on_page, images_on_page = map(list, zip(*image_iterator))
-            st.session_state['my_cloth']= clickable_images(images_on_page,titles=[f"Image #{str(i)}" for i in range(5)],
-                                        div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
-                                        img_style={"margin": "5px", "height": "200px", "width" : "125px"},key='mySelect'
-                                    )
-            st.session_state['clicked_item']=item_ids[indices_on_page[st.session_state['my_cloth']]] # id가  들어옴
 
-            st.session_state['my_cloth_button']=st.button('선택', disabled=st.session_state['clicked_item'] == -1)
-if st.session_state['my_cloth_button']: # 버튼이 눌리면
+            page = st.slider('Select pages', 0, page_limit, 0)
+
+            idx = 0 + (page * 10)
+
+            for row in range(2):
+                for col_index, col in enumerate(st.columns(5)):
+                    indecator = idx
+                    if indecator >= len(image_list):
+                        break
+
+                    cloth = image_list[indecator]
+
+                    with col:
+                        st.image(cloth)
+                        st.checkbox(
+                            'test',
+                            key = 'cloth-{}'.format(item_ids[indecator]),
+                            on_change = select_item,
+                            args=(idx,),
+                        )
+                    idx+=1
+            
+
+if st.session_state['survey_end']: # 버튼이 눌리면
     survey_container.empty() # 위의 내용들 삭제하기
 
     with st.container():
         st.write("선택한 아이템 : ")
         st.image(str(list(get_images_url([st.session_state['clicked_item']]).values())[0]), width=300) # st.session_state['clicked_item'] : id
+        
         codis=get_item_recommendation(st.session_state['clicked_item'])
 
         st.markdown('### 관련 코디를 보고싶은 옷을 골라보세요')
@@ -93,8 +119,8 @@ if st.session_state['my_cloth_button']: # 버튼이 눌리면
                                             img_style={"margin": "5px", "height": "200px", "width" : "125px"},key=f'{codi}Select')
 
         print(st.session_state)
-        # if st.session_state[f'{codi}_click']:
-        #     print(st.session_state[f'{codi}_click'])
+        if st.session_state[f'{codi}_click']:
+            print(st.session_state[f'{codi}_click'])
         # st.markdown(f"Image #{top_click} clicked" if top_click > -1 else "No image clicked")
 
         # st.markdown("""---""")
