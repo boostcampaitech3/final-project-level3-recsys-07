@@ -44,6 +44,9 @@ def select_item(index: int):
     st.session_state['clicked_item']=item_ids[index] # id가  들어옴
     st.session_state['survey_end'] = True
 
+def pick_item(idx:int,item_ids):
+    st.session_state['picked_item']=item_ids[idx]
+    st.session_state['picked_end']=True
 survey_container=st.empty()
 with survey_container.container():
     with st.container():
@@ -102,14 +105,12 @@ with survey_container.container():
 if st.session_state['survey_end']: # 버튼이 눌리면
     survey_container.empty() # 위의 내용들 삭제하기
     pick_container=st.empty()
-    with pick_container:
+    with pick_container.container():
         st.write("선택한 아이템 : ")
         (_, center, _) = st.columns([1, 1, 1])
         with center:
             st.image(str(list(get_images_url([st.session_state['clicked_item']]).values())[0]), width=300) # st.session_state['clicked_item'] : id
       
-
-
         codis=get_item_recommendation(st.session_state['clicked_item'])
 
         st.markdown('### 관련 코디를 보고싶은 옷을 골라보세요')
@@ -136,17 +137,12 @@ if st.session_state['survey_end']: # 버튼이 눌리면
                         checked=st.checkbox(
                             get_clothes_name(item_ids[idx]),
                             key = 'clothes-{}'.format(codi_list[idx]), #url이 key로 들어가게됨
-                            # on_change = select_item,
-                            # args=(idx,),
+                            on_change = pick_item,
+                            args=(idx,item_ids,),
                         )
-                        if checked:
-                            print(codi,idx, get_clothes_name(item_ids[idx]),item_ids[idx])
-                            st.session_state['picked_item']=item_ids[idx]
-                            st.session_state['picked_end']=True
-                            break
-                            # pick_item()
+
                     idx+=1
-# st.write(st.session_state['picked_item'])
+
 if st.session_state['picked_end']:
     pick_container.empty() # 지금껏 있던 내용들 모두 삭제
     with st.container():
@@ -154,10 +150,11 @@ if st.session_state['picked_end']:
         st.write(st.session_state['picked_item'])
         st.write("코디리스트")
         print('코디리스트')
-        codi_ids=get_codi(st.session_state['picked_item'])
-
+        codi_ids=get_codi(st.session_state['clicked_item'],st.session_state['picked_item'])
         codi_dict=get_codi_images_url(codi_ids)
         codi_image_list=list(codi_dict.values())
-        print(codi_image_list)
+        result_codi_ids=list(codi_dict.keys())
+
+        st.write('결과 코디 아이디',result_codi_ids)
 
         st.image(codi_image_list, use_column_width=False, caption=["some generic text"] * len(codi_image_list),width=125)#codi image url을 못찾아서 지금은 상품 이미지임
