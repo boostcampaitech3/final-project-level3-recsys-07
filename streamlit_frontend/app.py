@@ -6,28 +6,6 @@ from utils import get_codi_images_url, get_images_url, get_clothes_name,get_codi
 import pandas as pd
 from rule_based import get_item_recommendation
 
-
-st.image('https://www.noiremag.com/wp-content/uploads/2020/08/2020-fashion-trends-feature-696x392-1.jpg')
-st.title('YUSINSA')
-
-df=pd.read_excel('/opt/ml/input/data/raw_codishop/item_tag.xlsx',engine='openpyxl')
-tags=pd.unique(df['tag'])
-STATE_KEYS_VALS = [
-    ("result", []),
-    ("input_status", True),
-    ("my_cloth",None),
-    ("end_survey",False),
-    ('clicked_item',-1),
-    ('my_cloth_button',False), 
-    ('survey_end',False),
-    ('codi_click', None),
-    ('picked_item',None),
-    ('picked_end',False)
-]
-for k, v in STATE_KEYS_VALS:
-    if k not in st.session_state:
-        st.session_state[k] = v
-
 def search(tag):
     if tag != []:
         temp=df[df['tag']==tag[0]] # 그 키워드를 가진 아이템
@@ -47,20 +25,50 @@ def select_item(index: int):
 def pick_item(idx:int,item_ids):
     st.session_state['picked_item']=item_ids[idx]
     st.session_state['picked_end']=True
+
+
+df=pd.read_excel('/opt/ml/input/data/raw_codishop/item_tag.xlsx',engine='openpyxl')
+tags=pd.unique(df['tag'])
+STATE_KEYS_VALS = [
+    ("result", []),
+    ("input_status", True),
+    ("my_cloth",None),
+    ("end_survey",False),
+    ('clicked_item',-1),
+    ('my_cloth_button',False), 
+    ('survey_end',False),
+    ('codi_click', None),
+    ('picked_item',None),
+    ('picked_end',False)
+]
+for k, v in STATE_KEYS_VALS:
+    if k not in st.session_state:
+        st.session_state[k] = v
+
+st.set_page_config(layout='wide')
+
+(_, l,r, _) = st.columns([1, 4,9, 1])
+with l:
+    st.title('YUSINSA') 
+with r:
+    st.image('./main_image-removebg-preview.png')
+    
+
 survey_container=st.empty()
 with survey_container.container():
     with st.container():
         # TODO : 검색 리스트 생성
         # TODO : 검색 이벤트 연결 -> on.click
-        c1_col1,c1_col2 = st.columns(2)
-
-        with c1_col1:
-            input=st.multiselect(label='👕👖 갖고있는 옷을 검색하세요',options = tags,on_change=input_status_change)
-            
-        with c1_col2:
-            st.write("")
-            st.write("")
-            input_button = st.button('🔍', on_click=search,args =(input,), disabled=st.session_state['input_status'])       
+        
+        (_, c, _) = st.columns([1, 9, 1])
+        with c:
+            input=st.multiselect(label=' ',options = tags,on_change=input_status_change)
+        
+        (_, left,right, _) = st.columns([8,1,1,8])
+        with left:
+            input_button = st.button('🔍', on_click=search,args =(input,), disabled=st.session_state['input_status'])
+        with right:
+            random_button=st.button('🎲')   
         
 
     if len(st.session_state['result'])!=0:
@@ -158,3 +166,7 @@ if st.session_state['picked_end']:
         st.write('결과 코디 아이디',result_codi_ids)
 
         st.image(codi_image_list, use_column_width=False, caption=["some generic text"] * len(codi_image_list),width=125)#codi image url을 못찾아서 지금은 상품 이미지임
+
+
+
+
