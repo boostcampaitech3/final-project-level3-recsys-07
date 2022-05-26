@@ -12,3 +12,5 @@ https://chromedriver.chromium.org/downloads
 
 ## selenium 설치
 pip install selenium
+
+apt install chromium-chromedriver
