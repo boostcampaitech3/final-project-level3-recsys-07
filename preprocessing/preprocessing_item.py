@@ -31,4 +31,6 @@ if __name__ == "__main__":
     SAVE_ITEM_PATH = f'/opt/ml/input/data/asset_{_STORE_OPTION}/{_SORT_OPTION}/item/'
     SAVE_CODI_PATH = f'/opt/ml/input/data/asset_{_STORE_OPTION}/{_SORT_OPTION}/codi/'
     
+    if os.path.exists(os.path.join(SAVE_ITEM_PATH, "item.xlsx")) == False:
+        os.makedirs(SAVE_ITEM_PATH)
     preprocessed_data.to_excel(os.path.join(SAVE_ITEM_PATH, "item.xlsx"), index=False)

@@ -1,11 +1,7 @@
-from xxlimited import Str
-from matplotlib.colors import hex2color
 import openpyxl
 import colorgram
 import requests
-import webcolors
 import warnings
-import json
 import re
 
 import pandas as pd
@@ -14,7 +10,7 @@ from rembg import remove
 from PIL import Image
 from io import BytesIO
 from tqdm import tqdm
-from typing import List, Tuple, Union
+from typing import List
 
 warnings.filterwarnings(action='ignore')
 
@@ -62,6 +58,7 @@ def color_preprocess(item_df: pd.DataFrame) -> pd.DataFrame:
         try:
             img = get_img_from_url(img_url)
         except:
+            print (f"Failed to load img {img_url}")
             color_r.append("0")
             color_g.append("0")
             color_b.append("0")
@@ -169,7 +166,7 @@ def gender_preprocess(raw_data: pd.DataFrame) -> pd.DataFrame:
         return '유니섹스'
 
     # -- gender 데이터 전처리
-    raw_data['gender'] = item.gender.transform(preprocessing_gender_info)
+    raw_data['gender'] = raw_data.gender.transform(preprocessing_gender_info)
     return raw_data
 
 
