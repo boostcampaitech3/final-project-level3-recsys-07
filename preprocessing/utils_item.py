@@ -224,3 +224,23 @@ def buy_age_preprocess(item_data : pd.DataFrame, ITEM_PATH : str) -> pd.DataFram
     item_data["most_bought_age_class"] = most_bought_age_list
 
     return item_data
+
+def buy_gender_preprocess(item_data : pd.DataFrame, ITEM_PATH : str) -> pd.DataFrame :
+    buy_gender_df = pd.read_excel(ITEM_PATH + "item_buy_gender.xlsx")
+
+    gender_ratio_dict = dict()
+    for i in range(len(buy_gender_df)) :
+        user_id = buy_gender_df["id"].iloc[i]
+        men_ratio = buy_gender_df["buy_men"].iloc[i]
+        gender_ratio_dict[user_id] = men_ratio
+    
+    gender_ratio_list = list()
+    for user in item_data["id"] :
+        try :
+            gender_ratio_list.append(gender_ratio_dict[user])
+        except :
+            gender_ratio_list.append(50)
+    
+    item_data["men_bought_ratio"] = gender_ratio_list
+
+    return item_data

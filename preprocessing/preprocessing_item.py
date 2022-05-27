@@ -21,3 +21,4 @@ if __name__ == "__main__":
     preprocessed_data = gender_preprocess(preprocessed_data)
     preprocessed_data = season_preprocess(preprocessed_data)
     preprocessed_data = buy_age_preprocess(preprocessed_data, ITEM_PATH)
+    preprocessed_data = buy_gender_preprocess(preprocessed_data, ITEM_PATH)
