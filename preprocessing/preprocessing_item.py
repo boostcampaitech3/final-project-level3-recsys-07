@@ -1,4 +1,4 @@
-import numpy as np
+import os
 import pandas as pd
 from utils_item import *
 
@@ -13,7 +13,7 @@ if __name__ == "__main__":
     CODI_PATH = f'/opt/ml/input/data/{_PREPROCESS}_{_STORE_OPTION}/{_SORT_OPTION}/codi/'
 
     # -- 데이터 불러오기
-    raw_data = pd.read_excel(ITEM_PATH+"item.xlsx")
+    raw_data = pd.read_excel(os.path.join(ITEM_PATH + "item.xlsx"))
 
     # -- 데이터 전처리
     preprocessed_data, need_revision_data = class_preprocess(raw_data)
@@ -31,4 +31,4 @@ if __name__ == "__main__":
     SAVE_ITEM_PATH = f'/opt/ml/input/data/asset_{_STORE_OPTION}/{_SORT_OPTION}/item/'
     SAVE_CODI_PATH = f'/opt/ml/input/data/asset_{_STORE_OPTION}/{_SORT_OPTION}/codi/'
     
-    preprocessed_data.to_excel(SAVE_ITEM_PATH+"item.xlsx", index=False)
+    preprocessed_data.to_excel(os.path.join(SAVE_ITEM_PATH, "item.xlsx"), index=False)

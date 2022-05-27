@@ -19,25 +19,25 @@ from typing import List, Tuple, Union
 warnings.filterwarnings(action='ignore')
 
 
-#########################
-#        COLOR          #
-#########################
-# 이미지를 불러오는 함수
 def get_img_from_url(url: str) -> Image:
+    """
+    url을 통해서 imgae를 풀러오는 함수
+    반환형태는 PIL 이미지
+    """
     response = requests.get(url)
     img = Image.open(BytesIO(response.content))
     return img
 
 
-# 이미지에 포함된 상위 K개의 색상 가져오기
 def topK_colors(img: Image, k: int) -> List:
+    """
+    현재 img 에 포함된 상위 K개의 색상을 가져오기
+    K개의 색상을 추출할 수 없을 때는, 추출된 색상 개수만큼 진행
+    """
     colors = colorgram.extract(img, k)
-    # print (colors)
     rgb_lists = list()
 
-    for idx in range(k):
-        if idx == len(colors):
-            break
+    for idx in range(min(k, len(colors))):
         R = colors[idx].rgb.r
         G = colors[idx].rgb.g
         B = colors[idx].rgb.b
@@ -47,7 +47,12 @@ def topK_colors(img: Image, k: int) -> List:
 
 
 def color_preprocess(item_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    현재 이미지가 어떤 색을 가지고 있는지 처리하는 color main function
+    item_df에 R, G, B 속성을 추가하여 반환
 
+    현재 이미지를 로드할 수 없는 경우, 검정색을 넣도록 지시
+    """
     color_r = list()
     color_g = list()
     color_b = list()
@@ -73,11 +78,10 @@ def color_preprocess(item_df: pd.DataFrame) -> pd.DataFrame:
         color_b.append(B)
         
 
-    #-- 이미지에서 선택된 hex 코드를 색상 이름으로 변경
+    #-- RGB 값 속성 추가
     item_df['R'] = color_r
     item_df['G'] = color_g
     item_df['B'] = color_b
-    # item_df['color_name'] = item_df['hex_color'].apply(lambda x: hex2color[x])
     item_df.to_excel('./temp_preprocess_color.xlsx', engine='openpyxl', index=False)
 
     print ("Preprocessing Color Done..")
@@ -85,16 +89,18 @@ def color_preprocess(item_df: pd.DataFrame) -> pd.DataFrame:
     return item_df
 
 
-
 # 평점 결측치 처리
 def rating_preprocess(item_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    결측치가 있는 평점에 대해서는 나머지 평점의 평균으로 계산한다.
+    """
     avg_rating = item_df[item_df['rating'].notnull()]['rating'].mean()
     item_df['rating'] = item_df['rating'].fillna(avg_rating)
     return item_df
 
 
 
-def class_preprocess(raw_item_data) :
+def class_preprocess(raw_item_data: pd.DataFrame) -> pd.DataFrame:
 
     base_big_class = ['아우터', '상의', '바지', '가방', '신발', '모자']
     df = raw_item_data[["id", "big_class", "mid_class"]]
@@ -145,7 +151,6 @@ def class_preprocess(raw_item_data) :
 
 # 좋아요 수 전처리
 def likes_preprocess(raw_data: pd.DataFrame) -> pd.DataFrame:
-
     raw_data["likes"] = raw_data["likes"].fillna(0)
     return raw_data
 
