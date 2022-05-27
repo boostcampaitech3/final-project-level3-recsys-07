@@ -6,7 +6,7 @@ from color_preprocess import color_preprocess
 
 raw_data = pd.read_excel("/opt/ml/input/data/raw_codishop/view/item/item.xlsx")
 
-preprocessed_data = class_preprocess(raw_data)
+preprocessed_data, need_revision_data = class_preprocess(raw_data)
 preprocessed_data = likes_preprocess(preprocessed_data)
 preprocessed_data = color_preprocess(preprocessed_data)
 
