@@ -6,9 +6,9 @@ import os
 def class_preprocess(raw_item_data) :
 
     base_big_class = ['아우터', '상의', '바지', '가방', '신발', '모자']
-
     df = raw_item_data[["id", "big_class", "mid_class"]]
 
+    # 전처리 
     for mid_class in ['캔버스/단화', '패션스니커즈화', '기타 스니커즈', '농구화'] :
         df.loc[df["mid_class"]==mid_class, "big_class"] = "신발"
 
@@ -33,4 +33,18 @@ def class_preprocess(raw_item_data) :
     # 출력 엑셀의 형식을 원래 데이터의 형식과 동일하게 맞춰주기 위한 부분
     raw_item_data["id"] = raw_item_data["id"].apply(str)
 
-    return raw_item_data
+    # 한번도 보지 못한 대분류 아이템 제거
+    unique_big_class = list(raw_item_data["big_class"].unique())
+    new_big_class = list(set(unique_big_class) - set(base_big_class))
+
+    need_revision_total_df = pd.DataFrame([], columns=list(raw_item_data.columns))
+    for new_class in new_big_class :
+        need_revision_df = raw_item_data.loc[raw_item_data["big_class"]==new_class]
+        need_revision_total_df = pd.concat([need_revision_total_df, need_revision_df])
+
+        left_out_index = need_revision_df.index
+        raw_item_data.drop(left_out_index, inplace=True)
+
+    need_revision_total_df["revision"] = ["big_class"] * len(need_revision_total_df)
+
+    return raw_item_data, need_revision_total_df
