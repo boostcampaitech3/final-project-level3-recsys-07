@@ -1,3 +1,4 @@
+from xxlimited import Str
 from matplotlib.colors import hex2color
 import openpyxl
 import colorgram
@@ -85,22 +86,11 @@ def color_preprocess(item_df: pd.DataFrame) -> pd.DataFrame:
 
 
 
-
-
-
-
-
-
-
 # 평점 결측치 처리
 def rating_preprocess(item_df: pd.DataFrame) -> pd.DataFrame:
     avg_rating = item_df[item_df['rating'].notnull()]['rating'].mean()
     item_df['rating'] = item_df['rating'].fillna(avg_rating)
     return item_df
-
-
-
-
 
 
 
@@ -213,9 +203,9 @@ def season_preprocess(raw_data: pd.DataFrame) -> pd.DataFrame:
 
     return raw_data
 
-def buy_age_preprocess(item_data : pd.DataFrame) -> pd.DataFrame :
+def buy_age_preprocess(item_data : pd.DataFrame, ITEM_PATH : str) -> pd.DataFrame :
     
-    buy_age_data = pd.read_excel("/opt/ml/input/data/raw_codishop/view/item/item_buy_age.xlsx")
+    buy_age_data = pd.read_excel(ITEM_PATH + "item_buy_age.xlsx")
 
     most_bought_age_dict = dict()
     for i in range(len(buy_age_data)) :
