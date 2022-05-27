@@ -5,7 +5,7 @@ from utils import get_codi_images_url, get_images_url, get_clothes_name,get_codi
 
 import pandas as pd
 from rule_based import get_item_recommendation
-
+# print(st.session_state)
 def search(tag):
     if tag != []:
         temp=df[df['tag']==tag[0]] # 그 키워드를 가진 아이템
@@ -26,6 +26,23 @@ def pick_item(idx:int,item_ids):
     st.session_state['picked_item']=item_ids[idx]
     st.session_state['picked_end']=True
 
+def home():
+    for key in st.session_state.keys():
+        del st.session_state[key]
+    set_state_key(STATE_KEYS_VALS)
+    input_status_change()
+    if survey_container:
+        survey_container.empty()
+    try:
+        if pick_container:
+            pick_container.empty()
+    except:
+        pass
+    
+def set_state_key(STATE_KEYS_VALS):
+    for k, v in STATE_KEYS_VALS:
+        if k not in st.session_state:
+            st.session_state[k] = v
 
 df=pd.read_excel('/opt/ml/input/data/raw_codishop/item_tag.xlsx',engine='openpyxl')
 tags=pd.unique(df['tag'])
@@ -41,15 +58,14 @@ STATE_KEYS_VALS = [
     ('picked_item',None),
     ('picked_end',False)
 ]
-for k, v in STATE_KEYS_VALS:
-    if k not in st.session_state:
-        st.session_state[k] = v
+set_state_key(STATE_KEYS_VALS)
 
 st.set_page_config(layout='wide')
 
 (_, l,r, _) = st.columns([1, 4,9, 1])
 with l:
     st.title('YUSINSA') 
+    st.button('🏠',on_click=home, args=())
 with r:
     st.image('./main_image-removebg-preview.png')
     
@@ -155,18 +171,11 @@ if st.session_state['picked_end']:
     pick_container.empty() # 지금껏 있던 내용들 모두 삭제
     with st.container():
         st.markdown('### 추천코디')
-        st.write(st.session_state['picked_item'])
-        st.write("코디리스트")
-        print('코디리스트')
+        # st.write(st.session_state['picked_item'])
+        # st.write("코디리스트")
         codi_ids=get_codi(st.session_state['clicked_item'],st.session_state['picked_item'])
         codi_dict=get_codi_images_url(codi_ids)
         codi_image_list=list(codi_dict.values())
         result_codi_ids=list(codi_dict.keys())
 
-        st.write('결과 코디 아이디',result_codi_ids)
-
-        st.image(codi_image_list, use_column_width=False, caption=["some generic text"] * len(codi_image_list),width=125)#codi image url을 못찾아서 지금은 상품 이미지임
-
-
-
-
+        st.image(codi_image_list, use_column_width=False,width=300)#codi image url을 못찾아서 지금은 상품 이미지임
