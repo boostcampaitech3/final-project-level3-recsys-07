@@ -160,12 +160,11 @@ def gender_preprocess(raw_data: pd.DataFrame) -> pd.DataFrame:
         : gender_info - 하나의 아이템에 대한 gener 정보 (str or nan)
         '''
         if type(gender_info) == str:
-            if gender_info == '남 여': return '유니섹스'
-            return gender_info
-        return gender_info # TODO: 성별 정보가 없을 때!
+            if gender_info != '남 여': return gender_info
+        return '유니섹스'
 
     # -- gender 데이터 전처리
-    raw_data['gender'] = raw_data.gender.transform(preprocessing_gender_info)
+    raw_data['gender'] = item.gender.transform(preprocessing_gender_info)
     return raw_data
 
 
@@ -181,8 +180,6 @@ def season_preprocess(raw_data: pd.DataFrame) -> pd.DataFrame:
             if day: return int(day.group())
         return None
 
-    
-
     def preprosessing_season_info(season_info):
         '''
         season_info에서 S/S, F/W, ALL 정보 추출 및 변환
@@ -197,11 +194,57 @@ def season_preprocess(raw_data: pd.DataFrame) -> pd.DataFrame:
 
     # -- season_day feature 생성
     raw_data['season_day'] = raw_data.season.transform(make_season_day)
-
     # -- season 데이터 전처리
     raw_data['season'] = raw_data.season.transform(preprosessing_season_info)
 
     return raw_data
+
+
+def view_preprocess(raw_data: pd.DataFrame) -> pd.DataFrame:
+
+    def preprocessing_view_info(view_info):
+        '''
+        view_info 데이터를 실수로 변환 및 전처리
+        : view_info - 하나의 item에 대한 view 정보 (str or nan)
+        '''
+        if type(view_info) == str:
+            view_info = view_info.replace('회 이상', '').strip()
+            view_info = view_info.replace('회 미만', '').strip()
+            if view_info[-1] == '천':
+                return float(view_info[:-1])*1000
+            elif view_info[-1] == '만':
+                return float(view_info[:-1])*10000
+            return float(view_info)
+        return view_info
+
+    # -- view 데이터 전처리
+    raw_data['view'] = raw_data.view.transform(preprocessing_view_info)
+
+    return raw_data
+
+
+def cum_sale_preprocess(raw_data: pd.DataFrame) -> pd.DataFrame:
+    
+    def preprocessing_cum_sale_info(cum_sale_info):
+        '''
+        cum_sale_info 데이터를 실수로 변환 및 전처리
+        : cum_sale_info - 하나의 item에 대한 view 정보 (str or nan)
+        '''
+        if type(cum_sale_info) == str:
+            cum_sale_info = cum_sale_info.replace('개 이상', '').strip()
+            cum_sale_info = cum_sale_info.replace('개 미만', '').strip()
+            if cum_sale_info[-1] == '천':
+                return float(cum_sale_info[:-1])*1000
+            elif cum_sale_info[-1] == '만':
+                return float(cum_sale_info[:-1])*10000
+            return float(cum_sale_info)
+        return cum_sale_info
+    
+    # -- cum_sale 데이터 전처리
+    raw_data['cum_sale'] = raw_data.cum_sale.transform(preprocessing_cum_sale_info)
+
+    return raw_data
+
 
 def buy_age_preprocess(item_data : pd.DataFrame, ITEM_PATH : str) -> pd.DataFrame :
     

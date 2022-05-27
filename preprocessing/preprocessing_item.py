@@ -12,13 +12,23 @@ if __name__ == "__main__":
     ITEM_PATH = f'/opt/ml/input/data/{_PREPROCESS}_{_STORE_OPTION}/{_SORT_OPTION}/item/'
     CODI_PATH = f'/opt/ml/input/data/{_PREPROCESS}_{_STORE_OPTION}/{_SORT_OPTION}/codi/'
 
+    # -- 데이터 불러오기
     raw_data = pd.read_excel(ITEM_PATH+"item.xlsx")
 
+    # -- 데이터 전처리
     preprocessed_data, need_revision_data = class_preprocess(raw_data)
     preprocessed_data = likes_preprocess(preprocessed_data)
     preprocessed_data = color_preprocess(preprocessed_data)
     preprocessed_data = rating_preprocess(preprocessed_data)
     preprocessed_data = gender_preprocess(preprocessed_data)
     preprocessed_data = season_preprocess(preprocessed_data)
+    preprocessed_data = view_preprocess(preprocessed_data)
+    preprocessed_data = cum_sale_preprocess(preprocessed_data)
     preprocessed_data = buy_age_preprocess(preprocessed_data, ITEM_PATH)
     preprocessed_data = buy_gender_preprocess(preprocessed_data, ITEM_PATH)
+
+    # -- preprocessed data save
+    SAVE_ITEM_PATH = f'/opt/ml/input/data/asset_{_STORE_OPTION}/{_SORT_OPTION}/item/'
+    SAVE_CODI_PATH = f'/opt/ml/input/data/asset_{_STORE_OPTION}/{_SORT_OPTION}/codi/'
+    
+    preprocessed_data.to_excel(SAVE_ITEM_PATH+"item.xlsx", index=False)
