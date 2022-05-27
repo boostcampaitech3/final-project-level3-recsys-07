@@ -1,14 +1,18 @@
 from faulthandler import disable
 from logging import PlaceHolder
 import streamlit as st
-from utils import get_codi_images_url, get_images_url, get_clothes_name,get_codi,get_codi_images_url
+from utils import *
 
 import pandas as pd
 from rule_based import get_item_recommendation
 
-def search(tag):
+from PIL import Image
+
+def search(tag, tag_df):
     if tag != []:
-        temp=df[df['tag']==tag[0]] # 그 키워드를 가진 아이템
+        # print(tag_df)
+        # print(tag)
+        temp=tag_df[tag_df['tag']==tag[0]] # 그 키워드를 가진 아이템
         st.session_state['result'] = temp.iloc[:,0].tolist()  #0:id column 
 
 def input_status_change():
@@ -27,8 +31,6 @@ def pick_item(idx:int,item_ids):
     st.session_state['picked_end']=True
 
 
-df=pd.read_excel('/opt/ml/input/data/raw_codishop/item_tag.xlsx',engine='openpyxl')
-tags=pd.unique(df['tag'])
 STATE_KEYS_VALS = [
     ("result", []),
     ("input_status", True),
@@ -61,12 +63,15 @@ with survey_container.container():
         # TODO : 검색 이벤트 연결 -> on.click
         
         (_, c, _) = st.columns([1, 9, 1])
+
+        item_tags = get_item_tags()
+        
         with c:
-            input=st.multiselect(label=' ',options = tags,on_change=input_status_change)
+            input=st.multiselect(label=' ',options = pd.unique(item_tags['tag']),on_change=input_status_change)
         
         (_, left,right, _) = st.columns([8,1,1,8])
         with left:
-            input_button = st.button('🔍', on_click=search,args =(input,), disabled=st.session_state['input_status'])
+            input_button = st.button('🔍', on_click=search,args =(input,item_tags), disabled=st.session_state['input_status'])
         with right:
             random_button=st.button('🎲')   
         
@@ -100,7 +105,7 @@ with survey_container.container():
                     clothes = image_list[idx]
 
                     with col:
-                        st.image(clothes)
+                        st.image(get_image(clothes))
                         st.checkbox(
                             get_clothes_name(item_ids[idx]),
                             key = 'clothes-{}'.format(item_ids[idx]),
@@ -117,7 +122,7 @@ if st.session_state['survey_end']: # 버튼이 눌리면
         st.write("선택한 아이템 : ")
         (_, center, _) = st.columns([1, 1, 1])
         with center:
-            st.image(str(list(get_images_url([st.session_state['clicked_item']]).values())[0]), width=300) # st.session_state['clicked_item'] : id
+            st.image(str(list(get_images_url([st.session_state['clicked_item']]).values())[0]), width=500) # st.session_state['clicked_item'] : id
       
         codis=get_item_recommendation(st.session_state['clicked_item'])
 
@@ -141,7 +146,7 @@ if st.session_state['survey_end']: # 버튼이 눌리면
                     clothes = codi_list[idx]
 
                     with col:
-                        st.image(clothes)
+                        st.image(get_image(clothes))
                         checked=st.checkbox(
                             get_clothes_name(item_ids[idx]),
                             key = 'clothes-{}'.format(codi_list[idx]), #url이 key로 들어가게됨
@@ -155,18 +160,14 @@ if st.session_state['picked_end']:
     pick_container.empty() # 지금껏 있던 내용들 모두 삭제
     with st.container():
         st.markdown('### 추천코디')
-        st.write(st.session_state['picked_item'])
+        # st.write(st.session_state['picked_item'])
         st.write("코디리스트")
-        print('코디리스트')
         codi_ids=get_codi(st.session_state['clicked_item'],st.session_state['picked_item'])
         codi_dict=get_codi_images_url(codi_ids)
         codi_image_list=list(codi_dict.values())
         result_codi_ids=list(codi_dict.keys())
 
-        st.write('결과 코디 아이디',result_codi_ids)
+        # st.write('결과 코디 아이디',result_codi_ids)
 
         st.image(codi_image_list, use_column_width=False, caption=["some generic text"] * len(codi_image_list),width=125)#codi image url을 못찾아서 지금은 상품 이미지임
-
-
-
 
