@@ -250,7 +250,7 @@ def cum_sale_preprocess(raw_data: pd.DataFrame) -> pd.DataFrame:
 
 def buy_age_preprocess(item_data : pd.DataFrame, ITEM_PATH : str) -> pd.DataFrame :
     
-    buy_age_data = pd.read_excel(ITEM_PATH + "item_buy_age.xlsx")
+    buy_age_data = pd.read_excel(ITEM_PATH + "item_buy_age.xlsx", engine='openpyxl')
 
     most_bought_age_dict = dict()
     for i in range(len(buy_age_data)) :
@@ -271,7 +271,7 @@ def buy_age_preprocess(item_data : pd.DataFrame, ITEM_PATH : str) -> pd.DataFram
     return item_data
 
 def buy_gender_preprocess(item_data : pd.DataFrame, ITEM_PATH : str) -> pd.DataFrame :
-    buy_gender_df = pd.read_excel(ITEM_PATH + "item_buy_gender.xlsx")
+    buy_gender_df = pd.read_excel(ITEM_PATH + "item_buy_gender.xlsx", engine='openpyxl')
 
     gender_ratio_dict = dict()
     for i in range(len(buy_gender_df)) :

@@ -13,7 +13,7 @@ if __name__ == "__main__":
     CODI_PATH = f'/opt/ml/input/data/{_PREPROCESS}_{_STORE_OPTION}/{_SORT_OPTION}/codi/'
 
     # -- 데이터 불러오기
-    raw_data = pd.read_excel(os.path.join(ITEM_PATH, "item.xlsx"))
+    raw_data = pd.read_excel(os.path.join(ITEM_PATH, "item.xlsx"), engine='openpyxl')
 
     # -- 데이터 전처리
     preprocessed_data, need_revision_data = class_preprocess(raw_data)
