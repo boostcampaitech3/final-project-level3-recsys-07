@@ -13,8 +13,12 @@
     ```shell
     > poerty install
     ```
+4. poetry 가상환경 실행
+    ```shell
+    > poerty shell
+    ```
 
-4. 서버 실행
+5. 서버 실행
 
     ```shell
     > cd $<server 폴더의 상위폴더>
