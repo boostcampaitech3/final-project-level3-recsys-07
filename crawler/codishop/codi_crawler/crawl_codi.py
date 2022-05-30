@@ -4,7 +4,7 @@ import openpyxl
 from utils import do_crawling
 
 # 🌟 important parameter. 크롤링 할 페이지 지정
-NUM_CRAWL_PAGE = 10
+NUM_CRAWL_PAGE = 1
 
 # 🚀 크롤링 완료된 정보를 저장할 excel sheet_codi 지정
 wb_codi = openpyxl.Workbook()
