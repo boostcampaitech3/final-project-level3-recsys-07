@@ -1,5 +1,4 @@
 import pandas as pd
-from utils_item_four_season import *
 from utils_item import synchronize_with_item
 
 if __name__ == "__main__":
@@ -15,12 +14,10 @@ if __name__ == "__main__":
     SAVE_CODI_PATH = f'/opt/ml/input/data/asset_{_STORE_OPTION}/{_SORT_OPTION}/codi/'
 
     item = pd.read_excel(SAVE_ITEM_PATH+"item.xlsx", engine='openpyxl')
-    item_four_season = pd.read_excel(ITEM_PATH+"item_four_season.xlsx", engine='openpyxl')
+    item_tag = pd.read_excel(ITEM_PATH+"item_tag.xlsx", engine='openpyxl')
 
-    # -- four season 데이터 전처리
-    item_four_season = synchronize_with_item(item=item, raw_data=item_four_season)
-    item_four_season = transform_season_to_four_season(item, item_four_season)
-    item_four_season = preprocessing_null_season_data(item, item_four_season)
+    # -- tag 데이터 전처리
+    item_tag = synchronize_with_item(item=item, raw_data=item_tag)
 
     # -- preprocessed data save
-    item_four_season.to_excel(SAVE_ITEM_PATH+"item_four_season.xlsx", index=False)
+    item_tag.to_excel(SAVE_ITEM_PATH+"item_tag.xlsx", index=False)

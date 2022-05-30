@@ -15,6 +15,23 @@ from typing import List
 warnings.filterwarnings(action='ignore')
 
 
+def synchronize_with_item(item:pd.DataFrame, raw_data: pd.DataFrame) -> pd.DataFrame:
+    '''
+    전처리 된 item의 id와 현재 raw_data의 item id를 동기화
+    대분류 전처리에서 drop 했던 item id를 제거
+    : raw_data - item feature list dataframe (ex. item_fit, item_tag, item_four_season, ...)
+    '''
+    item_ids = item['id'].unique()
+    new_data_list = []
+
+    for item_id in tqdm(item_ids):
+        data = raw_data[raw_data['id']==item_id].values.tolist()
+        if data:
+            new_data_list.extend(data)
+
+    return pd.DataFrame(new_data_list, columns=raw_data.columns)
+
+
 def get_img_from_url(url: str) -> Image:
     """
     url을 통해서 imgae를 풀러오는 함수
