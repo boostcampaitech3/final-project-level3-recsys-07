@@ -93,8 +93,8 @@ def make_crawl_xlsx(driver: webdriver.Chrome, sheets: Tuple[Worksheet, Worksheet
         codi_info.append(codi_id)
         codi_info.append(codi_style)
         codi_info.append(codi_img_url)
-        codi_info.append(popularity)
         codi_info.append(codi_path)
+        codi_info.append(popularity)
         sheet_codi.append(codi_info)
         
         
