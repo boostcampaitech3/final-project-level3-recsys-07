@@ -4,12 +4,12 @@ import openpyxl
 from utils import do_crawling
 
 # 🌟 important parameter. 크롤링 할 페이지 지정
-NUM_CRAWL_PAGE = 10
+NUM_CRAWL_PAGE = 1
 
 # 🚀 크롤링 완료된 정보를 저장할 excel sheet_codi 지정
 wb_codi = openpyxl.Workbook()
 sheet_codi = wb_codi.active
-sheet_codi.append(["id",  "style", "img_url", "url"])
+sheet_codi.append(["id",  "style", "img_url", "url", "popularity"])
 
 wb_codi_tag = openpyxl.Workbook()
 sheet_codi_tag = wb_codi_tag.active
