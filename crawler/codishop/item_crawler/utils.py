@@ -260,9 +260,9 @@ def make_worksheets(workbooks: Tuple[Workbook, ...]) -> Tuple[Worksheet, ...]:
         
     worksheets[0].append(["id",  "name", "big_class", "mid_class", "brand", "serial_number", "gender",
                    "season", "cum_sale", "view", "likes", "rating", "price", "url", "img_url"])
-    worksheets[1].append(["id", "option1"])
-    worksheets[2].append(["id", "option2"])
-    worksheets[3].append(["id", "option3"])
+    # worksheets[1].append(["id", "option1"])
+    # worksheets[2].append(["id", "option2"])
+    # worksheets[3].append(["id", "option3"])
     worksheets[4].append(["id", "tag"])
     worksheets[5].append(["id", "four_seaseon"])
     worksheets[6].append(["id", "fit"])
@@ -283,9 +283,9 @@ def save_workbooks(workbooks: Tuple[Workbook, ...], sort_opt: str, store_opt: st
     os.makedirs(path, exist_ok=True)
     
     workbooks[0].save(os.path.join(path, "item.xlsx"))
-    workbooks[1].save(os.path.join(path, "item_option1.xlsx"))
-    workbooks[2].save(os.path.join(path, "item_option2.xlsx"))
-    workbooks[3].save(os.path.join(path, "item_option3.xlsx"))
+    # workbooks[1].save(os.path.join(path, "item_option1.xlsx"))
+    # workbooks[2].save(os.path.join(path, "item_option2.xlsx"))
+    # workbooks[3].save(os.path.join(path, "item_option3.xlsx"))
     workbooks[4].save(os.path.join(path, "item_tag.xlsx"))
     workbooks[5].save(os.path.join(path, "item_four_season.xlsx"))
     workbooks[6].save(os.path.join(path, "item_fit.xlsx"))
@@ -318,19 +318,19 @@ def save_to_sheets(worksheets: Tuple[Worksheet, ...], item_info: EasyDict) -> No
     ])
 
     # dropbox 1 정보
-    if item_info.drop1:
-        for option in item_info.drop1:
-            worksheets[1].append([item_info.id, option])
+    # if item_info.drop1:
+    #     for option in item_info.drop1:
+    #         worksheets[1].append([item_info.id, option])
 
     # dropbox 2 정보
-    if item_info.drop2:
-        for option in item_info.drop2:
-            worksheets[2].append([item_info.id, option])
+    # if item_info.drop2:
+    #     for option in item_info.drop2:
+    #         worksheets[2].append([item_info.id, option])
 
     # dropbox 3 정보
-    if item_info.drop3:
-        for option in item_info.drop3:
-            worksheets[3].append([item_info.id, option])
+    # if item_info.drop3:
+    #     for option in item_info.drop3:
+    #         worksheets[3].append([item_info.id, option])
 
     # item_tag.xlsx 정보
     if item_info.tags_list:

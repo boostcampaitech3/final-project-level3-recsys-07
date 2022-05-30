@@ -122,9 +122,9 @@ for codi_id, codi_url in zip(codi_ids, codi_urls) :
         try: menu = driver.find_elements(By.CSS_SELECTOR, "div#goods_opt_area > select")
         except: menu = None
 
-        item_info.drop1         = get_dropbox(menu, 0)
-        item_info.drop2         = get_dropbox(menu, 1)
-        item_info.drop3         = get_dropbox(menu, 2)
+        # item_info.drop1         = get_dropbox(menu, 0)
+        # item_info.drop2         = get_dropbox(menu, 1)
+        # item_info.drop3         = get_dropbox(menu, 2)
         # item_info.color_list    = get_color(menu)
         # item_info.size_list     = get_size(menu)
 
