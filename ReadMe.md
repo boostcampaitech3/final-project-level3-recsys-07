@@ -1,4 +1,10 @@
 # 서버 실행 방법
+0. 사전 설정
+    ```shell
+    > apt-get update
+    > apt install curl
+    ```
+
 1. Poetry 설치하기
     ```shell
     > curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
@@ -11,11 +17,11 @@
 
 3. poetry install
     ```shell
-    > poerty install
+    > poetry install
     ```
 4. poetry 가상환경 실행
     ```shell
-    > poerty shell
+    > poetry shell
     ```
 
 5. 서버 실행
