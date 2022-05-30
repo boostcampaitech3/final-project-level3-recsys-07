@@ -264,7 +264,7 @@ def make_worksheets(workbooks: Tuple[Workbook, ...]) -> Tuple[Worksheet, ...]:
     # worksheets[2].append(["id", "option2"])
     # worksheets[3].append(["id", "option3"])
     worksheets[4].append(["id", "tag"])
-    worksheets[5].append(["id", "four_seaseon"])
+    worksheets[5].append(["id", "four_season"])
     worksheets[6].append(["id", "fit"])
     worksheets[7].append(["id", "buy_age_18", "buy_age_19_23", "buy_age_24_28", 
                            "buy_age_29_33", "buy_age_34_39", "buy_age_40"])
