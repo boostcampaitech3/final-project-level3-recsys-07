@@ -27,6 +27,6 @@
 5. 서버 실행
 
     ```shell
-    > cd $<server 폴더의 상위폴더>
+    > cd final-project-level3-recsys-07
     > python -m server 
     ```
