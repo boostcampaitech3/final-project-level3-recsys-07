@@ -20,7 +20,7 @@ apt install chromium-chromedriver
 2022.5.31 (by som)
 [crawl_codi]
 1. codi_item_id -> item_codi_id로 name 변경
-2. item_codi_id column: ['id', 'codi_id'] -> ['item_id', 'codi_id']로 변경
+2. item_codi_id column: ['id', 'item_id'] -> ['id', 'codi_id']로 변경 (여기서 id는 item id를 의미)
 3. item_codi_id save path: raw/codishop/view/codi -> raw/codishop/view/item 으로 변경
 
 [crawl_item]

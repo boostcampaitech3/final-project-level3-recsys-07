@@ -17,7 +17,7 @@ sheet_codi_tag.append(["id", "tag"])
 
 wb_item_codi_id = openpyxl.Workbook()
 sheet_item_codi_id = wb_item_codi_id.active
-sheet_item_codi_id.append(["item_id", "codi_id"])
+sheet_item_codi_id.append(["id", "codi_id"])
 
 workbooks = (wb_codi, wb_codi_tag, wb_item_codi_id)
 sheets = (sheet_codi, sheet_codi_tag, sheet_item_codi_id)
