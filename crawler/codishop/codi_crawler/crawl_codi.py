@@ -15,12 +15,12 @@ wb_codi_tag = openpyxl.Workbook()
 sheet_codi_tag = wb_codi_tag.active
 sheet_codi_tag.append(["id", "tag"])
 
-wb_codi_item_id = openpyxl.Workbook()
-sheet_codi_item_id = wb_codi_item_id.active
-sheet_codi_item_id.append(["id", "item_id"])
+wb_item_codi_id = openpyxl.Workbook()
+sheet_item_codi_id = wb_item_codi_id.active
+sheet_item_codi_id.append(["item_id", "codi_id"])
 
-workbooks = (wb_codi, wb_codi_tag, wb_codi_item_id)
-sheets = (sheet_codi, sheet_codi_tag, sheet_codi_item_id)
+workbooks = (wb_codi, wb_codi_tag, wb_item_codi_id)
+sheets = (sheet_codi, sheet_codi_tag, sheet_item_codi_id)
 
 
 # 🚀 지정한 페이지 수 만큼 크롤링 진행하기

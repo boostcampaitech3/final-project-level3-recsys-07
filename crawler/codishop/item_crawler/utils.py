@@ -259,7 +259,7 @@ def make_worksheets(workbooks: Tuple[Workbook, ...]) -> Tuple[Worksheet, ...]:
         worksheets.append(worksheet)
         
     worksheets[0].append(["id",  "name", "big_class", "mid_class", "brand", "serial_number", "gender",
-                   "season", "cum_sale", "view", "likes", "rating", "price", "url", "img_url"])
+                   "season", "cum_sale", "view_count", "likes", "rating", "price", "url", "img_url"])
     # worksheets[1].append(["id", "option1"])
     # worksheets[2].append(["id", "option2"])
     # worksheets[3].append(["id", "option3"])
@@ -309,7 +309,7 @@ def save_to_sheets(worksheets: Tuple[Worksheet, ...], item_info: EasyDict) -> No
         item_info.gender,
         item_info.season,
         item_info.cum_sale,
-        item_info.view,
+        item_info.view_count,
         item_info.likes,
         item_info.rating,
         item_info.price,

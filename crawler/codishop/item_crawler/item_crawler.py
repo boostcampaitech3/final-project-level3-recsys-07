@@ -117,7 +117,7 @@ for codi_id, codi_url in zip(codi_ids, codi_urls) :
         item_info.serial_number = get_serial_number(product_info)
         item_info.season        = get_season(driver)
         item_info.gender        = get_gender(driver)
-        item_info.view          = get_view(driver)
+        item_info.view_count    = get_view(driver)
         item_info.cum_sale      = get_cum_sale(driver)
         item_info.likes         = get_likes(driver)
         item_info.rating        = get_rating(driver)  

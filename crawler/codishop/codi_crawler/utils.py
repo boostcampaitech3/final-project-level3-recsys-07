@@ -62,7 +62,7 @@ def make_crawl_xlsx(driver: webdriver.Chrome, sheets: Tuple[Worksheet, Worksheet
     
     sheet_codi = sheets[0]
     sheet_codi_tag = sheets[1]
-    sheet_codi_item_id = sheets[2]
+    sheet_item_codi_id = sheets[2]
     
     # (코디 링크, 스타일 정보, 코디 이미지 url) 리스트 받아오기
     codi_id_list, codi_style_list, codi_url_list, pop_list = get_codi_info(driver)
@@ -88,7 +88,7 @@ def make_crawl_xlsx(driver: webdriver.Chrome, sheets: Tuple[Worksheet, Worksheet
         item_elements = driver.find_elements(by=By.CSS_SELECTOR, value=".styling_img")
         for item_element in item_elements:
             item_id = item_element.get_attribute("href").split("/")[-2]
-            sheet_codi_item_id.append([codi_id, item_id])
+            sheet_item_codi_id.append([item_id, codi_id])
             
         codi_info.append(codi_id)
         codi_info.append(codi_style)
@@ -102,17 +102,18 @@ def make_crawl_xlsx(driver: webdriver.Chrome, sheets: Tuple[Worksheet, Worksheet
 def save_as_xlsx(workbooks: Tuple[Workbook, Workbook, Workbook]):
     wb_codi = workbooks[0]
     wb_codi_tag = workbooks[1]
-    wb_codi_item_id = workbooks[2]
+    wb_item_codi_id = workbooks[2]
         
     subpath = 'recent'
     if "sort" in COORDI_LIST_PATH:
         subpath = 'view'
     
     PATH = '/opt/ml/input/data/raw_codishop/' + subpath + '/codi/'
+    ITEM_PATH = '/opt/ml/input/data/raw_codishop/' + subpath + '/item/'
     os.makedirs(PATH, exist_ok=True)
     wb_codi.save(os.path.join(PATH, "codi.xlsx"))
     wb_codi_tag.save(os.path.join(PATH, "codi_tag.xlsx"))
-    wb_codi_item_id.save(os.path.join(PATH, "codi_item_id.xlsx"))
+    wb_item_codi_id.save(os.path.join(ITEM_PATH, "item_codi_id.xlsx"))
     
 # 🚀 최상위 메인 페이지 불러오기 (코디 목록 60개 보여지는 페이지)
 def do_crawling(
