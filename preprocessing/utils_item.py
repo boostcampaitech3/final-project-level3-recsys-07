@@ -11,6 +11,7 @@ from PIL import Image
 from io import BytesIO
 from tqdm import tqdm
 from typing import List
+import json
 
 warnings.filterwarnings(action='ignore')
 
@@ -308,3 +309,51 @@ def buy_gender_preprocess(item_data : pd.DataFrame, ITEM_PATH : str) -> pd.DataF
     item_data["men_bought_ratio"] = gender_ratio_list
 
     return item_data
+
+def get_nearest_color(rgb) -> str:
+    sim_list = list()
+    f = open('./color.json')
+    color_json = json.load(f)
+    
+    for color in color_json.values():
+        dist = [(color[0] - rgb[0]) ** 2, (color[1] - rgb[1]) ** 2, (color[2] - rgb[2]) ** 2]
+        dist.append(max(dist))
+        sim_list.append(sum(dist))
+
+    index = sim_list.index(min(sim_list))
+    color_name = list(color_json.keys())[index]
+    return color_name
+
+def get_cube_color(rgb) -> int:
+    cube_id = (rgb[0] // 16) * 16 * 16 + (rgb[1] // 16) * 16 + (rgb[2] // 16)
+    return cube_id
+
+    
+def color_class_preprocess(input_df: pd.DataFrame) -> pd.DataFrame:
+    color_category = list()
+    for row in input_df.iterrows():
+        # print (row[1])
+        r, g, b = row[1]['R'], row[1]['G'], row[1]['B']
+        # print (r, g, b)
+        color = get_cube_color([r, g, b])
+        # color = get_nearest_color([r, g, b])
+        color_category.append(color)
+
+    # input_df["color_class"] = color_category
+    input_df['color_id'] = color_category
+    return input_df
+
+def mid_class_preprocess(item_df: pd.DataFrame) -> pd.DataFrame :
+
+    for i in range(len(item_df)) :
+        if item_df["mid_class"].iloc[i] in ["겨울 더블 코트", "겨울 싱글 코트", "겨울 기타 코트"] :
+            item_df["mid_class"].iloc[i] = "겨울 코트"
+        elif item_df["mid_class"].iloc[i] in ["레더/라이더스 재킷", "무스탕/퍼"] :
+            item_df["mid_class"].iloc[i] = "레더 재킷"
+        elif item_df["mid_class"].iloc[i] in ['나일론/코치 재킷', '아노락 재킷', '트레이닝 재킷'] :
+            item_df["mid_class"].iloc[i] = "트레이닝 재킷" 
+        elif item_df["mid_class"].iloc[i] == "기타 스니커즈" :
+            item_df["mid_class"].iloc[i] = "패션스니커즈화"
+        elif item_df["mid_class"].iloc[i] == "농구화" :
+            item_df["mid_class"].iloc[i] = "스포츠 신발"
+    return item_df
