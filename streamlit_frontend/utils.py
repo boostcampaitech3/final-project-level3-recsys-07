@@ -7,16 +7,16 @@ import requests
 from io import BytesIO
 from PIL import Image
 
-ITEM_PATH = "/opt/ml/input/data/raw_codishop/item.xlsx"
+ITEM_PATH = "/opt/ml/input/data/asset_codishop/view/item/item.xlsx"
 ITEM_DATA = pd.read_excel(ITEM_PATH,engine='openpyxl')
 
-ITEM_TAG_PATH = '/opt/ml/input/data/raw_codishop/item_tag.xlsx'
+ITEM_TAG_PATH = '/opt/ml/input/data/asset_codishop/view/item/item_tag.xlsx'
 ITEM_TAG_DATA = pd.read_excel(ITEM_TAG_PATH, engine='openpyxl')
 
-CODI_ITEM_PATH= "/opt/ml/input/data/raw_codishop/codi_item_id.xlsx"
+CODI_ITEM_PATH= "/opt/ml/input/data/raw_codishop/view/codi/codi_item_id.xlsx"
 CODI_ITEM_DATA = pd.read_excel(CODI_ITEM_PATH, engine='openpyxl')
 
-CODI_PATH='/opt/ml/input/data/raw_codishop/codi.xlsx'
+CODI_PATH='/opt/ml/input/data/raw_codishop/view/codi/codi.xlsx'
 CODI_DATA=pd.read_excel(CODI_PATH,engine='openpyxl')
 
 def get_images_url(item_ids: list) -> dict:
