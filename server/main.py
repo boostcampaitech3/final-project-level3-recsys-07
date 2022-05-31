@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
+from .services.crud import *
 
 app = FastAPI()
 
