@@ -1,5 +1,0 @@
-mysql:
-  user : 'root'
-  password : 'funidea2022'
-  host : '34.64.69.148'
-  db : 'wiyc_schema'
