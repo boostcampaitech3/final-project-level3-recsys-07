@@ -14,10 +14,10 @@ if __name__ == "__main__":
     SAVE_CODI_PATH = f'/opt/ml/input/data/asset_{_STORE_OPTION}/{_SORT_OPTION}/codi/'
 
     item = pd.read_excel(SAVE_ITEM_PATH+"item.xlsx", engine='openpyxl')
-    item_buy_age = pd.read_excel(ITEM_PATH+"item_buy_age.xlsx", engine='openpyxl')
+    item_codi_id = pd.read_excel(CODI_PATH+"codi_item_id.xlsx", engine='openpyxl')
 
-    # -- buy age 데이터 전처리
-    item_buy_age = synchronize_with_item(item=item, raw_data=item_buy_age)
+    # -- tag 데이터 전처리
+    item_codi_id = synchronize_with_item(item=item, raw_data=item_codi_id)
 
     # -- preprocessed data save
-    item_buy_age.to_csv(SAVE_ITEM_PATH+"item_buy_age.csv", index=False)
+    item_codi_id.to_csv(SAVE_ITEM_PATH+"item_codi_id.csv", index=False)

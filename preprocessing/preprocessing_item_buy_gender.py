@@ -20,4 +20,4 @@ if __name__ == "__main__":
     item_buy_gender = synchronize_with_item(item=item, raw_data=item_buy_gender)
 
     # -- preprocessed data save
-    item_buy_gender.to_excel(SAVE_ITEM_PATH+"item_buy_gender.xlsx", index=False)
+    item_buy_gender.to_csv(SAVE_ITEM_PATH+"item_buy_gender.csv", index=False)
