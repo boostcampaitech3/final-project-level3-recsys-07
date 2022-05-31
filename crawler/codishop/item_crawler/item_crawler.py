@@ -15,6 +15,10 @@ _SORT_OPTION = 'view'
 
 _STORE_OPTION = 'raw_codishop'
 # _STORE_OPTION = 'raw_codimap'
+
+# 아이템 크롤링 진행 범위 설정
+START_CODI_NUM = 0
+END_CODI_NUM = 0
 #-----------------------------------------
 
 URL_PATH = None
@@ -40,7 +44,7 @@ chrome_options.add_argument(argument='--disable-dev-shm-usage')
 # 🚀 크롤러 지정
 driver = webdriver.Chrome('chromedriver', options=chrome_options)
 driver.get(URL_PATH)
-driver.implicitly_wait(3) #페이지를 로딩하는 시간동안 대기
+driver.implicitly_wait(1.5) #페이지를 로딩하는 시간동안 대기
 
 # 🚀 크롤링 완료된 정보를 저장할 excel sheet_codi 지정
 workbooks = make_workbooks()
@@ -52,6 +56,7 @@ button.click()
 
 # 🚀 코디 정보를 가져올 url 받아오기
 codi_info = pd.read_excel('/opt/ml/input/data/' + _STORE_OPTION + '/' + _SORT_OPTION + '/codi/codi.xlsx', engine='openpyxl')
+codi_info = codi_info.iloc[START_CODI_NUM : END_CODI_NUM]
 codi_urls = codi_info["url"].to_list()
 codi_ids = codi_info["id"].to_list()
 
@@ -85,6 +90,7 @@ for codi_id, codi_url in zip(codi_ids, codi_urls) :
         seen_list.append(item_url)
 
         item_urls.append(item_url)
+
     # 각 아이템들을 순회하면서 크롤링 진행
     for item_url in item_urls:
         try : 
