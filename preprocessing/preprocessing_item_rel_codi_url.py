@@ -20,4 +20,4 @@ if __name__ == "__main__":
     item_rel_coid_url = synchronize_with_item(item=item, raw_data=item_rel_coid_url)
 
     # -- preprocessed data save
-    item_rel_coid_url.to_excel(SAVE_ITEM_PATH+"item_rel_coid_url.xlsx", index=False)
+    item_rel_coid_url.to_excel(SAVE_ITEM_PATH+"item_rel_codi_url.xlsx", index=False)
