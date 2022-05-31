@@ -26,6 +26,9 @@ if __name__ == "__main__":
     preprocessed_data = cum_sale_preprocess(preprocessed_data)
     preprocessed_data = buy_age_preprocess(preprocessed_data, ITEM_PATH)
     preprocessed_data = buy_gender_preprocess(preprocessed_data, ITEM_PATH)
+    preprocessed_data = color_class_preprocess(preprocessed_data)
+    preprocessed_data = mid_class_preprocess(preprocessed_data)
+    preprocessed_data = cluster_preprocess(preprocessed_data)
 
     print('Done')
 
