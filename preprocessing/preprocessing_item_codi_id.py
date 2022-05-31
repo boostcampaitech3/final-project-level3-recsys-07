@@ -14,7 +14,7 @@ if __name__ == "__main__":
     SAVE_CODI_PATH = f'/opt/ml/input/data/asset_{_STORE_OPTION}/{_SORT_OPTION}/codi/'
 
     item = pd.read_excel(SAVE_ITEM_PATH+"item.xlsx", engine='openpyxl')
-    item_codi_id = pd.read_excel(CODI_PATH+"codi_item_id.xlsx", engine='openpyxl')
+    item_codi_id = pd.read_excel(ITEM_PATH+"item_codi_id.xlsx", engine='openpyxl')
 
     # -- tag 데이터 전처리
     item_codi_id = synchronize_with_item(item=item, raw_data=item_codi_id)
