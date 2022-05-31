@@ -79,7 +79,7 @@ def color_preprocess(item_df: pd.DataFrame) -> pd.DataFrame:
         try:
             img = get_img_from_url(img_url)
         except:
-            print (f"Failed to load img {img_url}")
+            print (f"Failed to load img {img_url}", flush=True)
             color_r.append("0")
             color_g.append("0")
             color_b.append("0")
@@ -327,16 +327,16 @@ def get_nearest_color(rgb) -> str:
     color_name = list(color_json.keys())[index]
     return color_name
 
-def get_cube_color(rgb) -> int:
+def get_cube_color(rgb: list) -> int:
     cube_id = (rgb[0] // 16) * 16 * 16 + (rgb[1] // 16) * 16 + (rgb[2] // 16)
     return cube_id
 
     
 def color_class_preprocess(input_df: pd.DataFrame) -> pd.DataFrame:
     color_category = list()
-    for row in input_df.iterrows():
+    for idx, row in input_df.iterrows():
         # print (row[1])
-        r, g, b = row[1]['R'], row[1]['G'], row[1]['B']
+        r, g, b = row['R'], row['G'], row['B']
         # print (r, g, b)
         color = get_cube_color([r, g, b])
         # color = get_nearest_color([r, g, b])
