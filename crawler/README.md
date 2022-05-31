@@ -14,3 +14,15 @@ https://chromedriver.chromium.org/downloads
 pip install selenium
 
 apt install chromium-chromedriver
+
+## 변경사항
+```
+2022.5.31 (by som)
+[crawl_codi]
+1. codi_item_id -> item_codi_id로 name 변경
+2. item_codi_id column: ['id', 'codi_id'] -> ['item_id', 'codi_id']로 변경
+3. item_codi_id save path: raw/codishop/view/codi -> raw/codishop/view/item 으로 변경
+
+[crawl_item]
+1. item column : 'view' -> 'view_count'로 변경
+```
