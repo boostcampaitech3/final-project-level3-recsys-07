@@ -38,4 +38,4 @@ if __name__ == "__main__":
     
     if os.path.exists(os.path.join(SAVE_ITEM_PATH, "item.xlsx")) == False:
         os.makedirs(SAVE_ITEM_PATH)
-    preprocessed_data.to_excel(os.path.join(SAVE_ITEM_PATH, "item.xlsx"), index=False)
+    preprocessed_data.to_csv(os.path.join(SAVE_ITEM_PATH, "item.csv"), index=False)

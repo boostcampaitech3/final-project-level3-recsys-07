@@ -25,4 +25,4 @@ if __name__ == "__main__":
     item_fit = preprocessing_null_fit_data(item, item_fit, item_fit_from_tag)
 
     # -- preprocessed data save
-    item_fit.to_excel(SAVE_ITEM_PATH+"item_fit.xlsx", index=False)
+    item_fit.to_csv(SAVE_ITEM_PATH+"item_fit.csv", index=False)

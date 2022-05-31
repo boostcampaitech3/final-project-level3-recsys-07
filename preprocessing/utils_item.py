@@ -193,14 +193,14 @@ def gender_preprocess(raw_data: pd.DataFrame) -> pd.DataFrame:
 
 def season_preprocess(raw_data: pd.DataFrame) -> pd.DataFrame:
 
-    def make_season_day(season_info):
+    def make_season_year(season_info):
         '''
-        season 정보를 사용하여 season day 추출 및 생성
+        season 정보를 사용하여 season year 추출 및 생성
         : season_info - 하나의 item에 대한 season 정보 (str or nan)
         '''
         if type(season_info) == str:
-            day = re.search('[0-9]{4}', season_info)
-            if day: return int(day.group())
+            year = re.search('[0-9]{4}', season_info)
+            if year: return int(year.group())
         return None
 
     def preprosessing_season_info(season_info):
@@ -215,8 +215,8 @@ def season_preprocess(raw_data: pd.DataFrame) -> pd.DataFrame:
                 return re.search('[A-Z]{3}', season_info).group()
         return None
 
-    # -- season_day feature 생성
-    raw_data['season_day'] = raw_data.season.transform(make_season_day)
+    # -- season_year feature 생성
+    raw_data['season_year'] = raw_data.season.transform(make_season_year)
     # -- season 데이터 전처리
     raw_data['season'] = raw_data.season.transform(preprosessing_season_info)
 
@@ -251,7 +251,7 @@ def cum_sale_preprocess(raw_data: pd.DataFrame) -> pd.DataFrame:
     def preprocessing_cum_sale_info(cum_sale_info):
         '''
         cum_sale_info 데이터를 실수로 변환 및 전처리
-        : cum_sale_info - 하나의 item에 대한 view 정보 (str or nan)
+        : cum_sale_info - 하나의 item에 대한 cum_sale 정보 (str or nan)
         '''
         if type(cum_sale_info) == str:
             cum_sale_info = cum_sale_info.replace('개 이상', '').strip()

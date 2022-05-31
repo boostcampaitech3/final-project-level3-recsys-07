@@ -20,4 +20,4 @@ if __name__ == "__main__":
     item_tag = synchronize_with_item(item=item, raw_data=item_tag)
 
     # -- preprocessed data save
-    item_tag.to_excel(SAVE_ITEM_PATH+"item_tag.xlsx", index=False)
+    item_tag.to_csv(SAVE_ITEM_PATH+"item_tag.csv", index=False)

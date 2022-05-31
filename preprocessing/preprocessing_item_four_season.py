@@ -23,4 +23,4 @@ if __name__ == "__main__":
     item_four_season = preprocessing_null_season_data(item, item_four_season)
 
     # -- preprocessed data save
-    item_four_season.to_excel(SAVE_ITEM_PATH+"item_four_season.xlsx", index=False)
+    item_four_season.to_csv(SAVE_ITEM_PATH+"item_four_season.csv", index=False)
