@@ -1,3 +1,4 @@
+from email.policy import default
 import openpyxl
 import colorgram
 import requests
@@ -5,12 +6,14 @@ import warnings
 import re
 
 import pandas as pd
+from itertools import combinations
+from collections import defaultdict
 
 from rembg import remove
 from PIL import Image
 from io import BytesIO
 from tqdm import tqdm
-from typing import List
+from typing import List, Tuple
 import json
 
 warnings.filterwarnings(action='ignore')
@@ -356,4 +359,23 @@ def mid_class_preprocess(item_df: pd.DataFrame) -> pd.DataFrame :
             item_df["mid_class"].iloc[i] = "패션스니커즈화"
         elif item_df["mid_class"].iloc[i] == "농구화" :
             item_df["mid_class"].iloc[i] = "스포츠 신발"
+    return item_df
+
+def cluster_preprocess(item_df : pd.DataFrame) -> pd.DataFrame :
+    unique_mid_class = item_df["mid_class"].unique()
+    unique_color_class = item_df["color_id"].unique()
+
+    item2class = defaultdict(Tuple)
+    unique_id = 0
+    for mid_class in unique_mid_class:
+        for color_class in unique_color_class:
+            item2class[(mid_class, color_class)] = unique_id
+            unique_id += 1
+
+    uid_list = list()
+    for mid_class, color_class in zip(item_df['mid_class'], item_df['color_id']):
+        uid_list.append(item2class[(mid_class, color_class)])
+
+    item_df['cluster_id'] = uid_list
+
     return item_df
