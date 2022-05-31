@@ -17,7 +17,7 @@ def get_nearest_color(rgb) -> str:
     return color_name
 
 def get_cube_color(rgb) -> int:
-    cube_id = (rgb[0] // 64) * 16 + (rgb[1] // 64) * 4 + (rgb[2] // 64)
+    cube_id = (rgb[0] // 16) * 16 * 16 + (rgb[1] // 16) * 16 + (rgb[2] // 16)
     return cube_id
     
 def color_class_preprocess(input_df: pd.DataFrame) -> pd.DataFrame:
