@@ -1,12 +1,13 @@
 import numpy as np
+import openpyxl
 import pandas as pd
 
-interaction_PATH = "/opt/ml/input/data/itemInteractionMatrix.csv"
-item_PATH = "/opt/ml/workspace/crawler/item_crawler_ver2/total_asset/item.xlsx"
+interaction_PATH = "/opt/ml/input/data/asset_codishop/view/item/itemInteractionMatrix_withColor.csv"
+item_PATH = "/opt/ml/input/data/asset_codishop/view/item/item.xlsx"
 
 interaction_matrix = pd.read_csv(interaction_PATH)
-item_feature = pd.read_excel(item_PATH)
-item_feature = item_feature[["id","name","url", "likes", "big_class","mid_class"]]
+item_feature = pd.read_excel(item_PATH, engine="openpyxl")
+item_feature = item_feature[["id","name","url", "likes", "big_class","mid_class", "cluster_id"]]
 item_id_list = list(interaction_matrix.columns[1:])
 
 def sort_rec_item(item_list : list) -> list :
@@ -56,9 +57,9 @@ def data_preprocessing(item_feature : pd.DataFrame) -> None :
     item_feature["likes"] = item_feature["likes"].fillna(0)
 
 def get_item_reccomendation(item_id)-> None :
-    data_preprocessing(item_feature=item_feature)
-    
-    data = interaction_matrix[interaction_matrix["id"]==item_id]
+    #data_preprocessing(item_feature=item_feature)
+    cluster_id = item_feature[item_feature["id" == item_id]]["cluster_id"]
+    data = interaction_matrix[interaction_matrix["id"]==cluster_id]
     data = data.to_numpy()[0][1:] 
 
     index_list = list()
@@ -66,7 +67,7 @@ def get_item_reccomendation(item_id)-> None :
         if data[i] != 0 :
             index_list.append(i)
 
-    rec_result = {"상의" : [], "하의" : [], "아우터" : [], "신발" : [], "액세서리" : [], "기타" : []}
+    rec_result = {"상의" : [], "하의" : [], "아우터" : [], "신발" : [], "가방" : [], "모자" : []}
     for index in index_list :
         rec_item_id = item_id_list[index]
         rec_item_info = item_feature[item_feature["id"]==int(rec_item_id)]
