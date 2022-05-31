@@ -5,8 +5,6 @@ app = FastAPI()
 
 # TODO : DB 연결
 
-
-
 # TEST
 @app.get("/")
 def server_test():
