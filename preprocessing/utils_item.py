@@ -108,7 +108,7 @@ def rating_preprocess(item_df: pd.DataFrame) -> pd.DataFrame:
     """
     결측치가 있는 평점에 대해서는 나머지 평점의 평균으로 계산한다.
     """
-    avg_rating = item_df[item_df['rating'].notnull()]['rating'].mean()
+    avg_rating = round(item_df[item_df['rating'].notnull()]['rating'].mean(), 2)
     item_df['rating'] = item_df['rating'].fillna(avg_rating)
     return item_df
 
