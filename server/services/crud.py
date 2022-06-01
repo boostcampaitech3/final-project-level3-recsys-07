@@ -5,16 +5,28 @@ from easydict import EasyDict
 with open('./server/config.yaml') as f:
     config=yaml.load(f, Loader=yaml.FullLoader)
     config=EasyDict(config)
-    print(config)
-    item_db = pymysql.connect(
+    # print(config)
+    db = pymysql.connect(
         user=config.mysql.user, 
         passwd=config.mysql.password, 
         host=config.mysql.host,  # GCP instance
         db=config.mysql.db, # 나중에 파일로 가져오기
         charset='utf8'
     )
-    cursor = item_db.cursor(pymysql.cursors.DictCursor)
-    print(cursor)
-    sql='SELECT * FROM "item" where "id"=25868'
-    # cursor.execute(sql, item_db) # error남
+
+def get_images_url(item_id:str)->str:
+    sql=f"SELECT img_url FROM item where id = {item_id}"
+    cursor = db.cursor(pymysql.cursors.DictCursor)
+    cursor.execute(sql)
+    result = cursor.fetchall()
     cursor.close()
+    return result[0]['img_url']
+
+def get_clothes_name(item_id:str)->str:
+    sql=f"SELECT name FROM item where id = {item_id}"
+    cursor = db.cursor(pymysql.cursors.DictCursor)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    cursor.close()
+    print(result)
+    return result[0]['name']

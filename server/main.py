@@ -13,14 +13,14 @@ def server_test():
 
 # TODO : 아이템의 이미지 url 가져오기
 
-@app.post('/item/images')
-def read_images_url():
-    pass
+@app.get('/item/images/{item_id}')
+def read_images_url(item_id : str):
+    return get_images_url(item_id)
 
 # TODO : 아이템의 옷 이름 가져오기
-@app.post('/item/names')
-def read_clothes_name():
-    pass
+@app.get('/item/names/{item_id}')
+def read_clothes_name(item_id:str):
+    return get_clothes_name(item_id)
 
 # TODO : 원하는 아이템을 고른 후 적절한 코디를 추천
 @app.get('/codi/{codi_Id}')
