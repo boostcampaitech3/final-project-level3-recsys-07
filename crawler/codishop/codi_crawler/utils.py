@@ -77,7 +77,6 @@ def make_crawl_xlsx(driver: webdriver.Chrome, sheets: Tuple[Worksheet, Worksheet
         
         # 코디의 경로 받아오고 코디 상세정보 페이지 진입하기
         driver.get(codi_path)
-        driver.implicitly_wait(1.5)
         
         # ⭐ 5. 코디 태그 받아오기 (다른 sheet에 저장)
         coordi_tags = driver.find_elements(by=By.CSS_SELECTOR, value=".ui-tag-list__item")
@@ -129,7 +128,8 @@ def do_crawling(
     chrome_options.add_argument(argument='--disable-dev-shm-usage')
     
     driver = webdriver.Chrome(executable_path='chromedriver', options=chrome_options)
-    
+    driver.implicitly_wait(1.5)
+
     if "sort" in COORDI_LIST_PATH:
         print ("codi sort by 'popularity'")
     else:
@@ -138,7 +138,6 @@ def do_crawling(
     for page_idx in range(1, num_crawl_pages + 1):
         print (f"Crawling {page_idx} pages..\nurl={COORDI_LIST_PATH + str(page_idx)}")
         driver.get(COORDI_LIST_PATH + str(page_idx))
-        driver.implicitly_wait(1.5)
         
         # "남성"으로 성별 고정
         button_male = driver.find_element(By.CSS_SELECTOR, "button.global-filter__button--mensinsa")

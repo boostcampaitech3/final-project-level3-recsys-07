@@ -8,7 +8,7 @@ from utils import *
 
 #-----------------------------------------
 # 🌟 꼭 설정해야 하는 파라미터!
-_VERBOSE = True
+_VERBOSE = False
 
 _SORT_OPTION = 'view'
 # _SORT_OPTION = 'recent'
@@ -43,8 +43,8 @@ chrome_options.add_argument(argument='--disable-dev-shm-usage')
 
 # 🚀 크롤러 지정
 driver = webdriver.Chrome('chromedriver', options=chrome_options)
+driver.implicitly_wait(3) #페이지를 로딩하는 시간동안 대기
 driver.get(URL_PATH)
-driver.implicitly_wait(1.5) #페이지를 로딩하는 시간동안 대기
 
 # 🚀 크롤링 완료된 정보를 저장할 excel sheet_codi 지정
 workbooks = make_workbooks()
@@ -56,7 +56,7 @@ button.click()
 
 # 🚀 코디 정보를 가져올 url 받아오기
 codi_info = pd.read_excel('/opt/ml/input/data/' + _STORE_OPTION + '/' + _SORT_OPTION + '/codi/codi.xlsx', engine='openpyxl')
-codi_info = codi_info.iloc[START_CODI_NUM : END_CODI_NUM]
+# codi_info = codi_info.iloc[START_CODI_NUM : END_CODI_NUM]
 codi_urls = codi_info["url"].to_list()
 codi_ids = codi_info["id"].to_list()
 
@@ -70,9 +70,8 @@ for codi_id, codi_url in zip(codi_ids, codi_urls) :
     # 코디에 하나씩 접근
     try :
         driver.get(codi_url)
-        driver.implicitly_wait(3)
     except :
-        print("이 에러가 발생하면 다음 코디부터 따로 크롤링 해주시길 바랍니다!")
+        print("이 에러가 발생하면 다음 코디부터 따로 크롤링 해주시길 바랍니다!", flush=True)
         continue
     
     # 코디 안에 있는 아이템에 대한 element 받아오기
@@ -95,8 +94,8 @@ for codi_id, codi_url in zip(codi_ids, codi_urls) :
     for item_url in item_urls:
         try : 
             driver.get(item_url)
-            driver.implicitly_wait(0.5) #페이지를 로딩하는 시간동안 대기
         except :
+            print (f"Failed to load item (item_url = {item_url})", flush=True)
             continue
         
         print(f"Crawling item : {item_url}")
