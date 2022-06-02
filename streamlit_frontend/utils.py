@@ -32,7 +32,7 @@ def get_clothes_name(item_id: int) -> str:
     return name
 
 def get_codi(select_item:int,pick_item:int):
-    codi_data=CODI_ITEM_DATA.groupby('id')['item_id'].apply(list)
+    codi_data=CODI_ITEM_DATA.groupby('codi_id')['id'].apply(list)
 
     codi_ids=list()
     for i in range(len(codi_data)):
