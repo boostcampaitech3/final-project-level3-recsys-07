@@ -13,7 +13,7 @@ ITEM_DATA = pd.read_excel(ITEM_PATH,engine='openpyxl')
 ITEM_TAG_PATH = '/opt/ml/input/data/asset_codishop/view/item/item_tag.xlsx'
 ITEM_TAG_DATA = pd.read_excel(ITEM_TAG_PATH, engine='openpyxl')
 
-CODI_ITEM_PATH= "/opt/ml/input/data/raw_codishop/view/codi/codi_item_id.xlsx"
+CODI_ITEM_PATH= "/opt/ml/input/data/raw_codishop/view/item/item_codi_id.xlsx"
 CODI_ITEM_DATA = pd.read_excel(CODI_ITEM_PATH, engine='openpyxl')
 
 CODI_PATH='/opt/ml/input/data/raw_codishop/view/codi/codi.xlsx'
