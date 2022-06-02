@@ -66,7 +66,7 @@ st.set_page_config(layout='wide')
 
 (_, l,r, _) = st.columns([1, 4,9, 1])
 with l:
-    st.title('YUSINSA') 
+    st.title("What's In Your Closet?") 
     st.button('🏠',on_click=home, args=())
 with r:
     st.image('./main_image-removebg-preview.png')
@@ -185,5 +185,4 @@ if st.session_state['picked_end']:
 
         # st.write('결과 코디 아이디',result_codi_ids)
 
-        st.image(codi_image_list, use_column_width=False, caption=["some generic text"] * len(codi_image_list),width=125)#codi image url을 못찾아서 지금은 상품 이미지임
-
+        st.image(codi_image_list, use_column_width=False,width=300)#codi image url을 못찾아서 지금은 상품 이미지임
