@@ -177,7 +177,7 @@ if st.session_state['picked_end']:
     with st.container():
         st.markdown('### 추천코디')
         # st.write(st.session_state['picked_item'])
-        st.write("코디리스트")
+        # st.write("코디리스트")
         codi_ids=get_codi(st.session_state['clicked_item'],st.session_state['picked_item'])
         codi_dict=get_codi_images_url(codi_ids)
         codi_image_list=list(codi_dict.values())
