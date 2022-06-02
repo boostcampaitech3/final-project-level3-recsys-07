@@ -241,7 +241,7 @@ def view_preprocess(raw_data: pd.DataFrame) -> pd.DataFrame:
         return view_info
 
     # -- view 데이터 전처리
-    raw_data['view'] = raw_data.view.transform(preprocessing_view_info)
+    raw_data['view_count'] = raw_data['view_count'].transform(preprocessing_view_info)
 
     return raw_data
 
