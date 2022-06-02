@@ -4,8 +4,6 @@ from .services.crud import *
 
 app = FastAPI()
 
-# TODO : DB 연결
-
 # TEST
 @app.get("/")
 def server_test():
@@ -32,15 +30,15 @@ def read_codi():
 def read_codi_image_url():
     pass
 
-# TODO : key word 검색
+#key word 검색
 @app.get('/item/{key_word}')
-def read_item_recommendation():
-    pass
+def read_item_from_tag(key_word : str):
+    return get_item_from_tag(key_word)
 
-# TODO : 태그 리스트 가져오기
+# 태그 리스트 가져오기
 @app.get("/tags")
 def read_item_tags():
-    pass
+    return get_item_tags()
 
 # TODO : 필요한 데이터셋 가져오기
 
