@@ -233,21 +233,22 @@ def get_buy_gender_list(driver : webdriver.Chrome) -> Optional[str]:
 
     return buy_gender_list
 
-def get_rel_codi_url_list(driver: webdriver.Chrome, item_id, codi_urls) -> Optional[str]:
-    url_list = driver.find_elements(By.CSS_SELECTOR, value='div.tab.coordi > ul.style_list > li.list_item > a.img-block')
+
+def get_rel_codi_url_list(driver: webdriver.Chrome, item_id: str, codi_urls: List[str]) -> Optional[str]:
+    relative_codi_urls = driver.find_elements(By.CSS_SELECTOR, value='div.tab.coordi > ul.style_list > li.list_item > a.img-block')
     
-    for i in range(len(url_list)):
-        url_list[i] = url_list[i].get_attribute('href')
+    for i in range(len(relative_codi_urls)):
+        relative_codi_urls[i] = relative_codi_urls[i].get_attribute('href')
 
     rel_codi_url_list = list()
     codi_urls = list(map(str, codi_urls))
     
-    for rel_codi_url in url_list:
+    for rel_codi_url in relative_codi_urls:
 
         ## 이미 크롤링 된 적 있는 코디인지 확인
         rel_codi_id = rel_codi_url.split("/")[-1]
         if str(rel_codi_url) in codi_urls:
-            print (f"[get_rel_codi_url] 아이템 #{item_id} 와 연결된 코디 #{rel_codi_id} 는 이미 처리된 코디입니다.")
+            print (f"[INFO] 아이템 #{item_id} 와 연결된 코디(#{rel_codi_id}) 는 이미 크롤링 완료된 코디입니다.")
             continue
 
         ## 해당 코디에 진짜 동일한 아이템이 존재하는지 확인
@@ -264,10 +265,10 @@ def get_rel_codi_url_list(driver: webdriver.Chrome, item_id, codi_urls) -> Optio
     
         ## 진짜로 동일한 아이템이 존재하는 경우
         if contains_item == True:
-            print (f"[get_rel_codi_url] 현재 아이템 #{item_id}와 연결된 코디 #{rel_codi_id} 에 동일한 아이템이 존재합니다. 연결 코디로 저장합니다.")
+            print (f"[INFO] 현재 아이템 #{item_id}와 연결된 코디 #{rel_codi_id} 에 동일한 아이템이 존재합니다. 이 코디를 관련 코디로 저장합니다.")
             rel_codi_url_list.append(rel_codi_url)
         else:
-            print (f"[get_rel_codi_url] 현재 아이템 #{item_id}와 연결된 코디 #{rel_codi_id} 에는 동일한 아이템이 존재하지 않습니다. 색상이 다른데 연결된 코디의 경우 크롤링을 따로 진행하지 않습니다.")
+            print (f"[INFO] 현재 아이템 #{item_id}와 연결된 코디 #{rel_codi_id} 에는 동일한 아이템이 존재하지 않습니다. 색상이 다른데 연결된 코디의 경우 크롤링을 따로 진행하지 않습니다.")
 
     return rel_codi_url_list
         
@@ -280,6 +281,13 @@ def make_workbooks() -> Tuple[Workbook, ...]:
         workbook = openpyxl.Workbook()
         workbooks.append(workbook)
     
+    workbooks[0] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item.xlsx")
+    workbooks[1] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_tag.xlsx")
+    workbooks[2] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_four_season.xlsx")
+    workbooks[3] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_fit.xlsx")
+    workbooks[4] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_buy_age.xlsx")
+    workbooks[5] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_buy_gender.xlsx")
+
     return tuple(workbooks)
     
 
@@ -318,7 +326,7 @@ def save_workbooks(workbooks: Tuple[Workbook, ...], sort_opt: str, store_opt: st
     workbooks[5].save(os.path.join(path, "item_buy_gender.xlsx"))
     workbooks[6].save(os.path.join(path, "item_rel_codi_url.xlsx"))
 
-    print ("Saving Done..")
+    print ("[INFO] 모든 workbooks (xlsx) 파일들을 저장하는데 성공하였습니다.")
 
 
 # 🚀 각 알맞는 sheet에 크롤링된 정보들 추가

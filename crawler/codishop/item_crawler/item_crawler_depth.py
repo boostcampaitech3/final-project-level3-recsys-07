@@ -46,22 +46,22 @@ else:
 already_worksheet = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_codi_id.xlsx").active
 already_codi_item_list = list()
 for item_id, codi_id in zip(already_worksheet['A'], already_worksheet['B']):
-    already_codi_item_list.append((item_id, codi_id))
+    already_codi_item_list.append((item_id.value, codi_id.value))
 already_codi_item_list = already_codi_item_list[1:]
-print (f"현재 보유한 연결정보 : {len(already_codi_item_list)} 개")
 
+print (f"현재 보유한 연결정보 : {len(already_codi_item_list)} 개")
 
 already_crawled_codi = list()
 already_crawled_item = list()
 
+# 기존에 어떤 코디들을 크롤링 했었는지
 with open("/opt/ml/input/data/already/codi.pickle", "rb") as f:
     already_crawled_codi = pickle.load(f)
 
+# 기존에 어떤 아이템들을 크롤링 했었는지
 with open("/opt/ml/input/data/already/item.pickle", "rb") as f:
-    try:
-        already_crawled_item = pickle.load(f)
-    except:
-        pass
+    try: already_crawled_item = pickle.load(f)
+    except: pass
     
 # 🚀 크롤러 옵션 설정
 chrome_options = webdriver.ChromeOptions()
@@ -84,13 +84,12 @@ button.click()
 
 # 🚀 코디 정보를 가져올 url 받아오기
 codi_info = pd.read_excel('/opt/ml/input/data/raw_codishop/view/item/item_rel_codi_url.xlsx', engine='openpyxl')
-# codi_info = codi_info.iloc[START_CODI_NUM : END_CODI_NUM]
 
 codi_urls = codi_info["rel_codi_url"].to_list()
 
 # 🚀 각 코디에 대한 크롤링 진행
-cnt = 0
-for codi_url in codi_urls :
+cnt = 1
+for codi_url in codi_urls:
     print(f"\nCrawling for CODI URL : {codi_url}")
     print(f"{cnt} out of {len(codi_urls)} codi crawled...")
 
@@ -100,7 +99,7 @@ for codi_url in codi_urls :
     try :
         driver.get(codi_url)
     except :
-        print("이 에러가 발생하면 다음 코디부터 따로 크롤링 해주시길 바랍니다!", flush=True)
+        print("[ERROR] 현재 코디의 정보를 불러오는데 오류가 발생했습니다.", flush=True)
         continue
     
     # 코디 안에 있는 아이템에 대한 element 받아오기
@@ -108,12 +107,14 @@ for codi_url in codi_urls :
     item_urls = []
 
     if len(item_list) <= 1:
-        print ("현재 코디에는 1개 미만의 아이템이 존재하기 때문에 크롤링을 진행하지 않습니다.", flush=True)
-
-    if codi_url in already_crawled_codi:
-        print ("[item_crawler_depth.py] 이 코디는 이미 크롤링 된적이 있습니다.", flush=True)
+        print ("[WARNING] 현재 코디에는 1개 미만의 아이템이 존재하기 때문에 크롤링을 진행하지 않습니다.", flush=True)
         continue
 
+    if codi_url in already_crawled_codi:
+        print ("[WARNING] 이 코디는 이미 크롤링 된적이 있습니다.", flush=True)
+        continue
+
+    # 현재 이 코디를 크롤링 할 것이기 때문에 크롤링 리스트에 삽입
     already_crawled_codi.append(str(codi_url))
     
     # 각 아이템들의 url 추출
@@ -126,20 +127,20 @@ for codi_url in codi_urls :
         try : 
             driver.get(item_url)
         except :
-            print (f"Failed to load item (item_url = {item_url})", flush=True)
+            print (f"[ERROR] 현재 아이템을 불러오는데 실패하였습니다. (item url: {item_url})", flush=True)
             continue
         
         item_id = get_item_id(item_url)
         if (item_id, codi_id) in already_codi_item_list:
-            print (f"\n[item_crawler_depth.py] 코디 #{codi_id} ----- 아이템 #{item_id} 의 연결정보가 이미 있습니다.")
+            print (f"\n[INFO] 코디(#{codi_id}) ----- 아이템(#{item_id}) 의 연결정보가 이미 있습니다.")
         else:
-            print (f"\n[item_crawler_depth.py] 코디 #{codi_id} --X-- 아이템 #{item_id} 의 연결정보가 없습니다.")
+            print (f"\n[INFO] 코디(#{codi_id}) ----- 아이템(#{item_id}) 의 연결정보가 없습니다.")
             already_codi_item_list.append((item_id, codi_id))
 
 
-        print(f"아이템 #{item_id} 에 대한 크롤링을 진행합니다!! 웹 URL : {item_url}")
+        print(f"[INFO] 아이템 #{item_id} 에 대한 크롤링을 시작합니다. 웹 URL : {item_url}")
         if item_url in already_crawled_item:
-            print (f"현재 아이템 #{item_id} 는 이미 크롤링이 완료된 상태이므로 건너뜁니다.")
+            print (f"[WARNING] 현재 아이템 #{item_id} 는 이미 크롤링이 완료된 상태이므로 건너뜁니다.")
             continue
 
         already_crawled_item.append(item_url)
@@ -197,9 +198,10 @@ with open("/opt/ml/input/data/already/codi.pickle", "wb") as f:
 with open("/opt/ml/input/data/already/item.pickle", "wb") as f:
     pickle.dump(already_crawled_item, f)
 
-already_worksheet = openpyxl.Workbook().active
+already_workbook = openpyxl.Workbook()
+already_worksheet = already_workbook.active
 already_worksheet.append(['id', 'codi_id'])
 for (item_id, codi_id) in already_codi_item_list:
     already_worksheet.append([item_id, codi_id])
-already_worksheet.save('/opt/ml/input/data/raw_codishop/view/item/item_codi_id.xlsx')
+already_workbook.save('/opt/ml/input/data/raw_codishop/view/item/item_codi_id.xlsx')
 

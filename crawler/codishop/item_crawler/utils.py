@@ -236,9 +236,12 @@ def get_buy_gender_list(driver : webdriver.Chrome) -> Optional[str]:
 def get_rel_codi_url_list(driver: webdriver.Chrome, item_id, codi_id) -> Optional[str]:
     url_list = driver.find_elements(By.CSS_SELECTOR, value='div.tab.coordi > ul.style_list > li.list_item > a.img-block')
     
+    # 현재 아이템과 연결된 다른 코디들의 url을 가져오기
+    # 같은 제품이지만 다른 색상들도 모두 포함
     for i in range(len(url_list)):
         url_list[i] = url_list[i].get_attribute('href')
 
+    # 하나씩 코디 URL을 돌면서 확인
     rel_codi_url_list = list()
     for rel_codi_url in url_list:
 

@@ -68,6 +68,12 @@ def get_codi_info(driver: webdriver.Chrome) -> Tuple[list, list, list]:
         
     return codi_id_list, codi_style_list, codi_url_list, pop_list
 
+"""
+1. 현재 코디에 어떤 아이템들이 존재하는지 확인
+2. 코디 정보 수집
+3. 어떤 코디들을 크롤링 했는지 저장
+"""
+
 
 # 🚀 코디 링크에 하나씩 접속하면서, 연관된 상품 ID, 코디태그 받아오기
 def make_crawl_xlsx(driver: webdriver.Chrome, sheets: Tuple[Worksheet, Worksheet, Worksheet]):
