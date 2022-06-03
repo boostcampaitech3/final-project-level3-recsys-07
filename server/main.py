@@ -1,8 +1,15 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 from .services.crud import *
+from pydantic import BaseModel
+from typing import Optional,Dict,List
 
 app = FastAPI()
+
+class Item(BaseModel):
+    item_id: list
+    image_url: Optional[list]
+    item_name: Optional[list]
 
 # TEST
 @app.get("/")
@@ -11,14 +18,18 @@ def server_test():
 
 # TODO : 아이템의 이미지 url 가져오기
 
-@app.get('/item/images/{item_id}')
-def read_images_url(item_id : str):
-    return get_images_url(item_id)
+@app.post('/items/images/')
+async def read_images_url(item: Item)->dict:
+    item_dict=item.dict()
+    print('item_dict["item_id"]',item_dict['item_id'])
+    # get_images_url(item_dict['item_id'])
+    # print(s)
+    return {'d':['25868','16']}
 
 # TODO : 아이템의 옷 이름 가져오기
-@app.get('/item/names/{item_id}')
-def read_clothes_name(item_id:str):
-    return get_clothes_name(item_id)
+@app.post('/items/names/', response_model=Item)
+async def read_clothes_name(item: Item):
+    return get_clothes_name(item)
 
 # TODO : 원하는 아이템을 고른 후 적절한 코디를 추천
 @app.get('/codi/{codi_Id}')
