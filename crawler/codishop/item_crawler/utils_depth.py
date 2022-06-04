@@ -276,17 +276,14 @@ def get_rel_codi_url_list(driver: webdriver.Chrome, item_id: str, codi_urls: Lis
 # 🚀 크롤링 결과를 저장할 excel 파일 생성
 def make_workbooks() -> Tuple[Workbook, ...]:
     workbooks = list()
-
-    for _ in range(7):
-        workbook = openpyxl.Workbook()
-        workbooks.append(workbook)
     
-    workbooks[0] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item.xlsx")
-    workbooks[1] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_tag.xlsx")
-    workbooks[2] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_four_season.xlsx")
-    workbooks[3] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_fit.xlsx")
-    workbooks[4] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_buy_age.xlsx")
-    workbooks[5] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_buy_gender.xlsx")
+    workbooks.append(openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item.xlsx"))
+    workbooks.append(openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_tag.xlsx"))
+    workbooks.append(openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_four_season.xlsx"))
+    workbooks.append(openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_fit.xlsx"))
+    workbooks.append(openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_buy_age.xlsx"))
+    workbooks.append(openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_buy_gender.xlsx"))
+    workbooks.append(openpyxl.Workbook())
 
     return tuple(workbooks)
     
@@ -299,12 +296,6 @@ def make_worksheets(workbooks: Tuple[Workbook, ...]) -> Tuple[Worksheet, ...]:
         worksheets.append(worksheet)
 
     # rel_codi_url 을 제외하고 나머지 xlsx 불러오기
-    worksheets[0] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item.xlsx").active
-    worksheets[1] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_tag.xlsx").active
-    worksheets[2] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_four_season.xlsx").active
-    worksheets[3] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_fit.xlsx").active
-    worksheets[4] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_buy_age.xlsx").active
-    worksheets[5] = openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_buy_gender.xlsx").active
     worksheets[6].append(["id", "rel_codi_url"])
 
     return tuple(worksheets)
