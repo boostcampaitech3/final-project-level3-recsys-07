@@ -120,31 +120,26 @@ for codi_id, codi_url in zip(codi_ids, codi_urls) :
         item_info.id            = get_item_id(item_url)
         item_info.name          = get_item_name(driver)
 
-        category      = driver.find_elements(By.CSS_SELECTOR, "p.item_categories > a")
+        category                = driver.find_elements(By.CSS_SELECTOR, "p.item_categories > a")
         item_info.big_class     = get_big_class(category)
         item_info.mid_class     = get_mid_class(category)
 
-        product_info  = driver.find_elements(By.CSS_SELECTOR, "ul.product_article > li > p.product_article_contents > strong")
-        item_info.brand         = get_brand(product_info)
-        item_info.serial_number = get_serial_number(product_info)
-        item_info.season        = get_season(driver)
-        item_info.gender        = get_gender(driver)
-        item_info.view_count    = get_view(driver)
-        item_info.cum_sale      = get_cum_sale(driver)
-        item_info.likes         = get_likes(driver)
-        item_info.rating        = get_rating(driver)  
-        item_info.price         = get_price(driver)
-        item_info.img_url       = get_img_url(driver)
-        
-        #-- 주의: 크롤링의 일관성이 높지 않음
-        try: menu = driver.find_elements(By.CSS_SELECTOR, "div#goods_opt_area > select")
-        except: menu = None
-
-        item_info.tags_list       = get_tags_list(driver)
-        item_info.buy_age_list    = get_buy_age_list(driver)
-        item_info.buy_gender_list = get_buy_gender_list(driver)
-        item_info.four_season_list, item_info.fit_list = get_fs_and_fit(driver)    
+        product_info                = driver.find_elements(By.CSS_SELECTOR, "ul.product_article > li > p.product_article_contents > strong")
+        item_info.brand             = get_brand(product_info)
+        item_info.serial_number     = get_serial_number(product_info)
+        item_info.season            = get_season(driver)
+        item_info.gender            = get_gender(driver)
+        item_info.view_count        = get_view(driver)
+        item_info.cum_sale          = get_cum_sale(driver)
+        item_info.likes             = get_likes(driver)
+        item_info.rating            = get_rating(driver)  
+        item_info.price             = get_price(driver)
+        item_info.img_url           = get_img_url(driver)
+        item_info.tags_list         = get_tags_list(driver)
+        item_info.buy_age_list      = get_buy_age_list(driver)
+        item_info.buy_gender_list   = get_buy_gender_list(driver)
         item_info.rel_codi_url_list = get_rel_codi_url_list(driver, item_info.id, crawled_codi_list)  
+        item_info.four_season_list, item_info.fit_list = get_fs_and_fit(driver)    
         
         # 위에서 크롤링한 정보를 sheet에 append
         save_to_sheets(sheets, item_info)
