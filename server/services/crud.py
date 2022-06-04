@@ -1,17 +1,11 @@
 import pymysql
 import yaml
 from easydict import EasyDict
-from typing import List
-# from ..main import main
+from typing import Dict, List, Optional
+
 from pydantic import BaseModel
-from typing import Optional
 
-class Item(BaseModel):
-    item_id: list
-    image_url: Optional[list]
-    item_name: Optional[list]
 
-#여기에서 만들어둔 것을 main에서 사용
 with open('./server/config.yaml') as f:
     config=yaml.load(f, Loader=yaml.FullLoader)
     config=EasyDict(config)
@@ -24,22 +18,43 @@ with open('./server/config.yaml') as f:
         charset='utf8'
     )
 
+
+def get_item_info(item_ids:List)->dict:
+    '''
+        item_ids : List[int]
+        -> return id, name, img_url
+    '''
+    item_ids = tuple(item_ids)
+    sql = f"SELECT id, name, img_url  FROM item WHERE id IN {item_ids}"
+    cursor = db.cursor()
+    cursor.execute(sql)
+    
+    result = cursor.fetchall()
+    
+    out = {"item_id" : [], "item_name" : [], 'img_url' : []}
+    cursor.close()
+    
+    #tuple to dict
+    for item in result:
+        out['item_id'].append(item[0])
+        out['item_name'].append(item[1])
+        out['img_url'].append(item[2])
+    
+    return out 
+
 def get_images_url(item_id:List)->List:
-    # item_id=tuple(item.item_id)
-    # print('item_id',item_id)
     sql=f"SELECT img_url FROM item WHERE id IN {item_id}"
     cursor = db.cursor(pymysql.cursors.DictCursor)
     cursor.execute(sql)
-    # print('cursor')
+    
     result = cursor.fetchall()
-    # print()
-    # item.image_url=result['img_url']
-    print('result for images url',result)
+
+    # print('result for images url',result)
     cursor.close()
-    # print('item',item)
     return result['img_url']
 
-def get_clothes_name(item:Item)->Item:
+def get_clothes_name(item):
+
     item_id=tuple(item.item_id)
     sql=f"SELECT name FROM item where id IN {item_id}"
     cursor = db.cursor(pymysql.cursors.DictCursor)
