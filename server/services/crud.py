@@ -1,10 +1,9 @@
+from sqlite3 import Cursor
 import pymysql
 import yaml
 from easydict import EasyDict
-from typing import Dict, List, Optional
-
-from pydantic import BaseModel
-
+from typing import Dict, List
+import numpy as np
 
 with open('./server/config.yaml') as f:
     config=yaml.load(f, Loader=yaml.FullLoader)
@@ -22,7 +21,7 @@ with open('./server/config.yaml') as f:
 def get_item_info(item_ids:List)->dict:
     '''
         item_ids : List[int]
-        -> return id, name, img_url
+        -> dict {return id, name, img_url}
     '''
     item_ids = tuple(item_ids)
     sql = f"SELECT id, name, img_url  FROM item WHERE id IN {item_ids}"
@@ -43,15 +42,57 @@ def get_item_info(item_ids:List)->dict:
     return out 
 
 def get_images_url(item_id:List)->List:
-    sql=f"SELECT img_url FROM item WHERE id IN {item_id}"
+    sql= f"SELECT id, img_url FROM item WHERE id IN {item_id}"
     cursor = db.cursor(pymysql.cursors.DictCursor)
     cursor.execute(sql)
     
     result = cursor.fetchall()
 
-    # print('result for images url',result)
     cursor.close()
     return result['img_url']
+
+def get_codi(select_item:int, pick_item:int)->List:
+    ids = (select_item,pick_item)
+    sql= f"""
+            SELECT id, codi_id 
+            FROM item_codi_id 
+            WHERE id IN {ids}
+        """
+    cursor = db.cursor()
+    cursor.execute(sql)
+
+    result = cursor.fetchall() # id, codi_id
+    
+    result = np.array(result) #[[id, codi_id]]
+    # codi_id 등장 횟수 check
+    unique, counts = np.unique(result[:,1], return_counts=True)
+
+    result = np.asarray((unique, counts)).T
+
+    # 2번 이상 등장한 codi_id check
+    idx = np.where(result[:,1] >= 2)
+
+    codi_ids = result[idx][:, 0]
+    return codi_ids
+
+def get_codi_images_url(codi_ids:List)->Dict:
+    
+    codi_ids=tuple(codi_ids)
+    sql= f"SELECT id, img_url FROM codi WHERE id IN {codi_ids}"
+    cursor = db.cursor()
+    cursor.execute(sql)
+    
+    result = cursor.fetchall()
+    
+    out = {"codi_id" : [], 'img_url' : []}
+    cursor.close()
+    
+    #tuple to dict
+    for item in result:
+        out['codi_id'].append(item[0])
+        out['img_url'].append(item[1])
+    
+    return out
 
 def get_clothes_name(item):
 
@@ -62,7 +103,7 @@ def get_clothes_name(item):
     result = cursor.fetchall()
     item.image_url=result['name']
     cursor.close()
-    print('item',item)
+    
     return item
 
 
