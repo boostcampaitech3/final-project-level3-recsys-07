@@ -8,12 +8,9 @@ from rule_based import get_item_recommendation
 
 from PIL import Image
 
-def search(tag, tag_df):
-    if tag != []:
-        # print(tag_df)
-        # print(tag)
-        temp=tag_df[tag_df['tag']==tag[0]] # 그 키워드를 가진 아이템
-        st.session_state['result'] = temp.iloc[:,0].tolist()  #0:id column 
+def search(tag_list):
+    if tag_list != []:
+        st.session_state['result'] = get_tag_id(tag_list)
 
 def input_status_change():
     st.session_state['input_status']=False
@@ -23,7 +20,7 @@ def set_value(key):
 
 
 def select_item(index: int):
-    st.session_state['clicked_item']=item_ids[index] # id가  들어옴
+    st.session_state['clicked_item'] = item_ids[index] # id가  들어옴
     st.session_state['survey_end'] = True
 
 def pick_item(idx:int,item_ids):
@@ -81,23 +78,23 @@ with survey_container.container():
         (_, c, _) = st.columns([1, 9, 1])
 
         item_tags = get_item_tags()
-        
+
         with c:
-            input=st.multiselect(label=' ',options = pd.unique(item_tags['tag']),on_change=input_status_change)
-        
+            input=st.multiselect(label=' ', options = item_tags , on_change=input_status_change)
         (_, left,right, _) = st.columns([8,1,1,8])
         with left:
-            input_button = st.button('🔍', on_click=search,args =(input,item_tags), disabled=st.session_state['input_status'])
+            input_button = st.button('🔍', on_click= search ,args = ([input]), disabled=st.session_state['input_status'])
         with right:
             random_button=st.button('🎲')   
         
-
     if len(st.session_state['result'])!=0:
         st.markdown("""---""")
-        image_dict=get_images_url(st.session_state['result'])  #['result']에는 키워드 #list 반환
+
+        item_dict=get_item_info(st.session_state['result'])  #['result']에는 키워드 #list 반환
         
-        image_list=list(image_dict.values())
-        item_ids=list(image_dict.keys())
+        image_list=list(item_dict['img_url'])
+        item_ids=list(item_dict['item_ids'])
+        item_name = list(item_dict['item_name'])
 
         page_limit = len(image_list) // 10
         page_limit = max(1,page_limit) # slider max가 min이랑 동일한 경우 에러 발생
@@ -123,7 +120,7 @@ with survey_container.container():
                     with col:
                         st.image(get_image(clothes))
                         st.checkbox(
-                            get_clothes_name(item_ids[idx]),
+                            item_name[idx],
                             key = 'clothes-{}'.format(item_ids[idx]),
                             on_change = select_item,
                             args=(idx,),
@@ -138,7 +135,7 @@ if st.session_state['survey_end']: # 버튼이 눌리면
         st.write("선택한 아이템 : ")
         (_, center, _) = st.columns([1, 1, 1])
         with center:
-            st.image(str(list(get_images_url([st.session_state['clicked_item']]).values())[0]), width=500) # st.session_state['clicked_item'] : id
+            st.image(get_image_url(st.session_state['clicked_item']), width=500) # st.session_state['clicked_item'] : id
       
         codis=get_item_recommendation(st.session_state['clicked_item'])
 
@@ -148,24 +145,26 @@ if st.session_state['survey_end']: # 버튼이 눌리면
             
             if len(codi_id)!=0:
                 st.markdown(f'#### {codi}')
-                codi_dict=get_images_url(codi_id)
 
-                codi_list=list(codi_dict.values())
-                item_ids=list(codi_dict.keys())
+                codi_dict=get_item_info(codi_id)
 
-                codi_cnt = len(codi_list)
+                image_list=list(codi_dict['img_url'])
+                item_ids=list(codi_dict['item_ids'])
+                item_name = list(codi_dict['item_name'])
+
+                codi_cnt = len(item_ids)
                 idx = 0
                 for col_index, col in enumerate(st.columns(5)):
-                    if idx >= len(codi_list):
+                    if idx >= len(item_ids):
                         break
 
-                    clothes = codi_list[idx]
+                    clothes = image_list[idx]
 
                     with col:
                         st.image(get_image(clothes))
                         checked=st.checkbox(
-                            get_clothes_name(item_ids[idx]),
-                            key = 'clothes-{}'.format(codi_list[idx]), #url이 key로 들어가게됨
+                            item_name[idx],
+                            key = 'clothes-{}'.format(item_ids[idx]), #url이 key로 들어가게됨
                             on_change = pick_item,
                             args=(idx,item_ids,),
                         )
@@ -179,10 +178,11 @@ if st.session_state['picked_end']:
         # st.write(st.session_state['picked_item'])
         # st.write("코디리스트")
         codi_ids=get_codi(st.session_state['clicked_item'],st.session_state['picked_item'])
-        codi_dict=get_codi_images_url(codi_ids)
-        codi_image_list=list(codi_dict.values())
-        result_codi_ids=list(codi_dict.keys())
+        
+        codi_dict=get_codi_info(codi_ids)
+        print(codi_dict)
+        codi_image_list=list(codi_dict['img_url'])
+        result_codi_ids=list(codi_dict['item_ids'])
+        codi_style_list = list(codi_dict['item_name'])
 
-        # st.write('결과 코디 아이디',result_codi_ids)
-
-        st.image(codi_image_list, use_column_width=False,width=300)#codi image url을 못찾아서 지금은 상품 이미지임
+        st.image(codi_image_list, caption = codi_style_list, use_column_width=False,width=300)
