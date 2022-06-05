@@ -20,14 +20,22 @@ class ItemOut(BaseModel):
     img_url: Optional[List]
     item_name: Optional[List]
 
+class Tags(BaseModel):
+    tag_list: List[str]
+
 # TEST
 @app.get("/")
 def server_test():
     return {"server" : "test"}
 
+# image url
+@app.get('/item/image/{item_id}')
+def read_images_url(item_id : int):
+    return get_image_url(item_id)
+
 # Item info id, name, img_url
 @app.post('/items/info/', response_model=ItemOut)
-async def read_images_url(item: ItemIn):
+async def read_item_info(item: ItemIn):
     return get_item_info(item.item_ids)
 
 # recommendation from item_id
@@ -46,23 +54,23 @@ def MultiVAE_recommendation(item_id : int):
     pass
 
 # 아이템의 옷 이름 가져오기
-@app.post('/items/names/', response_model=Item)
+@app.post('/items/names', response_model=Item)
 async def read_clothes_name(item: Item):
     return get_clothes_name(item)
 
-@app.get('/codi/')
+@app.get('/codi')
 def read_codi(select_item: int, pick_item: int):
     return get_codi(select_item,pick_item)
 
-# 원하는 아이템을 고른 후 적절한 코디를 추천
-@app.post('/codis/', response_model=ItemOut)
-def read_codis_info(select_item: int, pick_item: int):
-    return get_codi_images_url(select_item, pick_item)
+@app.post('/codis/info', response_model=ItemOut)
+def read_codi_info(itemIn:ItemIn):
+    return get_codi_info(itemIn.item_ids)
+
 
 # key word 검색
-@app.get('/item/{key_word}')
-def read_item_from_tag(key_word : str):
-    return get_item_from_tag(key_word)
+@app.post('/items')
+def read_item_from_tag(tagIn : Tags):
+    return get_item_from_tag(tagIn.tag_list)
 
 # 태그 리스트 가져오기
 @app.get("/tags")
