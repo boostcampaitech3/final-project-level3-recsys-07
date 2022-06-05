@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 interaction_PATH = "/opt/ml/input/data/raw_codishop/itemInteractionMatrix.csv"
-item_PATH = "/opt/ml/input/data/raw_codishop/item.xlsx"
+item_PATH = "/opt/ml/input/data/asset_codishop/view/item/item.xlsx"
 
 interaction_matrix = pd.read_csv(interaction_PATH)
 item_feature = pd.read_excel(item_PATH,engine='openpyxl')
