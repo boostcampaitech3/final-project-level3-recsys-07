@@ -3,7 +3,7 @@ from io import BytesIO
 from PIL import Image
 import json
 
-BACKEND_SERVER = "http://127.0.0.1:8001"
+BACKEND_SERVER = "http://127.0.0.1:8001" #http://34.82.21.15:8001/
 
 def get_image_url(item_id: int) -> dict:
 

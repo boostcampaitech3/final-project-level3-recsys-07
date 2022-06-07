@@ -1,5 +1,6 @@
 from faulthandler import disable
 from logging import PlaceHolder
+from turtle import width
 import streamlit as st
 from utils import *
 
@@ -66,7 +67,7 @@ with l:
     st.title("What's In Your Closet?") 
     st.button('🏠',on_click=home, args=())
 with r:
-    st.image('./main_image-removebg-preview.png')
+    st.image('./main-image.png', width=600)
     
 
 survey_container=st.empty()
@@ -76,17 +77,16 @@ with survey_container.container():
         # TODO : 검색 이벤트 연결 -> on.click
         
         (_, c, _) = st.columns([1, 9, 1])
-
+      
         item_tags = get_item_tags()
 
         with c:
             input=st.multiselect(label='검색하고 싶은 키워드를 입력해주세요',options = pd.unique(item_tags['tag']),on_change=input_status_change)
-        
         (_, left,right, _) = st.columns([8,1,1,8])
         with left:
-            input_button = st.button('🔍', on_click= search ,args = ([input]), disabled=st.session_state['input_status'])
-        with right:
             random_button=st.button('🎲')   
+        with right:
+            input_button = st.button('🔍', on_click= search ,args = ([input]), disabled=st.session_state['input_status'])
         
     if len(st.session_state['result'])!=0:
         st.markdown("""---""")
