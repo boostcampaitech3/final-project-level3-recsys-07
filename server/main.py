@@ -4,21 +4,23 @@ from typing import Optional,Dict,List
 
 from server.services.crud import *
 from models.Rule_based.rule_based import *
+from server.services.recomendation import *
 
 app = FastAPI()
 
 class Item(BaseModel):
-    item_id: list
-    image_url: Optional[list]
-    item_name: Optional[list]
+    item_id: List[int]
+    image_url: Optional[List]
+    item_name: Optional[List]
 
 class ItemIn(BaseModel):
     item_ids: List[int]
 
 class ItemOut(BaseModel):
-    item_ids: List
+    item_ids: List[int]
     img_url: Optional[List]
     item_name: Optional[List]
+    big_class: Optional[List]
 
 class Tags(BaseModel):
     tag_list: List[str]
@@ -41,12 +43,12 @@ async def read_item_info(item: ItemIn):
 # recommendation from item_id
 @app.get('/rule_base/recommendation/{item_id}')
 def rule_base_recommendation(item_id : int):
-    return get_item_recommendation(item_id)
+    return get_rulebase_recommendation(item_id)
 
-# TODO : lightGCN recommendation
+# lightGCN recommendation
 @app.get('/lightGCN/recommendation/{item_id}')
 def lightGCN_recommendation(item_id : int):
-    pass
+    return get_lightGCN_recommendation(item_id)
 
 # TODO : MultiVAE recommendation
 @app.get('/MultiVAE/recommendation/{item_id}')
@@ -65,7 +67,6 @@ def read_codi(select_item: int, pick_item: int):
 @app.post('/codis/info', response_model=ItemOut)
 def read_codi_info(itemIn:ItemIn):
     return get_codi_info(itemIn.item_ids)
-
 
 # key word 검색
 @app.post('/items')
