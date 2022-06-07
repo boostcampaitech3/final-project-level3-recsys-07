@@ -1,15 +1,17 @@
 import numpy as np
 import pandas as pd
 
-interaction_PATH = "/opt/ml/input/data/itemInteractionMatrix.csv"
-item_PATH = "/opt/ml/workspace/crawler/item_crawler_ver2/total_asset/item.xlsx"
+interaction_PATH = "/opt/ml/input/data/resources/CCIM.csv"
+item_PATH = "/opt/ml/input/data/asset_codishop/view/item/item.csv"
+cluster_prob_PATH = "/opt/ml/input/data/resources/cluster_item_prob.csv"
 
-interaction_matrix = pd.read_csv("/opt/ml/workspace/model/Rule Based/IIM.csv")
-item_feature = pd.read_csv("/opt/ml/workspace/model/Rule Based/item.csv")
+interaction_matrix = pd.read_csv(interaction_PATH)
+item_feature = pd.read_csv(item_PATH)
+cluster_item_prob = pd.read_csv(cluster_prob_PATH)
 item_feature = item_feature[["id","name","url", "likes", "big_class","mid_class", "cluster_id"]]
 item_cluster_list = list(interaction_matrix.columns[1:])
 
-def sort_rec_item(item_list : list) -> list :
+def sort_item_by_likes(item_list : list) -> list :
     likes_list = list()
     result = list()
 
@@ -23,6 +25,29 @@ def sort_rec_item(item_list : list) -> list :
         result.append(item[1])
 
     return result
+
+def sort_item_by_prob(item_list : list, cluster_id : int) -> list :
+
+    prob_list = list()
+    result = list()
+
+    for item in item_list :
+        item_id = int(item)
+        cluster_condition = (cluster_item_prob["cluster_id"] == cluster_id)
+        item_condition = (cluster_item_prob["item_id"] == item_id)
+        item_prob = cluster_item_prob.loc[cluster_condition & item_condition, "prob"].iloc[0]
+        prob_list.append([item_prob, item_id])
+    
+    prob_list.sort(reverse=True)
+
+    for item in prob_list :
+        result.append(item[1])
+    
+    if len(result) > 10 :
+        result = result[:10]
+
+    return result
+    
 
 def get_item_reccomendation(item_id)-> dict :
 
@@ -49,7 +74,6 @@ def get_item_reccomendation(item_id)-> dict :
     for key in rec_result.keys() :
 
         if len(rec_result[key]) > 0:
-            rec_result[key] = sort_rec_item(rec_result[key])
+            rec_result[key] = sort_item_by_prob(rec_result[key], cluster_id)
     
     return rec_result
-
