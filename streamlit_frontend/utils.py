@@ -2,11 +2,10 @@ import requests
 from io import BytesIO
 from PIL import Image
 import json
-
 from itertools import chain
 from collections import defaultdict
 
-BACKEND_SERVER = "http://127.0.0.1:8001"
+BACKEND_SERVER = "http://127.0.0.1:8001" #http://34.82.21.15:8001/
 
 def get_image_url(item_id: int) -> dict:
 
@@ -66,16 +65,18 @@ def get_recommendation(item_id: int)-> dict:
 
     #rule_base recommendation
     # response = requests.get(url = BACKEND_SERVER + f"/rule_base/recommendation/{item_id}").json()
-    #rule_base_result = response
-    #TODO : check
-
-    #lightGCN recomendation
+    # rule_base_result = response
 
     response = requests.get(url = BACKEND_SERVER + f"/lightGCN/recommendation/{item_id}").json()
     lightGCN_result = response
+
     #TODO : append
     # for k, v in chain(dict1.items(), dict2.items()):
     #     rec_result[k].append(v)
     # for k,v in lightGCN_result.items():
 
     return lightGCN_result
+
+def cluster_id(item_id:int):
+    response_data = requests.get(url = BACKEND_SERVER + f"/item/cluster/{item_id}").json()
+    return response_data

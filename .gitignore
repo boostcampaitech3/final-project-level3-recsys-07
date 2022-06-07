@@ -2,3 +2,6 @@
 *.deb
 *.yaml
 __pycache__
+*.csv
+*.pt
+*.log
