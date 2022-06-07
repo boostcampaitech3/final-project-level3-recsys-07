@@ -5,7 +5,7 @@ import streamlit as st
 from utils import *
 
 import pandas as pd
-from rule_based import get_item_recommendation
+# from rule_based import get_item_recommendation
 
 from PIL import Image
 
@@ -58,6 +58,7 @@ STATE_KEYS_VALS = [
     ('picked_item',None),
     ('picked_end',False)
 ]
+
 set_state_key(STATE_KEYS_VALS)
 
 st.set_page_config(layout='wide')
@@ -73,8 +74,6 @@ with r:
 survey_container=st.empty()
 with survey_container.container():
     with st.container():
-        # TODO : 검색 리스트 생성
-        # TODO : 검색 이벤트 연결 -> on.click
         
         (_, c, _) = st.columns([1, 9, 1])
       
@@ -84,9 +83,11 @@ with survey_container.container():
             input=st.multiselect(label='검색하고 싶은 키워드를 입력해주세요',options = pd.unique(item_tags['tag']),on_change=input_status_change)
         (_, left,right, _) = st.columns([8,1,1,8])
         with left:
+
             random_button=st.button('🎲')   
         with right:
             input_button = st.button('🔍', on_click= search ,args = ([input]), disabled=st.session_state['input_status'])
+
         
     if len(st.session_state['result'])!=0:
         st.markdown("""---""")
@@ -138,7 +139,7 @@ if st.session_state['survey_end']: # 버튼이 눌리면
         with center:
             st.image(get_image_url(st.session_state['clicked_item']), width=500) # st.session_state['clicked_item'] : id
       
-        codis=get_item_recommendation(st.session_state['clicked_item'])
+        codis= get_recommendation(st.session_state['clicked_item'])
 
         st.markdown('### 관련 코디를 보고싶은 옷을 골라보세요')
         for codi in codis.keys():

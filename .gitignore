@@ -1,3 +1,4 @@
 *.xlsx
 *.deb
+*.yaml
 __pycache__
