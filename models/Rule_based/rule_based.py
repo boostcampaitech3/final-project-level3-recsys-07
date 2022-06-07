@@ -3,10 +3,10 @@ import openpyxl
 import pandas as pd
 
 interaction_PATH = "/opt/ml/input/data/asset_codishop/view/item/itemInteractionMatrix_withColor.csv"
-item_PATH = "/opt/ml/input/data/asset_codishop/view/item/item.xlsx"
+item_PATH = "/opt/ml/input/data/asset_codishop/view/item/item.csv"
 
 interaction_matrix = pd.read_csv(interaction_PATH)
-item_feature = pd.read_excel(item_PATH, engine="openpyxl")
+item_feature = pd.read_csv(item_PATH)
 item_feature = item_feature[["id","name","url", "likes", "big_class", "mid_class", "cluster_id"]]
 item_id_list = list(interaction_matrix.columns[1:])
 

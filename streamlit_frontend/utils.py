@@ -75,8 +75,16 @@ def get_recommendation(item_id: int)-> dict:
     #     rec_result[k].append(v)
     # for k,v in lightGCN_result.items():
 
+    # return rule_base_result
     return lightGCN_result
 
 def cluster_id(item_id:int):
     response_data = requests.get(url = BACKEND_SERVER + f"/item/cluster/{item_id}").json()
     return response_data
+
+def get_prob_info(cluster_id:int,item_ids: list) -> dict:
+    params = {"cluster_id" : cluster_id, "item_ids" : item_ids}
+    params = json.dumps(params)
+    response_data = requests.post(url = BACKEND_SERVER + "/items/prob/", data = params).json()
+    item_dict = response_data
+    return item_dict

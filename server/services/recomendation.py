@@ -16,7 +16,7 @@ PROB_DATA = pd.read_csv(LIGHTGCN_PROB_PATH)
 MAX_REC = 20
 
 def get_rulebase_recommendation(item_id:int)-> dict:
-    rule_base_rec = get_item_recommendation(item_id)
+    rule_base_rec = get_item_reccomendation(item_id) 
     return rule_base_rec
     
 
@@ -45,3 +45,13 @@ def get_lightGCN_recommendation(item_id:int)-> dict:
         item_dict[_big_class].append(_item_id)
 
     return item_dict
+def get_prob(cluster_id:int,item_ids:list):
+    result=list()
+    for item_id in item_ids:
+        temp=PROB_DATA[PROB_DATA['item_id']==item_id]
+        temp=temp[temp['cluster_id']==cluster_id]
+        result.append(temp['prob'].to_list()[0])
+        
+        # print(temp)
+        # print("temp['prob']",temp['prob'].to_list())
+    return {"item_probs":result}

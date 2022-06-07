@@ -25,6 +25,18 @@ class ItemOut(BaseModel):
 class Tags(BaseModel):
     tag_list: List[str]
 
+class ItemProb(BaseModel):
+    cluster_id: int
+    item_ids: List[int]
+    item_probs: List[float]
+
+class ItemProbIn(BaseModel):
+    cluster_id: int
+    item_ids: List[int]
+
+class ItemProbOut(BaseModel):
+    item_probs: List[float]
+
 # TEST
 @app.get("/")
 def server_test():
@@ -83,6 +95,9 @@ def read_item_tags():
 def read_cluster_id(item_id : int):
     return get_cluster_id(item_id)
 
+@app.post('/items/prob/', response_model=ItemProbOut)
+async def read_prob(item: ItemProbIn):
+    return get_prob(item.cluster_id,item.item_ids)
 # TODO : 추천된 코디 클릭시 implicit feedback 저장
 
 # TODO : 만족도 평가 받기
