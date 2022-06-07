@@ -1,4 +1,3 @@
-from email.policy import default
 import openpyxl
 import colorgram
 import requests
