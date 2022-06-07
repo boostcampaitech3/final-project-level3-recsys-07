@@ -80,7 +80,7 @@ with survey_container.container():
         item_tags = get_item_tags()
 
         with c:
-            input=st.multiselect(label='검색하고 싶은 키워드를 입력해주세요',options = pd.unique(item_tags['tag']),on_change=input_status_change)
+            input=st.multiselect(label='검색하고 싶은 키워드를 입력해주세요',options = pd.unique(item_tags),on_change=input_status_change)
         (_, left,right, _) = st.columns([8,1,1,8])
         with left:
 
@@ -135,12 +135,15 @@ if st.session_state['survey_end']: # 버튼이 눌리면
     pick_container=st.empty()
     with pick_container.container():
         st.write("선택한 아이템 : ")
+        # print('st.session_state["clicked_item"])',st.session_state['clicked_item'])
         (_, center, _) = st.columns([1, 1, 1])
         with center:
             st.image(get_image_url(st.session_state['clicked_item']), width=500) # st.session_state['clicked_item'] : id
-      
+        print('st.session_state["clicked_item"])',st.session_state['clicked_item'])
+        clicked_cluster_id=cluster_id(st.session_state['clicked_item'])
+        st.write('clicked_cluster_id',clicked_cluster_id)
         codis= get_recommendation(st.session_state['clicked_item'])
-
+        print("codis",codis)
         st.markdown('### 관련 코디를 보고싶은 옷을 골라보세요')
         for codi in codis.keys():
             codi_id=codis[codi]
@@ -170,6 +173,7 @@ if st.session_state['survey_end']: # 버튼이 눌리면
                             on_change = pick_item,
                             args=(idx,item_ids,),
                         )
+                        # st.write(f'가지고 계신 옷과 매칭확률 :{}%')
 
                     idx+=1
 

@@ -78,6 +78,11 @@ def read_item_from_tag(tagIn : Tags):
 def read_item_tags():
     return get_item_tags()
 
+# item 의 cluster id
+@app.get('/item/cluster/{item_id}')
+def read_cluster_id(item_id : int):
+    return get_cluster_id(item_id)
+
 # TODO : 추천된 코디 클릭시 implicit feedback 저장
 
 # TODO : 만족도 평가 받기
