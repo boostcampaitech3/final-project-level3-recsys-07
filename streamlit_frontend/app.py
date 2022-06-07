@@ -83,7 +83,7 @@ with survey_container.container():
         item_tags = get_item_tags()
         
         with c:
-            input=st.multiselect(label=' ',options = pd.unique(item_tags['tag']),on_change=input_status_change)
+            input=st.multiselect(label='검색하고 싶은 키워드를 입력해주세요',options = pd.unique(item_tags['tag']),on_change=input_status_change)
         
         (_, left,right, _) = st.columns([8,1,1,8])
         with left:
