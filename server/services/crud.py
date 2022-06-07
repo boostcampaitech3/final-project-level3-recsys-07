@@ -59,31 +59,34 @@ def get_image_url(item_id:int)->str:
     cursor.close()
     return result[0]
 
+
 def get_codi(select_item:int, pick_item:int)->list:
 
-    ids = (select_item,pick_item)
+    select_cluster = get_cluster_id(select_item)
+    pick_cluster = get_cluster_id(pick_item)
+
     sql= f"""
-            SELECT id, codi_id 
-            FROM item_codi_id 
-            WHERE id IN {ids}
+            SELECT DISTINCT ct1.codi_id
+            FROM(
+		            SELECT codi_id
+		            FROM item i left outer join item_codi_id ici on i.id = ici.id
+		            WHERE i.cluster_id = {select_cluster}
+	            ) ct1,
+	            (
+                    SELECT codi_id
+                    FROM item i left outer join item_codi_id ici on i.id = ici.id
+                    WHERE i.cluster_id = {pick_cluster}
+	            ) ct2
+            WHERE ct1.codi_id = ct2.codi_id
         """
     cursor = db.cursor()
     cursor.execute(sql)
 
-    result = cursor.fetchall() # id, codi_id
-    result = np.array(result) #[[id, codi_id]]
-    # codi_id 등장 횟수 check
-    unique, counts = np.unique(result[:,1], return_counts=True)
-
-    result = np.asarray((unique, counts)).T
-
-    # 2번 이상 등장한 codi_id check
-    idx = np.where(result[:,1] >= 2)
-
-    codi_ids = result[idx][:, 0]
-    codi_ids = codi_ids.tolist()
+    result = cursor.fetchall() # codi_id
+    result = np.array(result)  # [codi_id, ....]
+    result = result[:,0].tolist()
     
-    return codi_ids
+    return result
 
 def get_codi_info(codi_ids:List)->dict:
 
