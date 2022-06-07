@@ -1,10 +1,9 @@
 import os
-from xmlrpc.client import Boolean
-
-import pandas as pd
 import torch
 
-from typing import Dict, List, Optional, Union
+import pandas as pd
+
+from typing import Dict, List, Union
 
 
 def prepare_dataset(
@@ -30,7 +29,6 @@ def prepare_dataset(
     # basepath로 부터 train_data.csv + test_data.csv 합친 것 불러오기
     data = load_data(basepath, is_train)
 
-    # 불러온 data를 answerCode를 기준으로 다시 train과 test로 분리
     if is_train:
         train_data, test_data = separate_data(data)
     else:
@@ -41,7 +39,7 @@ def prepare_dataset(
     id2index = indexing_data(data)
 
     # Graph 정보 생성: dict(Edge, Label)
-    # - Edge : userID <----> assessmentItemID
+    # - Edge : Cluster <----> Item
     # - Label : answerCode
     train_data_proc = process_data(train_data, id2index, device)
     test_data_proc = process_data(test_data, id2index, device)
@@ -56,7 +54,7 @@ def prepare_dataset(
 def load_data(basepath: str, is_train: bool) -> pd.DataFrame:
     """
     train과 test 데이터셋을 불러와서 합친 후,
-    userID와 assessmentItemID 쌍이 고유한 것들만 남기고
+    cluster_id와 item_id 쌍이 고유한 것들만 남기고
     나머지는 제거한다.
     Args:
         basepath (str): 데이터셋이 존재하는 폴더 경로
@@ -78,9 +76,6 @@ def load_data(basepath: str, is_train: bool) -> pd.DataFrame:
 
 def separate_data(data: pd.DataFrame) -> Union[pd.DataFrame, pd.DataFrame]:
     """
-    data를 train과 test data로 재분리
-    - answerCode >= 0  : train data
-    - answerCode == -1 : test data
     Args:
         data (pd.DataFrame): train+test data
     Returns:
@@ -104,8 +99,8 @@ def separate_data(data: pd.DataFrame) -> Union[pd.DataFrame, pd.DataFrame]:
 
 def indexing_data(data: pd.DataFrame) -> Dict[int, List[int]]:
     """
-    user를 0부터 다시 번호 매기기 (0 ~ n_user - 1)
-    assessmentItemID 다시 번호 매기기 (0 ~ n_item - 1)
+    cluster_id를 0부터 다시 번호 매기기 (0 ~ n_cluster - 1)
+    item_id 다시 번호 매기기 (0 ~ n_item - 1)
     Args:
         data (pd.DataFrame): train+test data
     Returns:

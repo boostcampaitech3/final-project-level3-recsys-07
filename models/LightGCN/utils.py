@@ -1,10 +1,11 @@
 import os
 import random
-
-import numpy as np
 import torch
 
+import numpy as np
 
+
+# logger 출력 format을 위한 함수
 class process:
     def __init__(self, logger, name):
         self.logger = logger
@@ -17,8 +18,8 @@ class process:
         self.logger.info(f"{self.name} - Complete")
 
 
+# random soeed 고정
 def setSeeds(seed=42):
-    # 랜덤 시드를 설정하여 매 코드를 실행할 때마다 동일한 결과를 얻게 합니다.
     os.environ["PYTHONHASHSEED"] = str(seed)
     random.seed(seed)
     np.random.seed(seed)
@@ -27,6 +28,7 @@ def setSeeds(seed=42):
     torch.backends.cudnn.deterministic = True
 
 
+# logger 반환
 def get_logger(logger_conf):
     import logging
     import logging.config
@@ -36,6 +38,7 @@ def get_logger(logger_conf):
     return logger
 
 
+# class의 정보를 dication으로 반환
 def class2dict(f):
     return dict(
         (name, getattr(f, name)) for name in dir(f) if not name.startswith("__")

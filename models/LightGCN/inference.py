@@ -1,7 +1,8 @@
 import os
+import torch
 
 import pandas as pd
-import torch
+
 from config import CFG, logging_conf
 from datasets import prepare_dataset
 from models import build, inference
