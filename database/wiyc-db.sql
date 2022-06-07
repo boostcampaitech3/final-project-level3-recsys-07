@@ -89,5 +89,6 @@ CREATE TABLE `codi` (
 CREATE TABLE `codi_tag` (
   `id` INT NOT NULL,
   `tag` VARCHAR(100),
+  UNIQUE(id, tag),
   FOREIGN KEY(id) REFERENCES codi(id)
 );
