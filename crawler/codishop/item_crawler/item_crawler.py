@@ -155,5 +155,5 @@ for codi_id, codi_url in zip(codi_ids, codi_urls) :
 
 driver.close()
 
-with open("/opt/ml/input/data/already/item.pickle", "wb") as f:
+with open("../pickles/item.pickle", "wb") as f:
     pickle.dump(seen_list, f)

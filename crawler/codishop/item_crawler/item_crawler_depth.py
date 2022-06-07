@@ -55,11 +55,11 @@ already_crawled_codi = list()
 already_crawled_item = list()
 
 # 기존에 어떤 코디들을 크롤링 했었는지
-with open("/opt/ml/input/data/already/codi.pickle", "rb") as f:
+with open("../pickles/codi.pickle", "rb") as f:
     already_crawled_codi = pickle.load(f)
 
 # 기존에 어떤 아이템들을 크롤링 했었는지
-with open("/opt/ml/input/data/already/item.pickle", "rb") as f:
+with open("../pickles//item.pickle", "rb") as f:
     try: already_crawled_item = pickle.load(f)
     except: pass
     
@@ -192,10 +192,10 @@ for codi_url in codi_urls:
 driver.close()
 
 
-with open("/opt/ml/input/data/already/codi.pickle", "wb") as f:
+with open("../pickles/codi.pickle", "wb") as f:
     pickle.dump(already_crawled_codi, f)
 
-with open("/opt/ml/input/data/already/item.pickle", "wb") as f:
+with open("../pickles/item.pickle", "wb") as f:
     pickle.dump(already_crawled_item, f)
 
 already_workbook = openpyxl.Workbook()

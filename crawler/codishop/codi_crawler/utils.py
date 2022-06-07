@@ -50,13 +50,13 @@ def get_codi_info(driver: webdriver.Chrome) -> Tuple[list, list, list]:
         codi_url_list.append(img_element.get_attribute('src'))
 
     already_crawled_codi = list()
-    with open("/opt/ml/input/data/already/codi.pickle", "rb") as f:
+    with open("../pickles/codi.pickle", "rb") as f:
         try:
             already_crawled_codi = pickle.load(f)
         except:
             pass
 
-    with open("/opt/ml/input/data/already/codi.pickle", "wb") as f:
+    with open("../pickles/codi.pickle", "wb") as f:
         already_crawled_codi.extend(codi_url_list)
         pickle.dump(already_crawled_codi, f)
 
