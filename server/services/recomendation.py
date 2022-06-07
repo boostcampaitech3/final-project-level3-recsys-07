@@ -52,6 +52,4 @@ def get_prob(cluster_id:int,item_ids:list):
         temp=temp[temp['cluster_id']==cluster_id]
         result.append(temp['prob'].to_list()[0])
         
-        # print(temp)
-        # print("temp['prob']",temp['prob'].to_list())
     return {"item_probs":result}
