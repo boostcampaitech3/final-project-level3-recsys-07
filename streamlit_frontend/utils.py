@@ -3,6 +3,9 @@ from io import BytesIO
 from PIL import Image
 import json
 
+from itertools import chain
+from collections import defaultdict
+
 BACKEND_SERVER = "http://127.0.0.1:8001"
 
 def get_image_url(item_id: int) -> dict:
@@ -56,3 +59,23 @@ def get_image(url:str) -> Image:
     img = img.resize((500, 600), Image.ANTIALIAS) # ratio 5 : 6
 
     return img
+
+def get_recommendation(item_id: int)-> dict:
+    
+    rec_result = {"상의" : [],"바지" : [],"아우터" : [], "신발" : [], "가방" : [], "모자" : []}
+
+    #rule_base recommendation
+    # response = requests.get(url = BACKEND_SERVER + f"/rule_base/recommendation/{item_id}").json()
+    #rule_base_result = response
+    #TODO : check
+
+    #lightGCN recomendation
+
+    response = requests.get(url = BACKEND_SERVER + f"/lightGCN/recommendation/{item_id}").json()
+    lightGCN_result = response
+    #TODO : append
+    # for k, v in chain(dict1.items(), dict2.items()):
+    #     rec_result[k].append(v)
+    # for k,v in lightGCN_result.items():
+
+    return lightGCN_result

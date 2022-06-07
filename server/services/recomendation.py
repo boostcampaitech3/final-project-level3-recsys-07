@@ -13,6 +13,8 @@ from server.services.crud import *
 LIGHTGCN_PROB_PATH = "./resource/cluster_item_prob.csv"
 PROB_DATA = pd.read_csv(LIGHTGCN_PROB_PATH)
 
+MAX_REC = 20
+
 def get_rulebase_recommendation(item_id:int)-> dict:
     rule_base_rec = get_item_recommendation(item_id)
     return rule_base_rec
@@ -25,7 +27,7 @@ def get_lightGCN_recommendation(item_id:int)-> dict:
 
     TEMP_DATA = PROB_DATA[PROB_DATA['cluster_id'] == cluster_id]
     TEMP_DATA.sort_values(by=['prob'], ascending=False, ignore_index=True, inplace = True)
-    item_ids = TEMP_DATA["item_id"].head(20).values
+    item_ids = TEMP_DATA["item_id"].head(MAX_REC).values
     
     # GET ITEM INFO
     item_info = get_item_info(item_ids)
@@ -33,7 +35,7 @@ def get_lightGCN_recommendation(item_id:int)-> dict:
     # item dict
     item_dict = {"상의" : [],"바지" : [],"아우터" : [], "신발" : [], "가방" : [], "모자" : []}
     
-    for idx in range(0, 20):
+    for idx in range(0, MAX_REC):
         if item_info['item_ids'][idx] == item_id:
             continue
         _big_class = item_info['big_class'][idx]
