@@ -1,14 +1,6 @@
 from faulthandler import disable
-from logging import PlaceHolder
-from tkinter import W
-from turtle import width
 import streamlit as st
 from utils import *
-
-import pandas as pd
-# from rule_based import get_item_recommendation
-
-from PIL import Image
 import random
 
 def search(mid_class_list):
