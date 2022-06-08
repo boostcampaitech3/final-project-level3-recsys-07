@@ -5,7 +5,13 @@ import json
 from itertools import chain
 from collections import defaultdict
 
-BACKEND_SERVER = "http://127.0.0.1:8001" #http://34.82.21.15:8001/
+import yaml
+from easydict import EasyDict
+with open('./config.yaml') as f:
+    config=yaml.load(f, Loader=yaml.FullLoader)
+    config=EasyDict(config)
+
+BACKEND_SERVER = config.backend_url
 
 def get_image_url(item_id: int) -> dict:
 
