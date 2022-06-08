@@ -48,7 +48,7 @@ def sort_item_by_prob(item_list : list, cluster_id : int) -> list :
 
     return result
     
-
+error_list=[1015402,260755,978464,2263074]
 def get_item_reccomendation(item_id)-> dict :
 
     cluster_id = int(item_feature.loc[item_feature["id"]==item_id]["cluster_id"])
@@ -65,7 +65,9 @@ def get_item_reccomendation(item_id)-> dict :
         rec_cluster_id = item_cluster_list[index]
         rec_item_info = item_feature.loc[item_feature["cluster_id"]==int(rec_cluster_id), "id"]
 
-        for id in rec_item_info :
+        for id in rec_item_info : #id=item_id
+            if int(id) in error_list:
+                continue
             big_class = item_feature.loc[item_feature["id"]==id, "big_class"].iloc[0]
             name = item_feature.loc[item_feature["id"]==id, "name"].iloc[0]
             url = item_feature.loc[item_feature["id"]==id, "url"].iloc[0]
