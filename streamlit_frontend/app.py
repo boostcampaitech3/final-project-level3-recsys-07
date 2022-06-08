@@ -137,7 +137,7 @@ if st.session_state['survey_end']: # 버튼이 눌리면
             st.image(get_image_url(st.session_state['clicked_item']), width=500) # st.session_state['clicked_item'] : id
         
         clicked_cluster_id=cluster_id(st.session_state['clicked_item']) # prob를 위한 변수
-        st.write('clicked_cluster_id',clicked_cluster_id)
+        # st.write('clicked_cluster_id',clicked_cluster_id)
 
         codis= get_recommendation(st.session_state['clicked_item'])
 
