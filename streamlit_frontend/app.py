@@ -141,11 +141,15 @@ if st.session_state['survey_end']: # 버튼이 눌리면
         
 
         codis= get_recommendation(st.session_state['clicked_item'])
+        
+        clicked_item_info = get_item_info([st.session_state['clicked_item']])
+        clicked_big_class = clicked_item_info['big_class']
 
         st.markdown('### 관련 코디를 보고싶은 옷을 골라보세요')
         for codi in codis.keys():
             codi_id=codis[codi]
-            
+
+            if clicked_big_class == codi: continue
             if len(codi_id)!=0:
                 if codi == '아우터': st.markdown(f'#### 🧥 {codi}')
                 elif codi == '상의': st.markdown(f'#### 👕 {codi}')
