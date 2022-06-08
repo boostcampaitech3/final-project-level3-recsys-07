@@ -119,7 +119,7 @@ with survey_container.container():
                         st.image(get_image(clothes))
                         st.checkbox(
                             item_name[idx],
-                            key = 'clothes-{}'.format(item_ids[idx]),
+                            key = 'search-{}'.format(item_ids[idx]),
                             on_change = select_item,
                             args=(idx,),
                         )
@@ -137,7 +137,7 @@ if st.session_state['survey_end']: # 버튼이 눌리면
             st.image(get_image_url(st.session_state['clicked_item']), width=500) # st.session_state['clicked_item'] : id
         
         clicked_cluster_id=cluster_id(st.session_state['clicked_item']) # prob를 위한 변수
-        # st.write('clicked_cluster_id',clicked_cluster_id)
+        
 
         codis= get_recommendation(st.session_state['clicked_item'])
 
@@ -177,7 +177,6 @@ if st.session_state['survey_end']: # 버튼이 눌리면
                             on_change = pick_item,
                             args=(idx,item_ids,),
                         )
-                        #st.write(f'❤️ 가진 옷과 매칭확률 : {int(item_prob[idx]*100)}%', alignment='center')
                         st.markdown(f"<p style='text-align: center;'>❤️ 가진 옷과 매칭확률 : {int(item_prob[idx]*100)}%</p>", unsafe_allow_html=True)
                     idx+=1
 
@@ -185,8 +184,7 @@ if st.session_state['picked_end']:
     pick_container.empty() # 지금껏 있던 내용들 모두 삭제
     with st.container():
         st.markdown('### 🌟 추천코디')
-        # st.write(st.session_state['picked_item'])
-        # st.write("코디리스트")
+        
         codi_ids=get_codi(st.session_state['clicked_item'],st.session_state['picked_item'])
         
         codi_dict=get_codi_info(codi_ids)
