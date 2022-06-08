@@ -8,7 +8,9 @@ import numpy as np
 with open('./server/config.yaml') as f:
     config=yaml.load(f, Loader=yaml.FullLoader)
     config=EasyDict(config)
-    # print(config)
+
+def get_db(config):
+    
     db = pymysql.connect(
         user=config.mysql.user, 
         passwd=config.mysql.password, 
@@ -16,6 +18,8 @@ with open('./server/config.yaml') as f:
         db=config.mysql.db, # 나중에 파일로 가져오기
         charset='utf8'
     )
+    return db
+    
 
 
 def get_item_info(item_ids:List)->dict:
@@ -32,11 +36,12 @@ def get_item_info(item_ids:List)->dict:
 
     sql = f"SELECT id, name, img_url, big_class FROM item WHERE id IN {item_ids}"
     try:
+        db = get_db(config)
         cursor = db.cursor()
         cursor.execute(sql)
         result = cursor.fetchall()
     finally:
-        cursor.close()
+        db.close()
     
     out = {"item_ids" : [], "item_name" : [], 'img_url' : [], 'big_class' : []}
     #tuple to dict
@@ -51,12 +56,13 @@ def get_item_info(item_ids:List)->dict:
 def get_image_url(item_id:int)->str:
     sql= f"SELECT img_url FROM item WHERE id = {item_id}"
     try:
+        db = get_db(config)
         cursor = db.cursor()
         cursor.execute(sql)
         
         result = cursor.fetchall()
     finally:
-        cursor.close()
+        db.close()
 
     return result[0]
 
@@ -81,12 +87,13 @@ def get_codi(select_item:int, pick_item:int)->list:
             WHERE ct1.codi_id = ct2.codi_id
         """
     try:
+        db = get_db(config)
         cursor = db.cursor()
         cursor.execute(sql)
 
         result = cursor.fetchall() # codi_id
     finally:
-        cursor.close()
+        db.close()
     
     result = np.array(result)  # [codi_id, ....]
     result = result[:,0].tolist()
@@ -101,14 +108,15 @@ def get_codi_info(codi_ids:List)->dict:
         codi_ids = "('" + str(codi_ids[0]) + "')"
     else:
         codi_ids = tuple(codi_ids)
+    sql= f"SELECT id, img_url, style FROM codi WHERE id IN {codi_ids}"
     try:
-        sql= f"SELECT id, img_url, style FROM codi WHERE id IN {codi_ids}"
+        db = get_db(config)
         cursor = db.cursor()
         cursor.execute(sql)
-
         result = cursor.fetchall()
+
     finally:
-        cursor.close()
+        db.close()
 
     out = {"item_ids" : [], "item_name" : [], 'img_url' : []}
 
@@ -125,12 +133,14 @@ def get_clothes_name(item):
     item_id=tuple(item.item_id)
     sql=f"SELECT name FROM item where id IN {item_id}"
     try:
+        db = get_db(config)
         cursor = db.cursor(pymysql.cursors.DictCursor)
         cursor.execute(sql)
         result = cursor.fetchall()
-        item.image_url=result['name']
     finally:
-        cursor.close()
+        db.close()
+    
+    item.image_url=result['name']
     
     return item
 
@@ -141,24 +151,27 @@ def get_item_mid_class()-> list:
             ORDER BY mid_class 
            """
     try:
+        db = get_db(config)
         cursor = db.cursor()
         cursor.execute(sql)
         result = cursor.fetchall()
         result = [item[0] for item in result]
     finally:
-        cursor.close()
+        db.close()
     
     return result
 
 def get_item_tags()-> list:
     sql = f"SELECT tag FROM item_tag ORDER BY tag"
     try:
+        db = get_db(config)
         cursor = db.cursor()
         cursor.execute(sql)
         result = cursor.fetchall()
         result = [item[0] for item in result]
     finally:
-        cursor.close()  
+        db.close()
+
     return result
 
 
@@ -171,12 +184,14 @@ def get_item_from_tag(tag_list : list)-> list:
     sql = f"SELECT id FROM item_tag WHERE tag IN {tag_list}"
 
     try:
+        db = get_db(config)
         cursor = db.cursor()
         cursor.execute(sql)
         result = cursor.fetchall()
         result = [item[0] for item in result]
     finally:
-        cursor.close()
+        db.close()
+
     return result
 
 
@@ -188,12 +203,14 @@ def get_item_from_mid_class(mid_class_list : list)-> list:
         mid_class_list = tuple(mid_class_list)
     sql = f"SELECT id FROM item WHERE mid_class IN {mid_class_list}"
     try:
+        db = get_db(config)
         cursor = db.cursor()
         cursor.execute(sql)
         result = cursor.fetchall()
         result = [item[0] for item in result]
     finally:
-        cursor.close()
+        db.close()
+
     return result
 
 def get_cluster_id(item_id:int)-> int:
@@ -201,11 +218,12 @@ def get_cluster_id(item_id:int)-> int:
     sql = f"SELECT cluster_id FROM item WHERE id = {item_id}"
     
     try:
+        db = get_db(config)
         cursor = db.cursor()
         cursor.execute(sql)
         result = cursor.fetchone()
         result = result[0]
     finally:
-        cursor.close()
+        db.close()
     
     return result
