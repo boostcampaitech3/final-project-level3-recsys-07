@@ -52,7 +52,7 @@ def read_images_url(item_id : int):
 
 # Item info id, name, img_url
 @app.post('/items/info/', response_model=ItemOut)
-async def read_item_info(item: ItemIn):
+def read_item_info(item: ItemIn):
     return get_item_info(item.item_ids)
 
 # recommendation from item_id
@@ -72,7 +72,7 @@ def MultiVAE_recommendation(item_id : int):
 
 # 아이템의 옷 이름 가져오기
 @app.post('/items/names', response_model=Item)
-async def read_clothes_name(item: Item):
+def read_clothes_name(item: Item):
     return get_clothes_name(item)
 
 @app.get('/codi')
@@ -109,7 +109,7 @@ def read_cluster_id(item_id : int):
     return get_cluster_id(item_id)
 
 @app.post('/items/prob/', response_model=ItemProbOut)
-async def read_prob(item: ItemProbIn):
+def read_prob(item: ItemProbIn):
     return get_prob(item.cluster_id,item.item_ids)
 # TODO : 추천된 코디 클릭시 implicit feedback 저장
 
