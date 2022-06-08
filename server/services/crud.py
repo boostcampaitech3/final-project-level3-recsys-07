@@ -132,11 +132,14 @@ def get_item_mid_class()-> list:
             FROM item 
             ORDER BY mid_class 
            """
-    cursor = db.cursor()
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    result = [item[0] for item in result]
-    cursor.close()
+    try:
+        cursor = db.cursor()
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        result = [item[0] for item in result]
+    finally:
+        cursor.close()
+    
     return result
 
 def get_item_tags()-> list:
@@ -171,11 +174,13 @@ def get_item_from_mid_class(mid_class_list : list)-> list:
     else:
         mid_class_list = tuple(mid_class_list)
     sql = f"SELECT id FROM item WHERE mid_class IN {mid_class_list}"
-    cursor = db.cursor()
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    result = [item[0] for item in result]
-    cursor.close()
+    try:
+        cursor = db.cursor()
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        result = [item[0] for item in result]
+    finally:
+        cursor.close()
     return result
 
 def get_cluster_id(item_id:int)-> int:
