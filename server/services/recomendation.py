@@ -10,7 +10,7 @@ from server.services.crud import *
 
 '''
 
-LIGHTGCN_PROB_PATH = "/opt/ml/input/data/resources/cluster_item_prob.csv"
+LIGHTGCN_PROB_PATH = "./resource/cluster_item_prob.csv"
 PROB_DATA = pd.read_csv(LIGHTGCN_PROB_PATH)
 
 MAX_REC = 20
