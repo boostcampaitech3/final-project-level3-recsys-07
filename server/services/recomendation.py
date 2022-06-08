@@ -45,6 +45,7 @@ def get_lightGCN_recommendation(item_id:int)-> dict:
         item_dict[_big_class].append(_item_id)
 
     return item_dict
+    
 def get_prob(cluster_id:int,item_ids:list):
     result=list()
     for item_id in item_ids:

@@ -38,7 +38,7 @@ def sort_item_by_prob(item_list : list, cluster_id : int) -> list :
         item_prob = cluster_item_prob.loc[cluster_condition & item_condition, "prob"].iloc[0]
         prob_list.append([item_prob, item_id])
     
-    prob_list.sort(reverse=True)
+    prob_list.sort(reverse=True, key=lambda x:x[0])
 
     for item in prob_list :
         result.append(item[1])
@@ -52,6 +52,7 @@ def sort_item_by_prob(item_list : list, cluster_id : int) -> list :
 def get_item_reccomendation(item_id)-> dict :
 
     cluster_id = int(item_feature.loc[item_feature["id"]==item_id]["cluster_id"])
+    item_class = item_feature.loc[item_feature["id"]==item_id]["big_class"]
     data = interaction_matrix[interaction_matrix["id"]==cluster_id]
     data = data.to_numpy()[0][1:] 
 
@@ -69,6 +70,7 @@ def get_item_reccomendation(item_id)-> dict :
             big_class = item_feature.loc[item_feature["id"]==id, "big_class"].iloc[0]
             name = item_feature.loc[item_feature["id"]==id, "name"].iloc[0]
             url = item_feature.loc[item_feature["id"]==id, "url"].iloc[0]
+            
             rec_result[big_class].append(id)
 
     for key in rec_result.keys() :

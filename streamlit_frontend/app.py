@@ -1,5 +1,6 @@
 from ctypes import alignment
 from faulthandler import disable
+from math import floor
 import streamlit as st
 from utils import *
 import random
@@ -152,14 +153,27 @@ if st.session_state['survey_end']: # 버튼이 눌리면
                 elif codi == '모자': st.markdown(f'#### 🧢 {codi}')
                 elif codi == '가방': st.markdown(f'#### 🎒 {codi}')
                 elif codi == '신발': st.markdown(f'#### 👟 {codi}')
+                else: st.markdown(f'#### {codi}')
 
-                codi_dict=get_item_info(codi_id)
+                codi_dict=get_item_info(codi_id)  
 
+                item_prob= get_prob_info(clicked_cluster_id,item_ids)['item_probs']
                 image_list=list(codi_dict['img_url'])
                 item_ids=list(codi_dict['item_ids'])
                 item_name = list(codi_dict['item_name'])
-                item_prob=get_prob_info(clicked_cluster_id,item_ids)['item_probs']
 
+                sort_by_prob = list()
+                for id, url, name, prob in zip(item_ids, image_list, item_name, item_prob):
+                    sort_by_prob.append([id, url, name, prob])
+                sort_by_prob.sort(key=lambda x:x[3], reverse=True)
+
+                image_list, item_ids, item_name, item_prob = [], [], [], []
+                for id, url, name, prob in sort_by_prob:
+                    image_list.append(url)
+                    item_ids.append(id)
+                    item_name.append(name)
+                    item_prob.append(prob)
+                    
 
                 codi_cnt = len(item_ids)
                 idx = 0
@@ -177,7 +191,7 @@ if st.session_state['survey_end']: # 버튼이 눌리면
                             on_change = pick_item,
                             args=(idx,item_ids,),
                         )
-                        st.markdown(f"<p style='text-align: center;'>❤️ 가진 옷과 매칭확률 : {int(item_prob[idx]*100)}%</p>", unsafe_allow_html=True)
+                        st.markdown(f"<p style='text-align: center;'>❤️ 가진 옷과 매칭확률 : {int(item_prob[idx]*10000)/100}%</p>", unsafe_allow_html=True)
                     idx+=1
 
 if st.session_state['picked_end']:
