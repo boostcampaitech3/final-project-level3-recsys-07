@@ -25,6 +25,9 @@ class ItemOut(BaseModel):
 class Tags(BaseModel):
     tag_list: List[str]
 
+class MidClass(BaseModel):
+    mid_class_list : List[str]
+
 class ItemProb(BaseModel):
     cluster_id: int
     item_ids: List[int]
@@ -80,10 +83,20 @@ def read_codi(select_item: int, pick_item: int):
 def read_codi_info(itemIn:ItemIn):
     return get_codi_info(itemIn.item_ids)
 
+# key word 검색 
+# @app.post('/items') 
+# def read_item_from_tag(tagIn : Tags): 
+#     return get_item_from_tag(tagIn.tag_list)
+
 # key word 검색
 @app.post('/items')
-def read_item_from_tag(tagIn : Tags):
-    return get_item_from_tag(tagIn.tag_list)
+def read_item_from_mid_class(midclassIn : MidClass):
+    return get_item_from_mid_class(midclassIn.mid_class_list)
+
+# 중분류 리스트 가져오기
+@app.get("/mid_class")
+def read_item_mid_class():
+    return get_item_mid_class()
 
 # 태그 리스트 가져오기
 @app.get("/tags")

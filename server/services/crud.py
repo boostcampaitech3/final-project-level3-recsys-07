@@ -126,6 +126,18 @@ def get_clothes_name(item):
     
     return item
 
+def get_item_mid_class()-> list:
+    sql = f"""
+            SELECT DISTINCT mid_class 
+            FROM item 
+            ORDER BY mid_class 
+           """
+    cursor = db.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    result = [item[0] for item in result]
+    cursor.close()
+    return result
 
 def get_item_tags()-> list:
     sql = f"SELECT tag FROM item_tag ORDER BY tag"
@@ -136,6 +148,7 @@ def get_item_tags()-> list:
     cursor.close()
     return result
 
+
 def get_item_from_tag(tag_list : list)-> list:
     
     if len(tag_list) == 1:
@@ -143,6 +156,21 @@ def get_item_from_tag(tag_list : list)-> list:
     else:
         tag_list = tuple(tag_list)
     sql = f"SELECT id FROM item_tag WHERE tag IN {tag_list}"
+    cursor = db.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    result = [item[0] for item in result]
+    cursor.close()
+    return result
+
+
+def get_item_from_mid_class(mid_class_list : list)-> list:
+    
+    if len(mid_class_list) == 1:
+        mid_class_list = "('" + mid_class_list[0] + "')"
+    else:
+        mid_class_list = tuple(mid_class_list)
+    sql = f"SELECT id FROM item WHERE mid_class IN {mid_class_list}"
     cursor = db.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()

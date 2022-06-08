@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 interaction_PATH = "./resource/CCIM.csv"
-item_PATH = "/opt/ml/input/data/asset_codishop/view/item/item.csv"
+item_PATH = "./resource/item.csv"
 cluster_prob_PATH = "./resource/cluster_item_prob.csv"
 
 interaction_matrix = pd.read_csv(interaction_PATH)

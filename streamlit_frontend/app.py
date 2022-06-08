@@ -1,5 +1,6 @@
 from faulthandler import disable
 from logging import PlaceHolder
+from tkinter import W
 from turtle import width
 import streamlit as st
 from utils import *
@@ -10,9 +11,9 @@ import pandas as pd
 from PIL import Image
 import random
 
-def search(tag_list):
-    if tag_list != []:
-        st.session_state['result'] = get_tag_id(tag_list)
+def search(mid_class_list):
+    if mid_class_list != []:
+        st.session_state['result'] = get_mid_class_id(mid_class_list)
 
 
 def input_status_change():
@@ -79,14 +80,17 @@ with survey_container.container():
         
         (_, c, _) = st.columns([1, 9, 1])
       
-        item_tags = get_item_tags()
-        item_tags=pd.unique(item_tags)
+        item_mid_class = get_item_mid_class()
         with c:
             st.info("남성 옷을 대상으로 하고 있습니다. 태그를 많이 입력할수록 많은 결과가 나오니 최대 3개까지만 입력해주세요.")
-            input=st.multiselect(label='검색하고 싶은 키워드를 입력해주세요 ex)치마, 반바지 같은 옷의 분류를 입력하면 검색을 잘 할 수 있어요',options = pd.unique(item_tags),on_change=input_status_change)
-        (_, left,right, _) = st.columns([8,1,1,8])
+            input=st.multiselect(label='검색하고 싶은 키워드를 입력해주세요 ex)치마, 반바지 같은 옷의 분류를 입력하면 검색을 잘 할 수 있어요',options = item_mid_class,on_change=input_status_change)
+        (_, left_ct, left, right, right_ct, _) = st.columns([7,1,1,1,2,6])
+        with left_ct:
+            st.write('랜덤')
         with left:
-            random_button=st.button('🎲')   
+            random_button=st.button('🎲')
+        with right_ct:
+            st.write('검색')   
         with right:
             input_button = st.button('🔍', on_click= search ,args = ([input]), disabled=st.session_state['input_status'])
 
@@ -94,7 +98,7 @@ with survey_container.container():
     if len(st.session_state['result'])!=0 or random_button==True:
         st.markdown("""---""")
         if random_button==True:
-            search([str(item_tags[random.randint(0,len(item_tags))])])
+            search([str(item_mid_class[random.randint(0,len(item_mid_class))])])
         item_dict=get_item_info(st.session_state['result'])  #['result']에는 키워드 #list 반환
         
         image_list=list(item_dict['img_url'])

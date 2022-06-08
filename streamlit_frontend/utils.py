@@ -42,6 +42,22 @@ def get_item_tags()->list:
     response_data = list(set(response_data))
     return response_data
 
+
+def get_item_mid_class()->list:
+    response_data = requests.get(url = BACKEND_SERVER + "/mid_class").json()
+    response_data = list(set(response_data))  # set 제거하면 오름차순 정렬 가능
+    return response_data
+
+
+def get_mid_class_id(mid_class_list:list)->list:
+    
+    params = {"mid_class_list" : mid_class_list}
+    params = json.dumps(params)
+    response_data = requests.post(url = BACKEND_SERVER + "/items", data = params).json()
+
+    return response_data
+
+
 def get_tag_id(tag_list:list)->list:
     
     params = {"tag_list" : tag_list}
