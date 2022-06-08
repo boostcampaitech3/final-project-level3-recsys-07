@@ -95,7 +95,7 @@ def read_item_from_mid_class(midclassIn : MidClass):
 
 # 중분류 리스트 가져오기
 @app.get("/mid_class")
-def read_item_mid_class():
+async def read_item_mid_class():
     return get_item_mid_class()
 
 # 태그 리스트 가져오기
