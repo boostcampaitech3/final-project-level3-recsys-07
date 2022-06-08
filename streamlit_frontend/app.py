@@ -1,3 +1,4 @@
+from ctypes import alignment
 from faulthandler import disable
 import streamlit as st
 from utils import *
@@ -76,15 +77,11 @@ with survey_container.container():
         with c:
             st.info("남성 옷을 대상으로 하고 있습니다. 태그를 많이 입력할수록 많은 결과가 나오니 최대 3개까지만 입력해주세요.")
             input=st.multiselect(label='검색하고 싶은 키워드를 입력해주세요 ex)치마, 반바지 같은 옷의 분류를 입력하면 검색을 잘 할 수 있어요',options = item_mid_class,on_change=input_status_change)
-        (_, left_ct, left, right, right_ct, _) = st.columns([7,1,1,1,2,6])
-        with left_ct:
-            st.write('랜덤')
+        (_, left, right, _) = st.columns([8,1,1,8])
         with left:
-            random_button=st.button('🎲')
-        with right_ct:
-            st.write('검색')   
+            random_button=st.button('🎲 랜덤')
         with right:
-            input_button = st.button('🔍', on_click= search ,args = ([input]), disabled=st.session_state['input_status'])
+            input_button = st.button('🔍 검색', on_click= search ,args = ([input]), disabled=st.session_state['input_status'])
 
         
     if len(st.session_state['result'])!=0 or random_button==True:
@@ -149,7 +146,12 @@ if st.session_state['survey_end']: # 버튼이 눌리면
             codi_id=codis[codi]
             
             if len(codi_id)!=0:
-                st.markdown(f'#### {codi}')
+                if codi == '아우터': st.markdown(f'#### 🧥 {codi}')
+                elif codi == '상의': st.markdown(f'#### 👕 {codi}')
+                elif codi == '바지': st.markdown(f'#### 👖 {codi}')
+                elif codi == '모자': st.markdown(f'#### 🧢 {codi}')
+                elif codi == '가방': st.markdown(f'#### 🎒 {codi}')
+                elif codi == '신발': st.markdown(f'#### 👟 {codi}')
 
                 codi_dict=get_item_info(codi_id)
 
@@ -175,14 +177,14 @@ if st.session_state['survey_end']: # 버튼이 눌리면
                             on_change = pick_item,
                             args=(idx,item_ids,),
                         )
-                        st.write(f'가지고 계신 옷과 매칭확률 :{int(item_prob[idx]*100)}%')
-
+                        #st.write(f'❤️ 가진 옷과 매칭확률 : {int(item_prob[idx]*100)}%', alignment='center')
+                        st.markdown(f"<p style='text-align: center;'>❤️ 가진 옷과 매칭확률 : {int(item_prob[idx]*100)}%</p>", unsafe_allow_html=True)
                     idx+=1
 
 if st.session_state['picked_end']:
     pick_container.empty() # 지금껏 있던 내용들 모두 삭제
     with st.container():
-        st.markdown('### 추천코디')
+        st.markdown('### 🌟 추천코디')
         # st.write(st.session_state['picked_item'])
         # st.write("코디리스트")
         codi_ids=get_codi(st.session_state['clicked_item'],st.session_state['picked_item'])
