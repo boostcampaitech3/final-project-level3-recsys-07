@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-from models.Rule_based.rule_based import *
+from models.Rule_based.cluster_rule_based import *
 from server.services.crud import *
 
 '''
@@ -10,7 +10,7 @@ from server.services.crud import *
 
 '''
 
-LIGHTGCN_PROB_PATH = "/opt/ml/input/data/resource/cluster_item_prob.csv"
+LIGHTGCN_PROB_PATH = "/opt/ml/input/data/resources/cluster_item_prob.csv"
 PROB_DATA = pd.read_csv(LIGHTGCN_PROB_PATH)
 
 MAX_REC = 20

@@ -64,19 +64,19 @@ def get_recommendation(item_id: int)-> dict:
     rec_result = {"상의" : [],"바지" : [],"아우터" : [], "신발" : [], "가방" : [], "모자" : []}
 
     #rule_base recommendation
-    # response = requests.get(url = BACKEND_SERVER + f"/rule_base/recommendation/{item_id}").json()
-    # rule_base_result = response
+    response = requests.get(url = BACKEND_SERVER + f"/rule_base/recommendation/{item_id}").json()
+    rule_base_result = response
 
-    response = requests.get(url = BACKEND_SERVER + f"/lightGCN/recommendation/{item_id}").json()
-    lightGCN_result = response
+    # response = requests.get(url = BACKEND_SERVER + f"/lightGCN/recommendation/{item_id}").json()
+    # lightGCN_result = response
 
     #TODO : append
     # for k, v in chain(dict1.items(), dict2.items()):
     #     rec_result[k].append(v)
     # for k,v in lightGCN_result.items():
 
-    # return rule_base_result
-    return lightGCN_result
+    return rule_base_result
+    # return lightGCN_result
 
 def cluster_id(item_id:int):
     response_data = requests.get(url = BACKEND_SERVER + f"/item/cluster/{item_id}").json()

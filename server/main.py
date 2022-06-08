@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from typing import Optional,Dict,List
 
 from server.services.crud import *
-from models.Rule_based.rule_based import *
+from models.Rule_based.cluster_rule_based import *
 from server.services.recomendation import *
 
 app = FastAPI()
