@@ -138,11 +138,10 @@ if st.session_state['survey_end']: # 버튼이 눌리면
     survey_container.empty() # 위의 내용들 삭제하기
     pick_container=st.empty()
     with pick_container.container():
-        st.write("선택한 아이템 : ")
-        
+        st.markdown("### 가지고 있는 아이템")
         (_, center, _) = st.columns([1, 1, 1])
         with center:
-            st.image(get_image_url(st.session_state['clicked_item']), width=500) # st.session_state['clicked_item'] : id
+            st.image(get_image_url(st.session_state['clicked_item']), width=300) # st.session_state['clicked_item'] : id
         
         clicked_cluster_id=cluster_id(st.session_state['clicked_item']) # prob를 위한 변수
         
@@ -153,6 +152,7 @@ if st.session_state['survey_end']: # 버튼이 눌리면
         clicked_big_class = clicked_item_info['big_class'][0]
 
         st.markdown('### 관련 코디를 보고싶은 옷을 골라보세요')
+        st.markdown("#### 추천 아이템")
         for codi in codis.keys():
             codi_id=codis[codi]
 
@@ -209,6 +209,7 @@ if st.session_state['picked_end']:
     pick_container.empty() # 지금껏 있던 내용들 모두 삭제
     with st.container():
         st.markdown('### 🌟 추천코디')
+        st.markdown('※ 클릭하면 상품페이지로 <u>이동</u>할 수 있습니다', unsafe_allow_html=True)
         
         codi_ids=get_codi(st.session_state['clicked_item'],st.session_state['picked_item'])
         
@@ -219,10 +220,11 @@ if st.session_state['picked_end']:
         codi_style_list = list(codi_dict['item_name'])
         codi_url_list = list(codi_dict['item_url'])
         
-        for codi,style in zip(codi_image_list,codi_style_list):
+        for idx in range(len(codi_image_list)):
             col1, col2, col3 = st.columns(3)
             with col2:
-                st.image(codi, caption = style, use_column_width=False,width=500)
-                link=f'check out this [link]({codi_url_list[0]})'
-                st.markdown(link,unsafe_allow_html=True)
+                st.markdown(f'[<img src="{codi_image_list[idx]}" width=100%></img>]({codi_url_list[idx]})',
+                            unsafe_allow_html=True)
+                st.markdown(f'<p style="text-align: center; font-size: 20px"><strong>{codi_style_list[idx]}</strong></p>',
+                            unsafe_allow_html=True)
 
