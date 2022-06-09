@@ -18,6 +18,7 @@ class ItemIn(BaseModel):
 
 class ItemOut(BaseModel):
     item_ids: List[int]
+    item_url: Optional[List]
     img_url: Optional[List]
     item_name: Optional[List]
     big_class: Optional[List]

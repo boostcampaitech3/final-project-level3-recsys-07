@@ -60,13 +60,18 @@ set_state_key(STATE_KEYS_VALS)
 
 st.set_page_config(layout='wide')
 
-(_, l,r, _) = st.columns([1, 4,9, 1])
-with l:
-    st.title("What's In Your Closet?") 
-    st.button('🏠',on_click=home, args=())
-with r:
-    st.image('./main-image.png', width=600)
+# (_, l,r, _) = st.columns([1, 4,9, 1])
+# with l:
+# st.title("What's In Your Closet?") 
+st.button('🏠',on_click=home, args=())
+st.markdown(f"<p style='text-align: center; font-size: 70px'><strong>What's In Your Closet ?</strong></p>", unsafe_allow_html=True)
+# with r:
+
+st.markdown(f"<p style='text-align: center;'><img src='https://user-images.githubusercontent.com/91870042/172782203-665dfca6-31de-48e6-a317-1c3816b23427.png' width=70% alt='Logo'></p>", unsafe_allow_html=True)  
+
     
+#
+#  st.markdown(f"<p style='text-align: center;'>❤️ 가진 옷과 매칭확률 : {int(item_prob[idx]*10000)/100}%</p>", unsafe_allow_html=True)
 
 survey_container=st.empty()
 with survey_container.container():
@@ -78,7 +83,9 @@ with survey_container.container():
         with c:
             st.info("남성 옷을 대상으로 하고 있습니다. 태그를 많이 입력할수록 많은 결과가 나오니 최대 3개까지만 입력해주세요.")
             input=st.multiselect(label='검색하고 싶은 키워드를 입력해주세요 ex)치마, 반바지 같은 옷의 분류를 입력하면 검색을 잘 할 수 있어요',options = item_mid_class,on_change=input_status_change)
-        (_, left, right, _) = st.columns([8,1,1,8])
+        (_, left2, left, right, _) = st.columns([8,1,1,1,8])
+        with left2:
+            st.button('🪄 리셋',on_click=home, args=())
         with left:
             random_button=st.button('🎲 랜덤')
         with right:
@@ -210,8 +217,12 @@ if st.session_state['picked_end']:
         codi_image_list=list(codi_dict['img_url'])
         result_codi_ids=list(codi_dict['item_ids'])
         codi_style_list = list(codi_dict['item_name'])
+        codi_url_list = list(codi_dict['item_url'])
+        
         for codi,style in zip(codi_image_list,codi_style_list):
             col1, col2, col3 = st.columns(3)
             with col2:
                 st.image(codi, caption = style, use_column_width=False,width=500)
+                link=f'check out this [link]({codi_url_list[0]})'
+                st.markdown(link,unsafe_allow_html=True)
 
