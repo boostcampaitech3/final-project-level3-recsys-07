@@ -202,6 +202,7 @@ if st.session_state['picked_end']:
     pick_container.empty() # 지금껏 있던 내용들 모두 삭제
     with st.container():
         st.markdown('### 🌟 추천코디')
+        st.markdown('※ 클릭하면 상품페이지로 <u>이동</u>할 수 있습니다', unsafe_allow_html=True)
         
         codi_ids=get_codi(st.session_state['clicked_item'],st.session_state['picked_item'])
         
@@ -212,10 +213,11 @@ if st.session_state['picked_end']:
         codi_style_list = list(codi_dict['item_name'])
         codi_url_list = list(codi_dict['item_url'])
         
-        for codi,style in zip(codi_image_list,codi_style_list):
+        for idx in range(len(codi_image_list)):
             col1, col2, col3 = st.columns(3)
             with col2:
-                st.image(codi, caption = style, use_column_width=False,width=500)
-                link=f'check out this [link]({codi_url_list[0]})'
-                st.markdown(link,unsafe_allow_html=True)
+                st.markdown(f'[<img src="{codi_image_list[idx]}" width=100%></img>]({codi_url_list[idx]})',
+                            unsafe_allow_html=True)
+                st.markdown(f'<p style="text-align: center; font-size: 20px"><strong>{codi_style_list[idx]}</strong></p>',
+                            unsafe_allow_html=True)
 
