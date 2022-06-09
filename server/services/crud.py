@@ -108,7 +108,7 @@ def get_codi_info(codi_ids:List)->dict:
         codi_ids = "('" + str(codi_ids[0]) + "')"
     else:
         codi_ids = tuple(codi_ids)
-    sql= f"SELECT id, img_url, style FROM codi WHERE id IN {codi_ids}"
+    sql= f"SELECT id, img_url, style, url FROM codi WHERE id IN {codi_ids}"
     try:
         db = get_db(config)
         cursor = db.cursor()
@@ -118,13 +118,14 @@ def get_codi_info(codi_ids:List)->dict:
     finally:
         db.close()
 
-    out = {"item_ids" : [], "item_name" : [], 'img_url' : []}
+    out = {"item_ids" : [], "item_name" : [], 'img_url' : [], 'item_url': []}
 
     #tuple to dict
     for item in result:
         out['item_ids'].append(item[0])
         out['img_url'].append(item[1])
         out['item_name'].append(item[2])
+        out['item_url'].append(item[3])
 
     return out
 
