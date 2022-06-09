@@ -153,6 +153,8 @@ if st.session_state['survey_end']: # 버튼이 눌리면
 
         st.markdown('### 관련 코디를 보고싶은 옷을 골라보세요')
         st.markdown("#### 추천 아이템")
+        st.info("※ 이미지를 클릭하면 상품 페이지로, 체크박스를 클릭하면 연관 코디 페이지로 이동할 수 있습니다")
+        
         for codi in codis.keys():
             codi_id=codis[codi]
 
@@ -172,18 +174,20 @@ if st.session_state['survey_end']: # 버튼이 눌리면
                 image_list=list(codi_dict['img_url'])
                 item_ids=list(codi_dict['item_ids'])
                 item_name = list(codi_dict['item_name'])
+                item_url = list(codi_dict['item_url'])
 
                 sort_by_prob = list()
-                for id, url, name, prob in zip(item_ids, image_list, item_name, item_prob):
-                    sort_by_prob.append([id, url, name, prob])
+                for id, img_url, name, prob, url in zip(item_ids, image_list, item_name, item_prob, item_url):
+                    sort_by_prob.append([id, img_url, name, prob, url])
                 sort_by_prob.sort(key=lambda x:x[3], reverse=True)
 
-                image_list, item_ids, item_name, item_prob = [], [], [], []
-                for id, url, name, prob in sort_by_prob:
-                    image_list.append(url)
+                image_list, item_ids, item_name, item_prob, item_url = [], [], [], [], []
+                for id, img_url, name, prob, url in sort_by_prob:
+                    image_list.append(img_url)
                     item_ids.append(id)
                     item_name.append(name)
                     item_prob.append(prob)
+                    item_url.append(url)
                     
 
                 codi_cnt = len(item_ids)
@@ -195,21 +199,24 @@ if st.session_state['survey_end']: # 버튼이 눌리면
                     clothes = image_list[idx]
 
                     with col:
-                        st.image(get_image(clothes))
+                        st.markdown(f"<p style='text-align: center;'>❤️ AI 매칭확률 : {int(item_prob[idx]*10000)/100}%</p>", unsafe_allow_html=True)
+                        st.markdown(f'[<img src="{image_list[idx]}" width=100%></img>]({item_url[idx]})',
+                            unsafe_allow_html=True)
+
                         checked=st.checkbox(
                             item_name[idx],
                             key = 'clothes-{}'.format(item_ids[idx]), #url이 key로 들어가게됨
                             on_change = pick_item,
                             args=(idx,item_ids,),
                         )
-                        st.markdown(f"<p style='text-align: center;'>❤️ AI 매칭확률 : {int(item_prob[idx]*10000)/100}%</p>", unsafe_allow_html=True)
+    
                     idx+=1
 
 if st.session_state['picked_end']:
     pick_container.empty() # 지금껏 있던 내용들 모두 삭제
     with st.container():
         st.markdown('### 🌟 추천코디')
-        st.markdown('<p style="color:blue ; font-size: 15px"><strong>※ 클릭하면 상품페이지로 <u>이동</u>할 수 있습니다</strong></p>',
+        st.markdown('<p style="color:blue ; font-size: 15px"><strong>※ 이미지를 클릭하면 코디 페이지로 <u>이동</u>할 수 있습니다</strong></p>',
                      unsafe_allow_html=True)
         
         codi_ids=get_codi(st.session_state['clicked_item'],st.session_state['picked_item'])
