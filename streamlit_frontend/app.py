@@ -195,7 +195,7 @@ if st.session_state['survey_end']: # 버튼이 눌리면
                             on_change = pick_item,
                             args=(idx,item_ids,),
                         )
-                        st.markdown(f"<p style='text-align: center;'>❤️ 가진 옷과 매칭확률 : {int(item_prob[idx]*10000)/100}%</p>", unsafe_allow_html=True)
+                        st.markdown(f"<p style='text-align: center;'>❤️ AI 매칭확률 : {int(item_prob[idx]*10000)/100}%</p>", unsafe_allow_html=True)
                     idx+=1
 
 if st.session_state['picked_end']:
@@ -210,5 +210,8 @@ if st.session_state['picked_end']:
         codi_image_list=list(codi_dict['img_url'])
         result_codi_ids=list(codi_dict['item_ids'])
         codi_style_list = list(codi_dict['item_name'])
+        for codi,style in zip(codi_image_list,codi_style_list):
+            col1, col2, col3 = st.columns(3)
+            with col2:
+                st.image(codi, caption = style, use_column_width=False,width=500)
 
-        st.image(codi_image_list, caption = codi_style_list, use_column_width=False,width=300)
