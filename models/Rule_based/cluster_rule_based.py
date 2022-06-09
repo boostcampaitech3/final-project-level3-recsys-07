@@ -61,12 +61,18 @@ def get_item_reccomendation(item_id)-> dict :
         if data[i] != 0 :
             index_list.append(i)
 
+    # 코디에 아이템이 하나밖에 없어서 발생하는 아이템 목록 -> 추후 수정
+    err_list = [1015402, 260755, 978464, 2263074]
+
     rec_result = {"상의" : [], "바지" : [], "아우터" : [], "신발" : [], "가방" : [], "모자" : []}
     for index in index_list :
         rec_cluster_id = item_cluster_list[index]
         rec_item_info = item_feature.loc[item_feature["cluster_id"]==int(rec_cluster_id), "id"]
 
         for id in rec_item_info :
+            if int(id) in err_list:
+                continue
+
             big_class = item_feature.loc[item_feature["id"]==id, "big_class"].iloc[0]
             name = item_feature.loc[item_feature["id"]==id, "name"].iloc[0]
             url = item_feature.loc[item_feature["id"]==id, "url"].iloc[0]
