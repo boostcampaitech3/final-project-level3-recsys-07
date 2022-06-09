@@ -1,5 +1,6 @@
 from ctypes import alignment
 from faulthandler import disable
+from logging import PlaceHolder
 from math import floor
 import streamlit as st
 from utils import *
@@ -69,7 +70,6 @@ st.markdown(f"<p style='text-align: center; font-size: 70px'><strong>What's In Y
 
 st.markdown(f"<p style='text-align: center;'><img src='https://user-images.githubusercontent.com/91870042/172782203-665dfca6-31de-48e6-a317-1c3816b23427.png' width=70% alt='Logo'></p>", unsafe_allow_html=True)  
 
-    
 #
 #  st.markdown(f"<p style='text-align: center;'>❤️ 가진 옷과 매칭확률 : {int(item_prob[idx]*10000)/100}%</p>", unsafe_allow_html=True)
 
@@ -209,7 +209,8 @@ if st.session_state['picked_end']:
     pick_container.empty() # 지금껏 있던 내용들 모두 삭제
     with st.container():
         st.markdown('### 🌟 추천코디')
-        st.markdown('※ 클릭하면 상품페이지로 <u>이동</u>할 수 있습니다', unsafe_allow_html=True)
+        st.markdown('<p style="color:blue ; font-size: 15px"><strong>※ 클릭하면 상품페이지로 <u>이동</u>할 수 있습니다</strong></p>',
+                     unsafe_allow_html=True)
         
         codi_ids=get_codi(st.session_state['clicked_item'],st.session_state['picked_item'])
         
