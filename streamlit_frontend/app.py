@@ -131,11 +131,10 @@ if st.session_state['survey_end']: # 버튼이 눌리면
     survey_container.empty() # 위의 내용들 삭제하기
     pick_container=st.empty()
     with pick_container.container():
-        st.write("선택한 아이템 : ")
-        
+        st.markdown("### 가지고 있는 아이템")
         (_, center, _) = st.columns([1, 1, 1])
         with center:
-            st.image(get_image_url(st.session_state['clicked_item']), width=500) # st.session_state['clicked_item'] : id
+            st.image(get_image_url(st.session_state['clicked_item']), width=300) # st.session_state['clicked_item'] : id
         
         clicked_cluster_id=cluster_id(st.session_state['clicked_item']) # prob를 위한 변수
         
@@ -146,6 +145,7 @@ if st.session_state['survey_end']: # 버튼이 눌리면
         clicked_big_class = clicked_item_info['big_class'][0]
 
         st.markdown('### 관련 코디를 보고싶은 옷을 골라보세요')
+        st.markdown("#### 추천 아이템")
         for codi in codis.keys():
             codi_id=codis[codi]
 
