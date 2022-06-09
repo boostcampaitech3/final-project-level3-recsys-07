@@ -210,5 +210,8 @@ if st.session_state['picked_end']:
         codi_image_list=list(codi_dict['img_url'])
         result_codi_ids=list(codi_dict['item_ids'])
         codi_style_list = list(codi_dict['item_name'])
-
+        codi_url_list = list(codi_dict['item_url'])
+        
         st.image(codi_image_list, caption = codi_style_list, use_column_width=False,width=300)
+        link=f'check out this [link]({codi_url_list[0]})'
+        st.markdown(link,unsafe_allow_html=True)
