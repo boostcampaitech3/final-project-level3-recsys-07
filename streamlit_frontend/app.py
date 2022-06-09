@@ -65,10 +65,10 @@ st.set_page_config(layout='wide')
 # with l:
 # st.title("What's In Your Closet?") 
 st.button('🏠',on_click=home, args=())
-st.markdown(f"<p style='text-align: center; font-size: 70px'><strong>What's In Your Closet ?</strong></p>", unsafe_allow_html=True)
+st.markdown(f"<p style='text-align: center; font-size: 60px'><strong>What's In Your Closet ?</strong></p>", unsafe_allow_html=True)
 # with r:
 
-st.markdown(f"<p style='text-align: center;'><img src='https://user-images.githubusercontent.com/91870042/172782203-665dfca6-31de-48e6-a317-1c3816b23427.png' width=70% alt='Logo'></p>", unsafe_allow_html=True)  
+st.markdown(f"<p style='text-align: center;'><img src='https://user-images.githubusercontent.com/91870042/172792327-8eb0214e-7c3b-4a12-9d26-19223d5c545e.png' width=70% alt='Logo'></p>", unsafe_allow_html=True)  
 
 #
 #  st.markdown(f"<p style='text-align: center;'>❤️ 가진 옷과 매칭확률 : {int(item_prob[idx]*10000)/100}%</p>", unsafe_allow_html=True)
