@@ -74,8 +74,12 @@ def get_tag_id(tag_list:list)->list:
 
 
 def get_image(url:str) -> Image:
-    response = requests.get(url)
-    img = Image.open(BytesIO(response.content))
+    try:
+        response = requests.get(url)
+        img = Image.open(BytesIO(response.content))
+    except:
+        response = requests.get("https://www.google.com/imgres?imgurl=https%3A%2F%2Fthumbs.dreamstime.com%2Fb%2Fno-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg&imgrefurl=https%3A%2F%2Fwww.dreamstime.com%2Fno-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-image132482953&tbnid=KDNppyUHocvEWM&vet=12ahUKEwiVof258Z_4AhUTTPUHHeOXAwUQMygCegUIARDhAQ..i&docid=aY2W28UsxZn-4M&w=800&h=800&q=no%20image&ved=2ahUKEwiVof258Z_4AhUTTPUHHeOXAwUQMygCegUIARDhAQ")
+        img = Image.open("")
 
     img = img.resize((500, 600), Image.ANTIALIAS) # ratio 5 : 6
 
