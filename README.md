@@ -40,7 +40,7 @@
         <td align="center"><a href="https://github.com/halucinor">Github</a></td>
         <td align="center"><a href="">Github</a></td>
         <td align="center"><a href="">Github</a></td>
-        <td align="center"><a href="">Blog</a></td>
+        <td align="center"><a href="https://github.com/killerWhale0917">Github</a></td>
         <td align="center"><a href="">Github</a></td>
     </tr>
     <tr>
@@ -54,7 +54,7 @@
           <code>?</code>
         </td>
         <td align="center">
-          <code>?</code> <code>?</code>
+          <code>데이터 크롤링</code><br><code>데이터 전처리</code>
         </td>
         <td align="center">
           <code>?</code> <code>?</code> <br> <code>그래프 임베딩</code>
