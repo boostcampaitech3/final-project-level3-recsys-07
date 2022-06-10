@@ -66,8 +66,18 @@
 
 ## 프로젝트 소개
 
-*### TODO : 서비스 소개*
-`All together`
+- 사용자가 가진 옷들을 기반으로 여러 코디에 최대한 활용할 수 있는 옷을 추천해주는 서비스
+
+- Rule Base, LightGCN 모델을 활용해서 사용자가 가지고 있는 옷과 어울리는 옷을 추천하고 두 옷을 조합한 코디를 추천
+
+<div align= "center">
+
+<img src="https://user-images.githubusercontent.com/10546369/173015652-adce2a8b-188b-4dba-b48b-c6331790dcdf.png"/>
+</div>
+
+**### 추천 프로세스**
+
+사용자가 가진 옷 검색 → 비슷한 옷 선택 → 옷 추천 → 추천 결과 중 마음에 드는 옷 선택→ 관련 코디를 추천
 
 ## 서비스 시연
 
