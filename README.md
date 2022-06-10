@@ -82,8 +82,9 @@
 
 [**서비스 링크**](https://bit.ly/3NAqJQd)
 
-*### TODO : 영상 or 서비스 gif 업로드*
-`김소미`
+<div align= "center">
+<img src="https://user-images.githubusercontent.com/10546369/173023495-c431e7aa-bf9b-413c-aae8-25f8ead731fd.gif"/>
+</div>
 
 ## 디렉토리 구조
 
