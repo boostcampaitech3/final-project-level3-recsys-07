@@ -63,5 +63,8 @@ Chrome Driver 설치링크: https://chromedriver.chromium.org/downloads
 <br>
 
 ## Installing Selenium
+
+```bash
 pip install selenium
 apt install chromium-chromedriver
+```
