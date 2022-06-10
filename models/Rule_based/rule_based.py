@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 
-interaction_PATH = "/opt/ml/input/data/itemInteractionMatrix.csv"
-item_PATH = "/opt/ml/workspace/crawler/item_crawler_ver2/total_asset/item.xlsx"
+interaction_PATH = "/opt/ml/input/data/asset_codishop/itemInteractionMatrix.csv"
+item_PATH = "/opt/ml/input/data/asset_codishop/view/item/item.xlsx"
 
 interaction_matrix = pd.read_csv(interaction_PATH)
 item_feature = pd.read_excel(item_PATH)
