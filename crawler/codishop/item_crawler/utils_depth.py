@@ -197,10 +197,10 @@ def get_fs_and_fit(driver : webdriver.Chrome) -> Union[List, List]:
             fits = guide.find_elements(By.CSS_SELECTOR, value="td.active")
             for fit in fits :
                 fit_list.append(fit.text)
-    if len(four_season_list)==0 :
+    if len(four_season_list) == 0 :
         four_season_list = None
     
-    if len(fit_list)==0 :
+    if len(fit_list) == 0 :
         fit_list = None
     return four_season_list, fit_list
 
@@ -233,22 +233,22 @@ def get_buy_gender_list(driver : webdriver.Chrome) -> Optional[str]:
 
     return buy_gender_list
 
-def get_rel_codi_url_list(driver: webdriver.Chrome, item_id, codi_id) -> Optional[str]:
-    url_list = driver.find_elements(By.CSS_SELECTOR, value='div.tab.coordi > ul.style_list > li.list_item > a.img-block')
-    
-    # 현재 아이템과 연결된 다른 코디들의 url을 가져오기
-    # 같은 제품이지만 다른 색상들도 모두 포함
-    for i in range(len(url_list)):
-        url_list[i] = url_list[i].get_attribute('href')
 
-    # 하나씩 코디 URL을 돌면서 확인
+def get_rel_codi_url_list(driver: webdriver.Chrome, item_id: str, codi_urls: List[str]) -> Optional[str]:
+    relative_codi_urls = driver.find_elements(By.CSS_SELECTOR, value='div.tab.coordi > ul.style_list > li.list_item > a.img-block')
+    
+    for i in range(len(relative_codi_urls)):
+        relative_codi_urls[i] = relative_codi_urls[i].get_attribute('href')
+
     rel_codi_url_list = list()
-    for rel_codi_url in url_list:
+    codi_urls = list(map(str, codi_urls))
+    
+    for rel_codi_url in relative_codi_urls:
 
         ## 이미 크롤링 된 적 있는 코디인지 확인
         rel_codi_id = rel_codi_url.split("/")[-1]
-        if str(rel_codi_id) in codi_id:
-            print ("현재 이 아이템과 연결된 코디는 이미 크롤링 된 적이 있는 코디입니다.")
+        if str(rel_codi_url) in codi_urls:
+            print (f"[INFO] 아이템 #{item_id} 와 연결된 코디(#{rel_codi_id}) 는 이미 크롤링 완료된 코디입니다.")
             continue
 
         ## 해당 코디에 진짜 동일한 아이템이 존재하는지 확인
@@ -265,10 +265,10 @@ def get_rel_codi_url_list(driver: webdriver.Chrome, item_id, codi_id) -> Optiona
     
         ## 진짜로 동일한 아이템이 존재하는 경우
         if contains_item == True:
-            print (f"현재 아이템 #{item_id}와 연결된 코디 #{rel_codi_id} 에 동일한 아이템이 존재합니다. 연결 코디로 저장합니다.")
+            print (f"[INFO] 현재 아이템 #{item_id}와 연결된 코디 #{rel_codi_id} 에 동일한 아이템이 존재합니다. 이 코디를 관련 코디로 저장합니다.")
             rel_codi_url_list.append(rel_codi_url)
         else:
-            print (f"현재 아이템 #{item_id}와 연결된 코디 #{rel_codi_id} 에는 동일한 아이템이 존재하지 않습니다. 색상이 다른데 연결된 코디의 경우 크롤링을 따로 진행하지 않습니다.")
+            print (f"[INFO] 현재 아이템 #{item_id}와 연결된 코디 #{rel_codi_id} 에는 동일한 아이템이 존재하지 않습니다. 색상이 다른데 연결된 코디의 경우 크롤링을 따로 진행하지 않습니다.")
 
     return rel_codi_url_list
         
@@ -276,11 +276,15 @@ def get_rel_codi_url_list(driver: webdriver.Chrome, item_id, codi_id) -> Optiona
 # 🚀 크롤링 결과를 저장할 excel 파일 생성
 def make_workbooks() -> Tuple[Workbook, ...]:
     workbooks = list()
-
-    for _ in range(7):
-        workbook = openpyxl.Workbook()
-        workbooks.append(workbook)
     
+    workbooks.append(openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item.xlsx"))
+    workbooks.append(openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_tag.xlsx"))
+    workbooks.append(openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_four_season.xlsx"))
+    workbooks.append(openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_fit.xlsx"))
+    workbooks.append(openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_buy_age.xlsx"))
+    workbooks.append(openpyxl.load_workbook("/opt/ml/input/data/raw_codishop/view/item/item_buy_gender.xlsx"))
+    workbooks.append(openpyxl.Workbook())
+
     return tuple(workbooks)
     
 
@@ -291,15 +295,7 @@ def make_worksheets(workbooks: Tuple[Workbook, ...]) -> Tuple[Worksheet, ...]:
         worksheet = workbook.active
         worksheets.append(worksheet)
 
-    # rel_codi_url 을 제외하고 나머지 xlsx 불러오기        
-    worksheets[0].append(["id",  "name", "big_class", "mid_class", "brand", "serial_number", "gender",
-                   "season", "cum_sale", "view_count", "likes", "rating", "price", "url", "img_url"])
-    worksheets[1].append(["id", "tag"])
-    worksheets[2].append(["id", "four_season"])
-    worksheets[3].append(["id", "fit"])
-    worksheets[4].append(["id", "buy_age_18", "buy_age_19_23", "buy_age_24_28", 
-                           "buy_age_29_33", "buy_age_34_39", "buy_age_40"])
-    worksheets[5].append(["id", "buy_men", "buy_women"])
+    # rel_codi_url 을 제외하고 나머지 xlsx 불러오기
     worksheets[6].append(["id", "rel_codi_url"])
 
     return tuple(worksheets)
@@ -321,7 +317,7 @@ def save_workbooks(workbooks: Tuple[Workbook, ...], sort_opt: str, store_opt: st
     workbooks[5].save(os.path.join(path, "item_buy_gender.xlsx"))
     workbooks[6].save(os.path.join(path, "item_rel_codi_url.xlsx"))
 
-    print ("Saving Done..")
+    print ("[INFO] 모든 workbooks (xlsx) 파일들을 저장하는데 성공하였습니다.")
 
 
 # 🚀 각 알맞는 sheet에 크롤링된 정보들 추가
@@ -369,9 +365,8 @@ def save_to_sheets(worksheets: Tuple[Worksheet, ...], item_info: EasyDict) -> No
         worksheets[5].append([item_info.id] + item_info.buy_gender_list)
 
     if item_info.rel_codi_url_list:
-        item_info.rel_codi_url_list = set(item_info.rel_codi_url_list)
         for rel_codi_url in item_info.rel_codi_url_list:
-            worksheets[6].append([item_info.codi_id, rel_codi_url])
+            worksheets[6].append([item_info.id, rel_codi_url])
 
 
 # 🚀 디버깅: 크롤링 결과 출력
