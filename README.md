@@ -32,14 +32,14 @@
             <code>ML engineer</code>
         </td>
         <td align="center"><code></code></td>
-        <td align="center"><code></code></td>
+        <td align="center"><code>ML Engineer</code></td>
         <td align="center"><code></code></td>
         <td align="center"><code></code></td>
     </tr>
     <tr>
         <td align="center"><a href="https://github.com/halucinor">Github</a></td>
         <td align="center"><a href="">Github</a></td>
-        <td align="center"><a href="">Github</a></td>
+        <td align="center"><a href="https://github.com/chae52">Github</a></td>
         <td align="center"><a href="https://github.com/killerWhale0917">Github</a></td>
         <td align="center"><a href="">Github</a></td>
     </tr>
@@ -51,7 +51,7 @@
           <code>?</code> <code>?</code> <br> <code>?</code>
         </td>
         <td align="center">
-          <code>?</code>
+          <code>백엔드</code><br><code>프론트엔드</code><br><code>서비스배포</code>
         </td>
         <td align="center">
           <code>데이터 크롤링</code><br><code>데이터 전처리</code>
