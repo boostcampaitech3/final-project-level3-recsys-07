@@ -54,7 +54,7 @@
           <code>백엔드</code><br><code>프론트엔드</code><br><code>서비스배포</code>
         </td>
         <td align="center">
-          <code>데이터 크롤링</code><br><code>데이터 전처리</code><br><code></code>
+          <code>데이터 크롤링</code><br><code>데이터 전처리</code><br><code>모델링</code>
         </td>
         <td align="center">
           <code>?</code> <code>?</code> <br> <code>?</code>
