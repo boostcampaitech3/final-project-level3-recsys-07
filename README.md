@@ -1,32 +1,17 @@
-# 서버 실행 방법
-0. 사전 설정
-    ```shell
-    > apt-get update
-    > apt install curl
-    ```
+## 프로젝트 소개
 
-1. Poetry 설치하기
-    ```shell
-    > curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-    ```
+## 서비스 시연
 
-2. 환경변수 설정
-    ```shell
-    > source $HOME/.poetry/env 
-    ```
+### TODO : 영상 or 서비스 gif 업로드
 
-3. poetry install
-    ```shell
-    > poetry install
-    ```
-4. poetry 가상환경 실행
-    ```shell
-    > poetry shell
-    ```
+## 디렉토리 구조
 
-5. 서버 실행
+## 상세 설명
 
-    ```shell
-    > cd final-project-level3-recsys-07
-    > python -m server 
-    ```
+### 1. 데이터 크롤링/전처리
+
+### 2. 모델
+
+### 3. 프론트엔드 서버
+
+### 4. 백엔드 서버
