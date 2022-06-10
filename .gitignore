@@ -1,2 +1,7 @@
 __pycache__
 *.xlsx
+*.csv
+*.pt
+*.log
+*.deb
+*.xlsx
