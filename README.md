@@ -156,7 +156,7 @@
 `서현덕`
 
 ### 3. 프론트엔드 서버
-- [📜 Streamlit_frontend](.streamlit_frontend/readme.md)
+- [📜 Streamlit_frontend](./streamlit_frontend/readme.md)
 ### 4. 백엔드 서버
 
 *### TODO : README Link*
