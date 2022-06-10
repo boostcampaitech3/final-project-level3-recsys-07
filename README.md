@@ -70,15 +70,23 @@
 
 *### TODO : 서비스 소개*
 
-## 서비스 시연
+## 데모
 
 *### TODO : 영상 or 서비스 gif 업로드*
 
 [**서비스 링크**](https://bit.ly/3NAqJQd)
 
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 ## 디렉토리 구조
 
 *### TODO : 디렉토리 구조 toggle*
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+## 사용 기술
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## 상세 설명
 
@@ -96,3 +104,5 @@
 ### 4. 백엔드 서버
 
 *### TODO : README Link*
+
+<p align="right">(<a href="#top">back to top</a>)</p>
