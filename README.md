@@ -1,3 +1,69 @@
+## Contributers
+
+## Members
+
+<table align="center">
+    <tr>
+        <td align="center">백승주</td>
+        <td align="center">서현덕</td>
+        <td align="center">이채원</td>
+        <td align="center">유종문</td>
+        <td align="center">김소미</td>
+    </tr>
+    <tr height="160px">
+        <td align="center">
+            <img height="120px" weight="120px" src="https://avatars.githubusercontent.com/u/10546369?v=4"/>
+        </td>
+        <td align="center">
+            <img height="120px" weight="120px" src="https://avatars.githubusercontent.com/u/96756092?v=4"/>
+        </td>
+        <td align="center">
+            <img height="120px" weight="120px" src="https://avatars.githubusercontent.com/u/41178045?v=4"/>
+        </td>
+        <td align="center">
+            <img height="120px" weight="120px" src="https://avatars.githubusercontent.com/u/91870042?v=4"/>
+        </td>
+        <td align="center">
+            <img height="120px" weight="120px" src="https://avatars.githubusercontent.com/u/44887886?v=4"/>
+        </td>
+    </tr>
+    <tr>
+    </tr>
+    <tr>
+        <td align="center">
+            <code>ML engineer</code>
+        </td>
+        <td align="center"><code></code></td>
+        <td align="center"><code></code></td>
+        <td align="center"><code></code></td>
+        <td align="center"><code></code></td>
+    </tr>
+    <tr>
+        <td align="center"><a href="https://github.com/halucinor">Github</a></td>
+        <td align="center"><a href="">Github</a></td>
+        <td align="center"><a href="">Github</a></td>
+        <td align="center"><a href="">Blog</a></td>
+        <td align="center"><a href="">Github</a></td>
+    </tr>
+    <tr>
+        <td align="center">
+          <code>백엔드</code> <code>프론트엔드</code> <code>서비스배포</code>
+        </td>
+        <td align="center">
+          <code>?</code> <code>?</code> <br> <code>?</code>
+        </td>
+        <td align="center">
+          <code>?</code>
+        </td>
+        <td align="center">
+          <code>?</code> <code>?</code>
+        </td>
+        <td align="center">
+          <code>?</code> <code>?</code> <br> <code>?</code>
+        </td>
+    </tr>
+</table>
+
 ## 목차
 
 ## 프로젝트 소개
