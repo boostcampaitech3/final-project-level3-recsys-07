@@ -34,7 +34,7 @@ def get_item_info(item_ids:List)->dict:
     else:
         item_ids = tuple(item_ids)
 
-    sql = f"SELECT id, name, img_url, big_class FROM item WHERE id IN {item_ids}"
+    sql = f"SELECT id, name, img_url, big_class, url FROM item WHERE id IN {item_ids}"
     try:
         db = get_db(config)
         cursor = db.cursor()
@@ -43,13 +43,14 @@ def get_item_info(item_ids:List)->dict:
     finally:
         db.close()
     
-    out = {"item_ids" : [], "item_name" : [], 'img_url' : [], 'big_class' : []}
+    out = {"item_ids" : [], "item_name" : [], 'img_url' : [], 'big_class' : [], 'item_url': []}
     #tuple to dict
     for item in result:
         out['item_ids'].append(item[0])
         out['item_name'].append(item[1])
         out['img_url'].append(item[2])
         out['big_class'].append(item[3])
+        out['item_url'].append(item[4])
     
     return out 
 
