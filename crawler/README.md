@@ -1,5 +1,5 @@
 # Introduction
-패션사이트인 MUSINSA에서 코디샵 또는 코디맵의 코디와 아이템들을 크롤링하는 소스입니다. Python의 Selenium을 통해서 크롤링을 진행하고 있습니다. 필요한 패키지는 `requirements.txt` 에서 다운 받을 수 있으며, 드라이버는 아래 [ChromeDriver 설치 페이지](#chromedriver-설치)에서 자세한 내용을 확인할 수 있습니다.
+패션사이트인 MUSINSA에서 코디샵 또는 코디맵의 코디와 아이템들을 크롤링하는 소스입니다. Python의 Selenium을 통해서 크롤링을 진행하고 있습니다. 필요한 패키지는 `requirements.txt` 에서 다운 받을 수 있으며, 드라이버는 아래 [ChromeDriver 설치 페이지](#installing-chrome-driver)에서 자세한 내용을 확인할 수 있습니다.
 
 ## How to Run?
 
