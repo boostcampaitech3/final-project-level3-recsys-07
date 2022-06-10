@@ -67,12 +67,14 @@
 ## 프로젝트 소개
 
 *### TODO : 서비스 소개*
+`All together`
 
 ## 서비스 시연
 
 [**서비스 링크**](https://bit.ly/3NAqJQd)
 
 *### TODO : 영상 or 서비스 gif 업로드*
+`김소미`
 
 ## 디렉토리 구조
 
@@ -134,14 +136,18 @@
 ### 1. 데이터 크롤링/전처리
 
 *### TODO : README Link*
+`유종문` `김소미`
 
 ### 2. 모델
 
 *### TODO : README Link*
+`서현덕`
 
 ### 3. 프론트엔드 서버
 
 *### TODO : README Link*
+`이채원`
 ### 4. 백엔드 서버
 
 *### TODO : README Link*
+`백승주`
