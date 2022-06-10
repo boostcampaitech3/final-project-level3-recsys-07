@@ -45,7 +45,7 @@
     </tr>
     <tr>
         <td align="center">
-          <code>백엔드</code> <code>프론트엔드</code> <code>서비스배포</code>
+          <code>백엔드</code> <code>프론트엔드</code>
         </td>
         <td align="center">
           <code>?</code> <code>?</code> <br> <code>?</code>
@@ -57,7 +57,7 @@
           <code>데이터 크롤링</code><br><code>데이터 전처리</code>
         </td>
         <td align="center">
-          <code>?</code> <code>?</code> <br> <code>그래프 임베딩</code>
+          <code>?</code> <code>?</code> <br> <code>?</code>
         </td>
     </tr>
 </table>
@@ -67,30 +67,87 @@
 ## 프로젝트 소개
 
 *### TODO : 서비스 소개*
+`All together`
 
 ## 서비스 시연
 
-*### TODO : 영상 or 서비스 gif 업로드*
-
 [**서비스 링크**](https://bit.ly/3NAqJQd)
+
+*### TODO : 영상 or 서비스 gif 업로드*
+`김소미`
 
 ## 디렉토리 구조
 
-*### TODO : 디렉토리 구조 toggle*
+<details>
+<summary>Toggle</summary>
+<div markdown="1">
+
+```
+    .
+    |-- EDA
+    |   |-- EDA_codimap.ipynb
+    |   |-- IIM_maker.ipynb
+    |   `-- make_item_matrix_codimap.ipynb
+    |-- README.md
+    |-- crawler
+    |   `-- codishop
+    |-- models
+    |   |-- LightGCN
+    |   |-- Mult-VAE
+    |   |-- Rule based
+    |   |-- Rule_based
+    |   |-- __init__.py
+    |-- poetry.lock
+    |-- preprocessing
+    |   |-- cluster_item_interaction_matrix.py
+    |   |-- preprocess.py
+    |   |-- testing_files
+    |   `-- utils
+    |-- pyproject.toml
+    |-- requirements.txt
+    |-- resource
+    |   |-- CCIM.csv
+    |   |-- cluster_item_prob.csv
+    |   `-- item.csv
+    |-- server
+    |   |-- README.md
+    |   |-- __init__.py
+    |   |-- __main__.py
+    |   |-- __pycache__
+    |   |-- config.yaml
+    |   |-- main.py
+    |   `-- services
+    |-- server_run.sh
+    `-- streamlit_frontend
+        |-- app.py
+        |-- config.yaml
+        |-- main-image.png
+        |-- readme.md
+        |-- requirements.txt
+        |-- streamlit_run.sh
+        |-- test.ipynb
+        `-- utils.py
+```
+</div>
+</details>
 
 ## 상세 설명
 
 ### 1. 데이터 크롤링/전처리
 
 *### TODO : README Link*
+`유종문` `김소미`
 
 ### 2. 모델
 
 *### TODO : README Link*
+`서현덕`
 
 ### 3. 프론트엔드 서버
 
 *### TODO : README Link*
+`이채원`
 ### 4. 백엔드 서버
 
 *### TODO : README Link*
+`백승주`
