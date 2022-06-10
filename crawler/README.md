@@ -55,10 +55,10 @@
 ## Installing Chrome Driver
 Chrome Driver 설치링크: https://chromedriver.chromium.org/downloads
 
-- 위 링크에서 사용하는 chrome 버전에 맞춰 설치 진행  
-- `chromedriver.exe`는 `/crawler` 폴더 내부에 위치해야함  
+- 위 링크에서 사용하는 chrome 버전에 맞춰 설치를 진행합니다.
+- `chromedriver.exe`는 `/crawler` 폴더 내부에 위치해야합니다.
 - chrome 버전 확인  
-    `chrome://settings/help` 에서 확인 가능
+    `chrome://settings/help` 에서 확인
 
 <br>
 
