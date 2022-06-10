@@ -1,6 +1,7 @@
+__pycache__
 *.xlsx
 *.deb
-__pycache__
+*.yaml
 *.csv
 *.pt
 *.log
