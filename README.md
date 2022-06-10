@@ -2,11 +2,11 @@
 
 <table align="center">
     <tr>
-        <td align="center">백승주</td>
-        <td align="center">서현덕</td>
-        <td align="center">이채원</td>
-        <td align="center">유종문</td>
-        <td align="center">김소미</td>
+        <td align="center"><b>백승주</b></td>
+        <td align="center"><b>서현덕</b></td>
+        <td align="center"><b>이채원</b></td>
+        <td align="center"><b>유종문</b></td>
+        <td align="center"><b>김소미</b></td>
     </tr>
     <tr height="160px">
         <td align="center">
@@ -45,7 +45,7 @@
     </tr>
     <tr>
         <td align="center">
-          <code>백엔드</code> <code>프론트엔드</code>
+          <code>백엔드</code><br><code>프론트엔드</code><br><code>서비스배포</code>
         </td>
         <td align="center">
           <code>?</code> <code>?</code> <br> <code>?</code>
