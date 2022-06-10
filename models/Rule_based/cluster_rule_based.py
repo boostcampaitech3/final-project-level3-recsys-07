@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 
-interaction_PATH = "/opt/ml/input/data/resources/CCIM.csv"
-item_PATH = "/opt/ml/input/data/asset_codishop/view/item/item.csv"
-cluster_prob_PATH = "/opt/ml/input/data/resources/cluster_item_prob.csv"
+interaction_PATH = "./resource/CCIM.csv"
+item_PATH = "./resource/item.csv"
+cluster_prob_PATH = "./resource/cluster_item_prob.csv"
 
 interaction_matrix = pd.read_csv(interaction_PATH)
 item_feature = pd.read_csv(item_PATH)
@@ -38,7 +38,7 @@ def sort_item_by_prob(item_list : list, cluster_id : int) -> list :
         item_prob = cluster_item_prob.loc[cluster_condition & item_condition, "prob"].iloc[0]
         prob_list.append([item_prob, item_id])
     
-    prob_list.sort(reverse=True)
+    prob_list.sort(reverse=True, key=lambda x:x[0])
 
     for item in prob_list :
         result.append(item[1])
@@ -52,6 +52,7 @@ error_list=[1015402,260755,978464,2263074]
 def get_item_reccomendation(item_id)-> dict :
 
     cluster_id = int(item_feature.loc[item_feature["id"]==item_id]["cluster_id"])
+    item_class = item_feature.loc[item_feature["id"]==item_id]["big_class"]
     data = interaction_matrix[interaction_matrix["id"]==cluster_id]
     data = data.to_numpy()[0][1:] 
 
@@ -60,17 +61,22 @@ def get_item_reccomendation(item_id)-> dict :
         if data[i] != 0 :
             index_list.append(i)
 
+    # 코디에 아이템이 하나밖에 없어서 발생하는 아이템 목록 -> 추후 수정
+    err_list = [1015402, 260755, 978464, 2263074]
+
     rec_result = {"상의" : [], "바지" : [], "아우터" : [], "신발" : [], "가방" : [], "모자" : []}
     for index in index_list :
         rec_cluster_id = item_cluster_list[index]
         rec_item_info = item_feature.loc[item_feature["cluster_id"]==int(rec_cluster_id), "id"]
 
-        for id in rec_item_info : #id=item_id
-            if int(id) in error_list:
+        for id in rec_item_info :
+            if int(id) in err_list:
                 continue
+
             big_class = item_feature.loc[item_feature["id"]==id, "big_class"].iloc[0]
             name = item_feature.loc[item_feature["id"]==id, "name"].iloc[0]
             url = item_feature.loc[item_feature["id"]==id, "url"].iloc[0]
+            
             rec_result[big_class].append(id)
 
     for key in rec_result.keys() :
