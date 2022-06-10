@@ -5,7 +5,13 @@ import json
 from itertools import chain
 from collections import defaultdict
 
-BACKEND_SERVER = "http://127.0.0.1:8001" #http://34.82.21.15:8001/
+import yaml
+from easydict import EasyDict
+with open('./config.yaml') as f:
+    config=yaml.load(f, Loader=yaml.FullLoader)
+    config=EasyDict(config)
+
+BACKEND_SERVER = config.backend_url
 
 def get_image_url(item_id: int) -> dict:
 
@@ -42,6 +48,22 @@ def get_item_tags()->list:
     response_data = list(set(response_data))
     return response_data
 
+
+def get_item_mid_class()->list:
+    response_data = requests.get(url = BACKEND_SERVER + "/mid_class").json()
+    response_data = list(set(response_data))  # set 제거하면 오름차순 정렬 가능
+    return response_data
+
+
+def get_mid_class_id(mid_class_list:list)->list:
+    
+    params = {"mid_class_list" : mid_class_list}
+    params = json.dumps(params)
+    response_data = requests.post(url = BACKEND_SERVER + "/items", data = params).json()
+
+    return response_data
+
+
 def get_tag_id(tag_list:list)->list:
     
     params = {"tag_list" : tag_list}
@@ -52,8 +74,12 @@ def get_tag_id(tag_list:list)->list:
 
 
 def get_image(url:str) -> Image:
-    response = requests.get(url)
-    img = Image.open(BytesIO(response.content))
+    try:
+        response = requests.get(url, stream=True)
+        img = Image.open(BytesIO(response.content))
+    except:
+        response = requests.get("https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg", stream=True)
+        img = Image.open(BytesIO(response.content))
 
     img = img.resize((500, 600), Image.ANTIALIAS) # ratio 5 : 6
 
@@ -76,3 +102,15 @@ def get_recommendation(item_id: int)-> dict:
     # for k,v in lightGCN_result.items():
 
     return rule_base_result
+    # return lightGCN_result
+
+def cluster_id(item_id:int):
+    response_data = requests.get(url = BACKEND_SERVER + f"/item/cluster/{item_id}").json()
+    return response_data
+
+def get_prob_info(cluster_id:int,item_ids: list) -> dict:
+    params = {"cluster_id" : cluster_id, "item_ids" : item_ids}
+    params = json.dumps(params)
+    response_data = requests.post(url = BACKEND_SERVER + "/items/prob/", data = params).json()
+    item_dict = response_data
+    return item_dict

@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-from models.Rule_based.rule_based import *
+from models.Rule_based.cluster_rule_based import *
 from server.services.crud import *
 
 '''
@@ -16,7 +16,7 @@ PROB_DATA = pd.read_csv(LIGHTGCN_PROB_PATH)
 MAX_REC = 20
 
 def get_rulebase_recommendation(item_id:int)-> dict:
-    rule_base_rec = get_item_recommendation(item_id)
+    rule_base_rec = get_item_reccomendation(item_id) 
     return rule_base_rec
     
 
@@ -45,3 +45,16 @@ def get_lightGCN_recommendation(item_id:int)-> dict:
         item_dict[_big_class].append(_item_id)
 
     return item_dict
+    
+def get_prob(cluster_id:int,item_ids:list):
+    result=list()
+    for item_id in item_ids:
+        temp=PROB_DATA[PROB_DATA['item_id']==item_id]
+        temp=temp[temp['cluster_id']==cluster_id]
+
+        if len(temp['prob'].to_list()) == 0:
+            result.append(0.0001)
+        else:
+            result.append(temp['prob'].to_list()[0])
+        
+    return {"item_probs":result}
