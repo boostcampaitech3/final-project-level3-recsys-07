@@ -33,7 +33,7 @@
         </td>
         <td align="center"><code></code></td>
         <td align="center"><code>ML Engineer</code></td>
-        <td align="center"><code></code></td>
+        <td align="center"><code>ML Engineer</code></td>
         <td align="center"><code></code></td>
     </tr>
     <tr>
