@@ -16,15 +16,15 @@
 
 ### 1. 데이터 크롤링/전처리
 
-*### TODO : REAME Link*
+*### TODO : README Link*
 
 ### 2. 모델
 
-*### TODO : REAME Link*
+*### TODO : README Link*
 
 ### 3. 프론트엔드 서버
 
-*### TODO : REAME Link*
+*### TODO : README Link*
 ### 4. 백엔드 서버
 
-*### TODO : REAME Link*
+*### TODO : README Link*
