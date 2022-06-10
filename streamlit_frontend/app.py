@@ -1,7 +1,3 @@
-from ctypes import alignment
-from faulthandler import disable
-from logging import PlaceHolder
-from math import floor
 import streamlit as st
 from utils import *
 import random
@@ -60,19 +56,9 @@ STATE_KEYS_VALS = [
 set_state_key(STATE_KEYS_VALS)
 
 st.set_page_config(layout='wide')
-
-# (_, l,r, _) = st.columns([1, 4,9, 1])
-# with l:
-# st.title("What's In Your Closet?") 
 st.button('🏠',on_click=home, args=())
 st.markdown(f"<p style='text-align: center; font-size: 60px'><strong>What's In Your Closet ?</strong></p>", unsafe_allow_html=True)
-# with r:
-
 st.markdown(f"<p style='text-align: center;'><img src='https://user-images.githubusercontent.com/91870042/172792327-8eb0214e-7c3b-4a12-9d26-19223d5c545e.png' width=70% alt='Logo'></p>", unsafe_allow_html=True)  
-
-#
-#  st.markdown(f"<p style='text-align: center;'>❤️ 가진 옷과 매칭확률 : {int(item_prob[idx]*10000)/100}%</p>", unsafe_allow_html=True)
-
 survey_container=st.empty()
 with survey_container.container():
     with st.container():
