@@ -145,8 +145,10 @@
 
 ### 1. 데이터 크롤링/전처리
 
-*### TODO : README Link*
-`유종문` `김소미`
+- [📜 Data crawling README](./crawler/README.md)
+- [📜 Data preprocessing README](./preprocessing/README.md)
+
+`김소미`
 
 ### 2. 모델
 
