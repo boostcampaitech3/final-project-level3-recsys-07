@@ -78,7 +78,7 @@ def preprocess_item_fit():
 
 
 # four_season 전처리
-def preprocess_four_season():
+def preprocess_item_four_season():
     print ("Doing preprocess_four_season..")
 
     item = pd.read_csv(SAVE_ITEM_PATH + "item.csv")

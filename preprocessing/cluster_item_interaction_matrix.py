@@ -8,13 +8,13 @@ from tqdm import tqdm
 
 
 # path 지정
-ITEM_CODI_ID_XLSX_PATH  = '/opt/ml/input/data/raw_codishop/view/item/item_codi_id.xlsx'
+ITEM_CODI_ID_XLSX_PATH  = '/opt/ml/input/data/asset_codishop/view/item/item_codi_id.csv'
 ITEM_CSV_PATH           = '/opt/ml/input/data/asset_codishop/view/item/item.csv'
 OUTPUT_PATH             = '/opt/ml/input/data/asset_codishop/view/item/cluseter_item_interaction_matrix.csv'
 
 
 # dataframe 불러오기
-item_codi_df    = pd.read_excel(ITEM_CODI_ID_XLSX_PATH, engine='openpyxl')
+item_codi_df    = pd.read_csv(ITEM_CODI_ID_XLSX_PATH)
 item_df = pd.read_csv(ITEM_CSV_PATH)
 
 

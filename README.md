@@ -32,16 +32,16 @@
             <code>ML engineer</code>
         </td>
         <td align="center"><code></code></td>
-        <td align="center"><code></code></td>
-        <td align="center"><code></code></td>
-        <td align="center"><code></code></td>
+        <td align="center"><code>ML Engineer</code></td>
+        <td align="center"><code>ML Engineer</code></td>
+        <td align="center"><code>ML Enigineer</code><br><code>Data Engineer</code></td>
     </tr>
     <tr>
         <td align="center"><a href="https://github.com/halucinor">Github</a></td>
         <td align="center"><a href="">Github</a></td>
-        <td align="center"><a href="">Github</a></td>
+        <td align="center"><a href="https://github.com/chae52">Github</a></td>
         <td align="center"><a href="https://github.com/killerWhale0917">Github</a></td>
-        <td align="center"><a href="">Github</a></td>
+        <td align="center"><a href="https://github.com/somi198">Github</a></td>
     </tr>
     <tr>
         <td align="center">
@@ -51,13 +51,13 @@
           <code>?</code> <code>?</code> <br> <code>?</code>
         </td>
         <td align="center">
-          <code>?</code>
+          <code>백엔드</code><br><code>프론트엔드</code><br><code>서비스배포</code>
         </td>
         <td align="center">
-          <code>데이터 크롤링</code><br><code>데이터 전처리</code>
+          <code>데이터 크롤링</code><br><code>데이터 전처리</code><br><code>모델링</code>
         </td>
         <td align="center">
-          <code>?</code> <code>?</code> <br> <code>?</code>
+          <code>데이터 크롤링</code><br><code>데이터 전처리</code><br> <code>백엔드</code>
         </td>
     </tr>
 </table>
@@ -145,8 +145,10 @@
 
 ### 1. 데이터 크롤링/전처리
 
-*### TODO : README Link*
-`유종문` `김소미`
+- [📜 Data crawling README](./crawler/README.md)
+- [📜 Data preprocessing README](./preprocessing/README.md)
+
+`김소미`
 
 ### 2. 모델
 
@@ -154,9 +156,7 @@
 `서현덕`
 
 ### 3. 프론트엔드 서버
-
-*### TODO : README Link*
-`이채원`
+- [📜 Streamlit_frontend](./streamlit_frontend/readme.md)
 ### 4. 백엔드 서버
 
 *### TODO : README Link*
