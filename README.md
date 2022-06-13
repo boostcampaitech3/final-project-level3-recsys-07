@@ -31,14 +31,14 @@
         <td align="center">
             <code>ML engineer</code>
         </td>
-        <td align="center"><code></code></td>
+        <td align="center"><code>ML Engineer</code><br><code>Data Engineer</code></td>
         <td align="center"><code>ML Engineer</code></td>
-        <td align="center"><code>ML Engineer</code></td>
-        <td align="center"><code>ML Enigineer</code><br><code>Data Engineer</code></td>
+        <td align="center"><code>ML Engineer</code><br><code>Data Engineer</code></td>
+        <td align="center"><code>ML Engineer</code><br><code>Data Engineer</code></td>
     </tr>
     <tr>
         <td align="center"><a href="https://github.com/halucinor">Github</a></td>
-        <td align="center"><a href="">Github</a></td>
+        <td align="center"><a href="https://github.com/davidseo98">Github</a></td>
         <td align="center"><a href="https://github.com/chae52">Github</a></td>
         <td align="center"><a href="https://github.com/killerWhale0917">Github</a></td>
         <td align="center"><a href="https://github.com/somi198">Github</a></td>
@@ -48,7 +48,7 @@
           <code>백엔드</code><br><code>프론트엔드</code><br><code>서비스배포</code>
         </td>
         <td align="center">
-          <code>?</code> <code>?</code> <br> <code>?</code>
+          <code>데이터 크롤링</code><br><code>데이터 전처리</code><br><code>모델링</code>
         </td>
         <td align="center">
           <code>백엔드</code><br><code>프론트엔드</code><br><code>서비스배포</code>
@@ -62,7 +62,21 @@
     </tr>
 </table>
 
+<br>
+
 ## 목차
+
+- [프로젝트 소개](#프로젝트-소개)
+  * [추천 프로세스](#추천-프로세스)
+- [서비스 시연](#서비스-시연)
+- [디렉토리 구조](#디렉토리-구조)
+- [상세 설명](#상세-설명)
+  * [1. 데이터 크롤링/전처리](#1-데이터-크롤링전처리)
+  * [2. 모델](#2-모델)
+  * [3. 프론트엔드 서버](#3-프론트엔드-서버)
+  * [4. 백엔드 서버](#4-백엔드-서버)
+
+<br>
 
 ## 프로젝트 소개
 
@@ -150,12 +164,12 @@
 
 ### 2. 모델
 
-*### TODO : README Link*
-`서현덕`
+- [📜 Model README](./models/README.md)
 
 ### 3. 프론트엔드 서버
+
 - [📜 Streamlit_frontend](./streamlit_frontend/readme.md)
+  
 ### 4. 백엔드 서버
 
-*### TODO : README Link*
-`백승주`
+- [📜 FastAPI_backend](./server/README.md)
