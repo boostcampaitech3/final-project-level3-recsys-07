@@ -2,9 +2,7 @@
 # Models
 <br>
 
-------------
 ## 개요
--------------
 
 
 [1. Rule Based Model](#1-rule-based-model)
