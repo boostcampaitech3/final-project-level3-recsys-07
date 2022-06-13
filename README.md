@@ -31,10 +31,10 @@
         <td align="center">
             <code>ML engineer</code>
         </td>
-        <td align="center"><code>ML Enigineer</code><br><code>Data Engineer</code></td>
+        <td align="center"><code>ML Engineer</code><br><code>Data Engineer</code></td>
         <td align="center"><code>ML Engineer</code></td>
-        <td align="center"><code>ML Enigineer</code><br><code>Data Engineer</code></td>
-        <td align="center"><code>ML Enigineer</code><br><code>Data Engineer</code></td>
+        <td align="center"><code>ML Engineer</code><br><code>Data Engineer</code></td>
+        <td align="center"><code>ML Engineer</code><br><code>Data Engineer</code></td>
     </tr>
     <tr>
         <td align="center"><a href="https://github.com/halucinor">Github</a></td>
