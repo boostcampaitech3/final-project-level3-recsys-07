@@ -2,9 +2,7 @@
 # Models
 <br>
 
-------------
 ## 개요
--------------
 
 
 [1. Rule Based Model](#1-rule-based-model)
@@ -27,7 +25,7 @@
 <br>
 
 
-## 1. Rule Based Model
+## 1. Rule Based Model [🔗 상세설명](./Rule_based/README.md)
 
 ### 모델 선정 이유
 
@@ -53,7 +51,7 @@
       클러스터 사이 상호작용 여부를 담고 있는 클러스터 상호작용 행렬
 
 
-## 2. Light-GCN
+## 2. Light-GCN [🔗 상세설명](./LightGCN/readme.md)
 
 
 ### 모델 선정 이유
