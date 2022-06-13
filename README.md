@@ -150,7 +150,7 @@
 
 ### 2. 모델
 
-- [📜 Model README](./model/README.md)
+- [📜 Model README](./models/README.md)
 
 ### 3. 프론트엔드 서버
 
