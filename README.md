@@ -150,12 +150,12 @@
 
 ### 2. 모델
 
-*### TODO : README Link*
-`서현덕`
+- [📜 Model README](./model/README.md)
 
 ### 3. 프론트엔드 서버
+
 - [📜 Streamlit_frontend](./streamlit_frontend/readme.md)
+
 ### 4. 백엔드 서버
 
-*### TODO : README Link*
-`백승주`
+- [📜 Backend README](./server/README.md)
